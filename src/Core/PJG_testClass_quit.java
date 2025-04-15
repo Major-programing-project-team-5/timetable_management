@@ -1,7 +1,7 @@
 package Core;
 
 //to-do
-public class PJG_testClass {
+public class PJG_testClass_quit {
 
     public void quit(){
         uploadAllFileTodataBase();
