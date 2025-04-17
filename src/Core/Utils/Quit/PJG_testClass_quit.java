@@ -1,4 +1,4 @@
-package Core;
+package Core.Utils.Quit;
 
 //to-do
 public class PJG_testClass_quit {

@@ -1,4 +1,4 @@
-package Core;
+package Core.Views;
 
 public class PJH_test {
     public class test {
