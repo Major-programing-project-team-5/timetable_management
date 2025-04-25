@@ -1,4 +1,4 @@
-package Core.Utils.Add;
+package Core.Utils.Calc;
 
 public class LEB_Calc_Command(String userInput) {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
