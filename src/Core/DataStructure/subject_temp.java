@@ -1,6 +1,7 @@
 package Core.DataStructure;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class subject_temp {
 
@@ -39,5 +40,23 @@ public class subject_temp {
                 ", room='" + room + '\'' +
                 ", previousSub=" + Arrays.toString(previousSub) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        subject_temp that = (subject_temp) object;
+        return subNumber == that.subNumber && cost == that.cost && Objects.equals(name, that.name) && Objects.equals(area, that.area) && Objects.equals(days, that.days) && Objects.equals(room, that.room) && Objects.deepEquals(previousSub, that.previousSub);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, subNumber, cost, area, days, room, Arrays.hashCode(previousSub));
+    }
+
+    public String[] getSubjectInfo(){
+        return new String[]{name, Integer.toString(subNumber), Integer.toString(cost),
+                        area, days, room};
     }
 }

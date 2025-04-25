@@ -1,7 +1,5 @@
 package Core.Utils.Add;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class add_utilitySet {
 //    1. 지정 학기 시간표 생성(e.g.  add 2 1 (2학년 1학기 시간표),

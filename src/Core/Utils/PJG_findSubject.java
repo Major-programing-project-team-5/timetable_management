@@ -11,7 +11,6 @@ public class PJG_findSubject {
     public String room;
     public String[] previousSub;
     public subject_temp fineSubjectbytuples(String tuples){
-        subject_temp subject =
-        return
+
     }
 }
