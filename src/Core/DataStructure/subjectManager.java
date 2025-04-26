@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class subjectManager {
-    //튜플 찾기용으로 사용하는, 해쉬맵 담긴 뭐 그런겁니다.
+    //튜플 찾기용으로 사용하는, 해쉬맵이 담겨 있는 객체입니다.
 
     public static HashSet<Subject> subjectSets;
     public static List<Subject> subjectList;
@@ -23,7 +23,7 @@ public class subjectManager {
      * @param subject 추가할 서브젝트입니다.
      * @return 제대로 추가되었는지, 추가되지 않았는지를 리턴합니다.
      */
-    public boolean addSubjectToManager(Subject subject){
+    public static boolean addSubjectToManager(Subject subject){
         try{
             if(subjectSets.contains(subject)){
                 throw new addException("subjectManager - addSubjectToManager : 과목이 이미 존재함.");

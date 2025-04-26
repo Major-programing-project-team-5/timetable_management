@@ -1,30 +1,27 @@
 package Core.DataStructure;
 
+import java.util.List;
+import java.util.Map;
+
 public class Graduation {
-    private int totalCreditsRequired;
-    private int majorCreditsRequired;
-    private int liberalArtsCreditsRequired;
+    //졸엽오건은 하나만 존재해도 되니까 딱히 매니저같은거 안 만들고 객체 하나만 가지고있도록합니다.
+    private int totalCreditsRequired; // 총 이수 학점 목록
+    private Map<String, Integer> CreditRequiredEachMajor; // 각 과목별 이수 학점 목록입니다.
+    /*
+    이번 구현(1차)에섡 쓰이지 않습니다.
+     */
+    private List<Subject> requiredSubject; // 졸업을 위한 필수 수강 과목 목록
+    /*
+    아번 구현(1차) 에선 쓰이지 않습니다.
+     */
 
-    public Graduation(int totalCreditsRequired, int majorCreditsRequired, int liberalArtsCreditsRequired) {
+
+    /**
+     * 이번 구현에선 그냥 총 학점만 받아서 초기화하는 식입니다..
+     * @param totalCreditsRequired
+     */
+    public Graduation(int totalCreditsRequired) {
         this.totalCreditsRequired = totalCreditsRequired;
-        this.majorCreditsRequired = majorCreditsRequired;
-        this.liberalArtsCreditsRequired = liberalArtsCreditsRequired;
     }
 
-    public int getTotalCreditsRequired() {
-        return totalCreditsRequired;
-    }
-
-    public int getMajorCreditsRequired() {
-        return majorCreditsRequired;
-    }
-
-    public int getLiberalArtsCreditsRequired() {
-        return liberalArtsCreditsRequired;
-    }
-
-    @Override
-    public String toString() {
-        return "졸업 요건: 총 학점 " + totalCreditsRequired + "점, 전공 학점 " + majorCreditsRequired + "점, 교양 학점 " + liberalArtsCreditsRequired + "점";
-    }
 }

@@ -2,7 +2,9 @@ package Core.DataStructure;
 
 import Core.Utils.findSubjectClass;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Subject {
 
@@ -77,6 +79,12 @@ public class Subject {
         this.credit = -1;//기본값
     }
 
+    /**
+     * 과목을 찾을 때 임시로 만드는 것.
+     * @param subjectName
+     * @param subjectDayTime
+     * @param subjectCode
+     */
     public Subject(String subjectName, String[] subjectDayTime, String subjectCode) {
         this.subjectDayTime = subjectDayTime;
         this.subjectName = subjectName;
@@ -119,5 +127,18 @@ public class Subject {
     @Override
     public String toString() {
         return "[" + subjectCode + "] " + subjectName + " (" + credit + "학점, " + category + ")";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Subject subject = (Subject) object;
+        return Objects.equals(subjectName, subject.subjectName) && Objects.deepEquals(subjectDayTime, subject.subjectDayTime) && Objects.equals(subjectCode, subject.subjectCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(subjectName, Arrays.hashCode(subjectDayTime), subjectCode);
     }
 }

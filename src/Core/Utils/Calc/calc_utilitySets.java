@@ -1,6 +1,6 @@
 package Core.Utils.Calc;
 
-public class LEB_Calc_Command(String userInput) {
+public class calc_utilitySets(String userInput) {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
 //    2. <calc> <term> 특정 학기 내 학점 계산
 //    3. <calc> <remain> 잔여 학점(전 학기 시간표 대상) 계산

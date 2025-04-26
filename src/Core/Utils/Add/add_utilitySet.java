@@ -9,10 +9,11 @@ public class add_utilitySet {
 
     // 명령어가 add인 것을 외부에서 확인 후 접근.
     public static void AddCommand(String input){
-        String[] tokens = input.trim();
+        String[] tokens = input.trim().split(" ");
         String currentTable;
 
         if (!tokens[0].equals("add")) {
+            //외부에서 명령어가 확인이 됐다면 이 부분도 필요없지않을까요?
             System.out.println("Invalid command.");
             return;
         }
