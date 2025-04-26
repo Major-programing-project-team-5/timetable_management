@@ -4,11 +4,13 @@ import Core.Exception.addException;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class subjectManager {
     //튜플 찾기용으로 사용하는, 해쉬맵 담긴 뭐 그런겁니다.
 
-    public HashSet<subject_temp> subjectSets;
+    public static HashSet<subject_temp> subjectSets;
+    public static List<subject_temp> subjectList;
 
     /**
      * subjectManager에 과목을 추가하는 메소드입니다.
@@ -21,6 +23,7 @@ public class subjectManager {
                 throw new addException("subjectManager - addSubjectToManager : 과목이 이미 존재함.");
             }else{
                 subjectSets.add(subject);
+                subjectList.add(subject);
                 return true;
             }
         }catch (addException e){

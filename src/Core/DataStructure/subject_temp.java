@@ -15,9 +15,15 @@ public class subject_temp {
     public String room;
     public String[] previousSub;
 
-    public subject_temp(){
-
+    public subject_temp(String name, int subNumber, int cost, String area, String days, String room) {
+        this.name = name;
+        this.subNumber = subNumber;
+        this.cost = cost;
+        this.area = area;
+        this.days = days;
+        this.room = room;
     }
+
     public subject_temp(String name, int subNumber, int cost, String area, String days, String room, String[] previousSub) {
         this.name = name;
         this.subNumber = subNumber;
@@ -47,7 +53,7 @@ public class subject_temp {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         subject_temp that = (subject_temp) object;
-        return subNumber == that.subNumber && cost == that.cost && Objects.equals(name, that.name) && Objects.equals(area, that.area) && Objects.equals(days, that.days) && Objects.equals(room, that.room) && Objects.deepEquals(previousSub, that.previousSub);
+        return subNumber == that.subNumber && cost == that.cost && Objects.equals(name, that.name) && Objects.equals(area, that.area) && Objects.equals(days, that.days) && Objects.equals(room, that.room);
     }
 
     @Override
