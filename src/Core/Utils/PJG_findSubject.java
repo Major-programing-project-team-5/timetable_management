@@ -29,10 +29,14 @@ public class PJG_findSubject {
             }
         }
         List<subject_temp> tempSubjectList = new ArrayList<>();
+        int i = 0;
         for(var temp : subjectManager.subjectList) {
-            if (tuple[0].equals(temp.name)) {
+            if (tuple[i].equals(temp.name)) {
                 tempSubjectList.add(temp);
+                i++;
             }
+            if(tuple[i].equals(temp.subNumber))
+
         }
         if
     }
