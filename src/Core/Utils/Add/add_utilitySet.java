@@ -1,20 +1,19 @@
 package Core.Utils.Add;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
-public class LEB_Add_Command {
-    1. 지정 학기 시간표 생성(e.g.  add 2 1 (2학년 1학기 시간표),
-    2. add current 3 1 (2학년 1학기 시간표 생성 및 현재 시간표로 설정)
-    3. 시간표에 과목 추가 add current 운영체제 화 14:00~16:00 (현재 시간표에 과목 추가)
-    4. 데이터 베이스에 과목 등록 add 과목 <강의 정보>
+public class add_utilitySet {
+//    1. 지정 학기 시간표 생성(e.g.  add 2 1 (2학년 1학기 시간표),
+//    2. add current 3 1 (2학년 1학기 시간표 생성 및 현재 시간표로 설정)
+//    3. 시간표에 과목 추가 add current 운영체제 화 14:00~16:00 (현재 시간표에 과목 추가)
+//    4. 데이터 베이스에 과목 등록 add 과목 <강의 정보>
 
     // 명령어가 add인 것을 외부에서 확인 후 접근.
     public static void AddCommand(String input){
-        String[] tokens = input.trim();
+        String[] tokens = input.trim().split(" ");
         String currentTable;
 
         if (!tokens[0].equals("add")) {
+            //외부에서 명령어가 확인이 됐다면 이 부분도 필요없지않을까요?
             System.out.println("Invalid command.");
             return;
         }
