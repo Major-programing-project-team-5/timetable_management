@@ -1,11 +1,11 @@
 package Core.DataStructure;
 
-public class graduation_temp {
+public class Graduation {
     private int totalCreditsRequired;
     private int majorCreditsRequired;
     private int liberalArtsCreditsRequired;
 
-    public graduation_temp(int totalCreditsRequired, int majorCreditsRequired, int liberalArtsCreditsRequired) {
+    public Graduation(int totalCreditsRequired, int majorCreditsRequired, int liberalArtsCreditsRequired) {
         this.totalCreditsRequired = totalCreditsRequired;
         this.majorCreditsRequired = majorCreditsRequired;
         this.liberalArtsCreditsRequired = liberalArtsCreditsRequired;
