@@ -1,6 +1,7 @@
 package Core.Views;
 
 import Core.DataStructure.Graduation;
+import Core.DataStructure.Timetable;
 import Core.DataStructure.TimetableManager;
 import Core.DataStructure.subjectManager;
 import Core.Utils.Update.UpdateManager;
@@ -14,6 +15,7 @@ public class OnloadProgram {
         help_onStart();
 
         String input;
+
         Scanner scanner = new Scanner(System.in);
         while (true) {
             // 사용자 입력 받기

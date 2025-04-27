@@ -14,42 +14,7 @@ public class add_utilitySet {
         String[] tokens = input.trim().split("[ \t\n\r\f\u000B]");
         String currentTable = null;
 
-        try {
-            if (isNumeric(tokens[1]) && isNumeric(tokens[2])) {
-                // 1. 지정 학기 시간표 생성 (학년, 학기)
-                int year = Integer.parseInt(tokens[1]);
-                int semester = Integer.parseInt(tokens[2]);
-                createTimetable(year, semester);
 
-            } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
-                // 2. 현재 시간표 생성 및 설정
-                int year = Integer.parseInt(tokens[2]);
-                int semester = Integer.parseInt(tokens[3]);
-                currentTable = createAndSetCurrentTimetable(year, semester);
-
-            } else if (tokens[1].equals("current") && tokens.length > 2) {
-                // 3. 시간표에 과목 추가
-                String[] subjectInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
-                addSubjectToCurrentTimetable(subjectInfo, currentTable);
-
-            } else if (tokens[1].equals("과목")) {
-                // 4. 데이터베이스에 과목 추가
-                String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
-                addSubjectToDatabase(lectureInfo);
-
-            } else if (tokens[1].equals("past") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
-                // 5. 과거 시간표 추가(명령에 past가 붙어도 일반 테이블 생성처럼 작동)
-                int year = Integer.parseInt(tokens[2]);
-                int semester = Integer.parseInt(tokens[3]);
-                createTimetable(year, semester);
-
-            } else {
-                System.out.println("잘못된 add 명령 형식입니다.");
-            }
-
-        } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다: " + e.getMessage());
-        }
     }
 
     // 현재 시간표에 과목 추가
