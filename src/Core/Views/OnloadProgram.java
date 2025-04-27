@@ -8,13 +8,13 @@ import Core.Utils.Update.UpdateManager;
 public class OnloadProgram {
 
     public void run(){
-
+        update();
     }
     public void update(){
         UpdateManager updateManager = new UpdateManager();
-        updateManager.updateSubjectManager("subject.txt");
-        updateManager.updateTimetableManager("timetable.txt");
-        updateManager.updateGraduate("graduate.txt");
+        updateManager.updateSubjectManager("src/resources/subject.txt");
+        updateManager.updateTimetableManager("src/resources/timetable.txt");
+        updateManager.updateGraduate("src/resources/graduate.txt");
     }
 
 }

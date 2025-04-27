@@ -53,4 +53,13 @@ public class Timetable {
     public int hashCode() {
         return Objects.hash(semester, year);
     }
+
+    @Override
+    public String toString() {
+        return "Timetable{" +
+                "subjects=" + subjects +
+                ", semester=" + semester +
+                ", year=" + year +
+                '}';
+    }
 }

@@ -83,6 +83,7 @@ public class UpdateManager {
                         lectureRoom,
                         previousSubjects
                 );
+                System.out.println(subject.toString());
 
                 // subjectManager에 과목 추가
                 subjectManager.addSubjectToManager(subject);
@@ -91,6 +92,7 @@ public class UpdateManager {
         } catch (Exception e) {
             System.out.println("updateSubjectManager 에러 : " + e.getMessage());
         }
+
     }
 
     public void updateTimetableManager(String filePath) {
@@ -107,16 +109,17 @@ public class UpdateManager {
                 int year = Integer.parseInt(tokens[0]);
                 int semester = Integer.parseInt(tokens[1]);
                 ArrayList<Subject> subjects = new ArrayList<>();
-
-                line = br.readLine();
-
-                //과목찾기찾기
-                String[] tuples = line.split(" ");
-                Subject subject = findSubjectClass.findSubject(tuples);
-
+                int subjectAmount = Integer.parseInt(br.readLine());
+                for(int i = 0; i < subjectAmount; i++){
+                    line = br.readLine();
+                    String[] tuples = line.split(" ");
+                    Subject subject = findSubjectClass.findSubject(tuples);
+                    subjects.add(subject);
+                }
 
                 Timetable timetable = new Timetable(year, semester, subjects);
                 TimetableManager.addTimeTabletoManager(timetable);
+                System.out.println(timetable.toString());
             }
             br.close();
         } catch (Exception e) {
