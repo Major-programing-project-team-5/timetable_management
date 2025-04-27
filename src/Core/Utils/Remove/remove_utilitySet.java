@@ -7,12 +7,12 @@ import Core.Exception.removeException;
 import java.io.*;
 import java.util.Arrays;
 
-public class removeUtilitySet {
+public class remove_utilitySet {
     public static void removeMain(String input) {
         String[] tokens = input.split("\\s+");
 
         if (tokens[1].equals("subject") || tokens[2].equals("all")) {
-            removeAllSubjectToTimetable();
+            removeAllSubjectToTimetable(TimetableManager.presentTimetable);
         } else if(tokens[1].equals("subject") || tokens[-1].equals("database")) {
             Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
             removeSubjectToDatabase(token);

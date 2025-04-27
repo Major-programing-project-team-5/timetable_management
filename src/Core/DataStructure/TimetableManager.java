@@ -10,6 +10,7 @@ import java.util.Map;
 public class TimetableManager {
     public static HashSet<Timetable> timetableSets;
     public static List<Timetable> timetableList;
+    public static Timetable presentTimetable;
     /**
      * TimeTableManager에 시간표를 추가하는 메소드입니다.
      * @param timetable 시간표에 추가할 시간표입니다

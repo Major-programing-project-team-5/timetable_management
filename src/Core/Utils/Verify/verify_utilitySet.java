@@ -7,13 +7,14 @@ import Core.Utils.findSubjectClass;
 
 import java.util.Arrays;
 
-public class PJG_testClass_verify {
+public class verify_utilitySet {
 
     public static void verifyMain(String input) {
         String[] tokens = input.split("[ \t\n\r\f\u000B]");
 
         if (tokens.length == 1) {
-            verifyTimetable(0, 0);
+            Timetable table = TimetableManager.presentTimetable;
+            verifyTimetable(table.getYear(), table.getSemester());
         }
         else if (tokens[1].equals("subject")) {
             String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
