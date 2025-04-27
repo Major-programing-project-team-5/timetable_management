@@ -36,7 +36,7 @@ public class add_promptSet {
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 3, tokens.length);
-                print_add_course_timetable(lectureInfo);
+                print_add_course_timetable(year, semester, lectureInfo);
             } else {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
@@ -45,7 +45,7 @@ public class add_promptSet {
         }
     }
 
-    private void print_add_course_timetable(String[] lectureInfo) {
+    private void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
     }
 
     public void print_add_timetable(int year, int semester) {
@@ -110,7 +110,7 @@ public class add_promptSet {
     }
 }
 
-public void print_add_course_
+
 
 private static boolean isNumeric(String str) {
     return str.matches("\\d+");
