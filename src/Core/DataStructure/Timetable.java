@@ -13,6 +13,9 @@ public class Timetable {
         this.subjects = subjects;
         this.year = year;
     }
+    public void addSubject(Subject subject){
+        subjects.add(subject);
+    }
 
     public ArrayList<Subject> getSubjects() {
         return subjects;

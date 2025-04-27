@@ -46,8 +46,8 @@ public class findSubjectClass {
                     return i;
                 }
             }
-            return null;
         }
+        return null;
 
 
         //만약 튜플 개수 다 구현해야 하는 쪽으로 갈거면 이 쪽도 구현

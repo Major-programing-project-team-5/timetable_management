@@ -1,6 +1,8 @@
 package Core.Utils.Add;
-package Core.DataStructure;
+
 import java.io.*;
+import java.util.Arrays;
+
 import Core.DataStructure.*;
 
 public class add_utilitySet {
@@ -93,7 +95,7 @@ public class add_utilitySet {
     // 현재 시간표 객체를 반환하는 메서드 (current를 통해 시간표를 찾는 로직)
     public static Timetable getCurrentTimetable(String current) {
         for (Timetable timetable : TimetableManager.timetableList) {
-            if (timetable.getSemester().equals(current)) {
+            if (timetable.equals(current)) {
                 return timetable;
             }
         }
