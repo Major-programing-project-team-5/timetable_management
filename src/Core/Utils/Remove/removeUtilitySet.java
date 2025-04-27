@@ -8,11 +8,6 @@ import java.io.*;
 import java.util.Arrays;
 
 public class removeUtilitySet {
-    /**
-     * 시간표를 매니저에서 삭제하는 메소드입니다.
-     * @param timetable 삭제할 시간표
-     * @return 삭제 성공 여부
-     */
     public static void removeMain(String input) {
         String[] tokens = input.split("\\s+");
 
@@ -36,6 +31,11 @@ public class removeUtilitySet {
             }
         }
     }
+    /**
+     * 시간표를 매니저에서 삭제하는 메소드입니다.
+     * @param timetable 삭제할 시간표
+     * @return 삭제 성공 여부
+     */
     public static boolean removeTimetableToManager(Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {

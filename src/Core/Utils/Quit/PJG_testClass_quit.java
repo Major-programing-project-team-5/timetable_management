@@ -10,7 +10,7 @@ import java.util.List;
 public class PJG_testClass_quit {
 
     private final List<Subject> subjectBuffer;
-    private final Timetable timetableBuffer;
+    private final List<Timetable> timetableBuffer;
 
     public PJG_testClass_quit() {
         this.subjectBuffer = subjectManager.subjectList;
@@ -43,9 +43,15 @@ public class PJG_testClass_quit {
 
     private void pushTimetableFileToDatabase() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("timetable.txt"))) {
-            for (Subject subject : timetableBuffer.getSubjects()) {
-                writer.write(subject.toString());
+            for (Timetable timetable : timetableBuffer) {
+                writer.write(timetable.getYear() + " " + timetable.getSemester());
                 writer.newLine();
+                writer.write(timetable.getSubjects().size());
+                writer.newLine();
+                for (Subject subject : timetable.getSubjects()) {
+                    writer.write(subject.toString());
+                    writer.newLine();
+                }
             }
             System.out.println("timetable.txt에 저장 완료");
         } catch (IOException e) {
