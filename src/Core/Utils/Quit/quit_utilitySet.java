@@ -7,14 +7,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class quit_utilitySet {
+public class PJG_testClass_quit {
 
-    private List<Subject> subjectBuffer;
-    private Timetable timetableBuffer;
+    private final List<Subject> subjectBuffer;
+    private final Timetable timetableBuffer;
 
-    public quit_utilitySet(List<Subject> subjectBuffer, Timetable timetableBuffer) {
-        this.subjectBuffer = subjectBuffer;
-        this.timetableBuffer = timetableBuffer;
+    public PJG_testClass_quit() {
+        this.subjectBuffer = subjectManager.subjectList;
+        this.timetableBuffer = TimetableManager.timetableList;
     }
 
     public void quit() {

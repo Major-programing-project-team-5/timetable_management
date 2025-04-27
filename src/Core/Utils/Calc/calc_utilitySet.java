@@ -5,7 +5,7 @@ import Core.Utils.findSubjectClass;
 
 import java.io.*;
 
-public class calc_utilitySet {
+public class calc_utilitySets {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
 //    2. <calc> <term> 특정 학기 내 학점 계산
 //    3. <calc> <remain> 잔여 학점(전 학기 시간표 대상) 계산
@@ -15,14 +15,13 @@ public class calc_utilitySet {
     static final String TIMETABLE_DIR = "data/";
     static final int GRADUATION_CREDIT = 130;
 
-    private final String[] tokens;
-//    if (tokens.length < 2 || !tokens[0].equals("calc") || !tokens[0].equals("계산") || !tokens[0].equals("학점")) {
+    //    if (tokens.length < 2 || !tokens[0].equals("calc") || !tokens[0].equals("계산") || !tokens[0].equals("학점")) {
 //        System.out.println("올바르지 않은 명령입니다.");
 //        return;
 //    } --> 삭제(메인함수에서 명령어 검증.)
 
-    public calc_utilitySet(String userInput) {
-        tokens = userInput.trim().split("\\s+");
+    public void calcInput(String userInput) {
+        String[] tokens = userInput.trim().split("\\s+");
 
         switch (tokens[1]) {
             case "total":
@@ -87,7 +86,23 @@ public class calc_utilitySet {
         System.out.println("전체 이수 학점: " + totalCredits);
     }
 
+//    // 2. 이수한 학기의 총 credit을 계산
+//    private static int getCreditFromDatabase(String subjectName) {
+//        try (BufferedReader reader = new BufferedReader(new FileReader(DB_PATH))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                String[] tokens = line.split(" ");
+//                if (tokens.length >= 5 && tokens[0].equals(subjectName)) {
+//                    return Integer.parseInt(tokens[4]); // 5번째 요소가 학점
+//                }
+//            }
+//        } catch (IOException e) {
+//            System.out.println("데이터베이스 읽기 오류: " + e.getMessage());
+//        }
+//        return 0;
+//    } --> findSubject 사용하면서 불필요해짐.
 
+    // 2. 특정 학기의 학점 계산
     public static void calculateTermCredits(int year, int semester) {
         String fileName = TIMETABLE_DIR + year + "_" + semester + "_timetable.csv";
         File file = new File(fileName);
