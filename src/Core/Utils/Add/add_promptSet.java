@@ -30,7 +30,7 @@ public class add_promptSet {
             } else if (tokens[1].equals("subject")) {
                 // 4. 데이터베이스에 과목 추가
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
-                add_utilitySet.addSubjectToDatabase(lectureInfo);
+                print_add_course_database(lectureInfo);
             } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && tokens.length > 2) {
                 // 5. add 학년 학기 <과목 정보> 로 입력시 해당 시간표에 과목 추가
                 int year = Integer.parseInt(tokens[1]);
