@@ -41,7 +41,7 @@ public class findSubjectClass {
 
          Subject tempsubject = new Subject(tuples[0], day, tuples[3]);
         if(subjectManager.subjectSets.contains(tempsubject)){
-            for(var i : subjectManager.subjectList){
+            for(Subject i : subjectManager.subjectList){
                 if(i.equals(tempsubject)){
                     return i;
                 }

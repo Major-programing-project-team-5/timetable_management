@@ -1,9 +1,12 @@
 package Core.Utils.Add;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import Core.DataStructure.*;
+import Core.Utils.*;
 
 public class add_utilitySet {
     // 명령어가 add인 것을 외부에서 확인 후 접근.
@@ -16,7 +19,7 @@ public class add_utilitySet {
                 // 1. 지정 학기 시간표 생성 (학년, 학기)
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
-                creatTimetable(year, semester);
+                createTimetable(year, semester);
 
             } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
                 // 2. 현재 시간표 생성 및 설정
@@ -104,13 +107,20 @@ public class add_utilitySet {
 
     // 데이터베이스에 과목을 추가하는 메서드
     public static void addSubjectToDatabase(String[] lectureInfo) {
-        if (lectureInfo.length < 4) {
+        List<String> previousSubjectCode = new ArrayList<>();
+        if (lectureInfo.length < 8) {
             System.out.println("과목 정보가 부족합니다.");
             return;
+        } else if (lectureInfo.length == 8) {
+            previousSubjectCode.add(null);
+        }
+        else {
+            previousSubjectCode = Arrays.asList(lectureInfo).subList(8, lectureInfo.length);
         }
 
         // 과목 정보에서 튜플을 생성하고 데이터베이스에 추가
-        Subject subject = new Subject(lectureInfo[0], Integer.parseInt(lectureInfo[1]), lectureInfo[2], lectureInfo[3]);
+        String[] lectureDate = Arrays.copyOfRange(lectureInfo, 1, 2);
+        Subject subject = new Subject(lectureInfo[0], lectureDate, lectureInfo[3], Integer.parseInt(lectureInfo[4]), lectureInfo[5], lectureInfo[6], lectureInfo[7], previousSubjectCode);
         boolean success = subjectManager.addSubjectToManager(subject);
         if (success) {
             System.out.println("과목이 데이터베이스에 추가되었습니다.");
@@ -120,7 +130,7 @@ public class add_utilitySet {
     }
 
     // 시간표 생성 메서드 (기존 로직 사용)
-    public static void creatTimetable(int year, int semester) {
+    public static void createTimetable(int year, int semester) {
         String dirName = "data";
         String fileName = year + "_" + semester + "_timetable.csv";
         File dir = new File(dirName);
