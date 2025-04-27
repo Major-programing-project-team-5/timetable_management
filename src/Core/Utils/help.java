@@ -11,6 +11,7 @@ public class help {
 
         if(inputList.length == 1) {
             helpNoarg();
+            return;
         }
 
         switch(inputList[1]) {
@@ -35,6 +36,8 @@ public class help {
             case "update":
                 helpUpdate();
                 break;
+            default:
+                helpHelp();
         }
     }
     public void clear() {
