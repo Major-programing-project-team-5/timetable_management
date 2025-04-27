@@ -11,10 +11,10 @@ public class calc_utilitySets(String userInput) {
     static final int GRADUATION_CREDIT = 130;
 
     String[] tokens = userInput.trim().split("\\s+");
-    if (tokens.length < 2 || !tokens[0].equals("calc") || !tokens[0].equals("계산") || !tokens[0].equals("학점")) {
-        System.out.println("올바르지 않은 명령입니다.");
-        return;
-    }
+//    if (tokens.length < 2 || !tokens[0].equals("calc") || !tokens[0].equals("계산") || !tokens[0].equals("학점")) {
+//        System.out.println("올바르지 않은 명령입니다.");
+//        return;
+//    } --> 삭제(메인함수에서 명령어 검증.)
 
 
     switch (tokens[1]) {
