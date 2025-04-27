@@ -13,10 +13,12 @@ public class OnloadProgram {
 
     }
     public void update(){
+        System.out.println("데이터 업데이트를 시도합니다.");
         UpdateManager updateManager = new UpdateManager();
         updateManager.updateSubjectManager("src/resources/subject.txt");
         updateManager.updateTimetableManager("src/resources/timetable.txt");
         updateManager.updateGraduate("src/resources/graduate.txt");
+        System.out.println("데이터 업데이트를 완료하였습니다.");
     }
     public void help_onStart(){
 
@@ -42,6 +44,5 @@ public class OnloadProgram {
         System.out.println("무엇을 도와드릴까요?");
         System.out.print("> ");
     }
-
 
 }
