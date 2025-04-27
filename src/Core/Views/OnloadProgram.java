@@ -1,25 +1,27 @@
 package Core.Views;
 
-import Core.DataStructure.Graduation;
-import Core.DataStructure.TimetableManager;
-import Core.DataStructure.subjectManager;
+import java.util.Scanner;
+
 import Core.Utils.Update.UpdateManager;
+import Core.Utils.Add.add_utilitySet;
+import Core.Utils.Calc.calc_utilitySets;
+import Core.Utils.Quit.PJG_testClass_quit;
+import Core.Utils.Remove.removeUtilitySet;
+import Core.Utils.Verify.*;
 
 public class OnloadProgram {
+    private final Scanner sc = new Scanner(System.in);
+    private helpPrompt help = new helpPrompt();
+    private calc_utilitySets calc = new calc_utilitySets();
+    private PJG_testClass_quit quit = new PJG_testClass_quit();
+    private UpdateManager update = new UpdateManager();
 
     public void run(){
-        update();
+        update.updateAll();
         help_onStart();
+        getInput();
+    }
 
-    }
-    public void update(){
-        System.out.println("데이터 업데이트를 시도합니다.");
-        UpdateManager updateManager = new UpdateManager();
-        updateManager.updateSubjectManager("src/resources/subject.txt");
-        updateManager.updateTimetableManager("src/resources/timetable.txt");
-        updateManager.updateGraduate("src/resources/graduate.txt");
-        System.out.println("데이터 업데이트를 완료하였습니다.");
-    }
     public void help_onStart(){
 
         //'='는 한 줄에 30개
@@ -43,6 +45,66 @@ public class OnloadProgram {
         System.out.println();
         System.out.println("무엇을 도와드릴까요?");
         System.out.print("> ");
+    }
+
+    public void getInput () {
+        sc.skip("\r\n");
+        String ans = sc.nextLine();
+        String[] args = ans.split("[ \t\n\r\f\u000B]");
+
+        switch (args[0]) {
+            case "help":
+            case "Help":
+            case "HELP":
+            case "도움말":
+            case "도움":
+            case "명령어":
+            case "목록":
+            case "?":
+                help.helpMain(ans);
+                break;
+            case "quit":
+            case "Quit":
+            case "QUIT":
+            case "종료":
+                quit.quit();
+                break;
+            case "add":
+            case "Add":
+            case "ADD":
+            case "추가":
+                add_utilitySet.AddCommand(ans);
+                break;
+            case "verify":
+            case "Verify":
+            case "VERIFY":
+            case "확인":
+            case "불러오기":
+            case "표시":
+                PJG_testClass_verify.verifyMain(ans);
+                break;
+            case "calc":
+            case "Calc":
+            case "CALC":
+            case "계산":
+            case "학점":
+                calc.calcInput(ans);
+                break;
+            case "remove":
+            case "Remove":
+            case "REMOVE":
+            case "삭제":
+            case "제거":
+                removeUtilitySet.removeMain(ans);
+                break;
+            case "update":
+            case "Update":
+            case "UPDATE":
+            case "갱신":
+            case "업데이트":
+                update.updateInput(ans);
+                break;
+        }
     }
 
 }
