@@ -1,8 +1,8 @@
 // 터미널 크기 120 * 30 가정한 크기
-package Core.Utils;
+package Core.Views;
 import java.util.Scanner;
 
-public class help {
+public class helpPrompt {
     private final Scanner sc = new Scanner(System.in);
 
     public void helpMain(String input) {
