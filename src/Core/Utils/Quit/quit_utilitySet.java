@@ -7,12 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class PJG_testClass_quit {
+public class quit_utilitySet {
 
     private List<Subject> subjectBuffer;
     private Timetable timetableBuffer;
 
-    public PJG_testClass_quit(List<Subject> subjectBuffer, Timetable timetableBuffer) {
+    public quit_utilitySet(List<Subject> subjectBuffer, Timetable timetableBuffer) {
         this.subjectBuffer = subjectBuffer;
         this.timetableBuffer = timetableBuffer;
     }

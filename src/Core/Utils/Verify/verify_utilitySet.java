@@ -3,7 +3,7 @@ package Core.Utils;
 import Core.DataStructure.Subject;
 import Core.DataStructure.Timetable;
 import Core.DataStructure.TimetableManager;
-public class PJG_testClass_verify {
+public class verify_utilitySet {
 
     public static void verifySubject(String[] tuples) {
         Subject subject = findSubjectClass.findSubject(tuples);

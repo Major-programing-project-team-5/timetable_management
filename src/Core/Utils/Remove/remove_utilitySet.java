@@ -5,7 +5,7 @@ import Core.Exception.removeException;
 
 import java.io.*;
 
-public class removeUtilitySet {
+public class remove_utilitySet {
     /**
      * 시간표를 매니저에서 삭제하는 메소드입니다.
      * @param timetable 삭제할 시간표
