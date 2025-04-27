@@ -5,18 +5,55 @@ import Core.DataStructure.TimetableManager;
 import Core.DataStructure.subjectManager;
 import Core.Utils.Update.UpdateManager;
 
+import java.util.Scanner;
+
 public class OnloadProgram {
 
     public void run(){
         update();
         help_onStart();
+
         String input;
-        while(true){
-            if(getInput()) continue;
-            else break;
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            // 사용자 입력 받기
+            System.out.print("> ");
+            String userInput = scanner.nextLine();
+            String[] inputTuples = userInput.trim().split("\\s+");
+            // 'quit' 입력 시 루프 종료
+            if (userInput.equals("quit")) {
+                break; // 루프 종료
+            }else if(inputTuples[0].equals("add")){
+                add_prompt();
+            }
+
+            // 'quit'이 아니면 그 외의 동작 처리
+            System.out.println("입력된 명령어: " + userInput);
+            // 여기서 추가적으로 다른 명령어를 처리하거나, 로직을 추가할 수 있음
         }
         Quit();
     }
+
+    private void add_prompt() {
+
+    }
+
+    public void print_add_timetable(int year, int semester){
+        System.out.println("[ " + year + "학년 " + semester + "학기 시간표가 생성되었습니다. ]");
+    }
+
+    public void print_add_timetable_setcurrent(int year, int semester){
+        System.out.println("[ 현재 시간표가 " + year + "학년 " + semester + "학기로 설정되었습니다. ]");
+    }
+
+    public void print_add_course_current(String coursename){
+        System.out.println("[ 과목 '" + coursename + "'가 현재 시간표에 추가되었습니다.]");
+    }
+
+    public void print_add_course_database(String coursename){
+        System.out.println("[ 과목 '" + coursename + "'가 데이터베이스에 등록되었습니다. ]");
+    }
+
 
     private void Quit() {
         //Quit 메서드 넣어서 종료하는 것 다 구현.
@@ -27,8 +64,7 @@ public class OnloadProgram {
 
     }
 
-    private boolean getInput() {
-    }
+
 
     public void update(){
         UpdateManager updateManager = new UpdateManager();
@@ -36,6 +72,8 @@ public class OnloadProgram {
         updateManager.updateTimetableManager("src/resources/timetable.txt");
         updateManager.updateGraduate("src/resources/graduate.txt");
     }
+
+    //help 쪽
     private void help_onStart(){
         //'='는 한 줄에 30개
         System.out.println("==============================");
@@ -57,8 +95,6 @@ public class OnloadProgram {
         System.out.println("예) help add");
         System.out.println();
         System.out.println("무엇을 도와드릴까요?");
-        System.out.print("> ");
-
     }
 
 
