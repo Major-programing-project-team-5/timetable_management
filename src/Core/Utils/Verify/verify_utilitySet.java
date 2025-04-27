@@ -10,9 +10,14 @@ import java.util.Arrays;
 public class verify_utilitySet {
 
     public static void verifyMain(String input) {
+
         String[] tokens = input.split("[ \t\n\r\f\u000B]");
 
         if (tokens.length == 1) {
+            if(TimetableManager.presentTimetable == null){
+                System.out.println("현재 시간표가 존재하지 않습니다");
+                return;
+            }
             Timetable table = TimetableManager.presentTimetable;
             verifyTimetable(table.getYear(), table.getSemester());
         }
