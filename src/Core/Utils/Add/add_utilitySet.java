@@ -10,6 +10,7 @@ import Core.Utils.*;
 
 public class add_utilitySet {
     // 명령어가 add인 것을 외부에서 확인 후 접근.
+    public static Timetable currentTable;
     public static void AddCommand(String input){
         String[] tokens = input.trim().split("[ \t\n\r\f\u000B]");
         String currentTable = null;
@@ -18,7 +19,7 @@ public class add_utilitySet {
     }
 
     // 현재 시간표에 과목 추가
-    public static void addSubjectToCurrentTimetable(String[] subjectInfo, String current) {
+    public static void addSubjectToCurrentTimetable(String[] subjectInfo) {
         // subjectInfo 배열에서 과목 정보 추출
         Subject foundSubject = findSubjectClass.findSubject(subjectInfo);
 
@@ -28,13 +29,13 @@ public class add_utilitySet {
         }
 
         // 현재 시간표에 과목 추가 시 시간 겹침 체크
-        if (isTimeConflicted(current, foundSubject)) {
+        if (isTimeConflicted(foundSubject)) {
             System.out.println("시간이 겹치는 과목이 이미 있습니다.");
             return;
         }
 
         // 과목을 현재 시간표에 추가
-        Timetable currentTimetable = getCurrentTimetable(current);  // current로 시간표 객체 가져오기
+        Timetable currentTimetable = getCurrentTimetable(foundSubject);  // current로 시간표 객체 가져오기
         if (currentTimetable != null) {
             currentTimetable.addSubject(foundSubject);
             System.out.println("과목이 시간표에 추가되었습니다: " + foundSubject);
@@ -146,4 +147,4 @@ public class add_utilitySet {
     private static boolean isNumeric(String str) {
         return str.matches("\\d+");
     }
-}
+} 

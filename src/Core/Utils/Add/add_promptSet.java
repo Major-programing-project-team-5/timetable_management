@@ -5,94 +5,78 @@ import Core.DataStructure.Timetable;
 import Core.DataStructure.TimetableManager;
 import Core.DataStructure.subjectManager;
 import Core.Utils.findSubjectClass;
-
 import java.util.Arrays;
 
 public class add_promptSet {
-    public void Select_add_prompt(String[] tokens){
-        //인풋 종료 따라 이동
-        //add current 학년 학기
-
-        //add subject 과목명 요일 시간 제목
+    public void Select_add_prompt(String[] tokens) {
         try {
             if (isNumeric(tokens[1]) && isNumeric(tokens[2])) {
                 // 1. 지정 학기 시간표 생성 (학년, 학기)
-                //add 학년 학기로 입력된 경우
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
                 print_add_timetable(year, semester);
             } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
                 // 2. 현재 시간표 생성 및 설정
-                //currnt를 입력했을 경우.
                 int year = Integer.parseInt(tokens[2]);
                 int semester = Integer.parseInt(tokens[3]);
                 print_add_timetable_setcurrent(year, semester);
-
             } else if (tokens[1].equals("current") && tokens.length > 2) {
                 // 3. 시간표에 과목 추가
                 String[] subjectInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 print_add_course_current(subjectInfo);
-
             } else if (tokens[1].equals("subject")) {
                 // 4. 데이터베이스에 과목 추가
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
-
-                addSubjectToDatabase(lectureInfo);
-
+                add_utilitySet.addSubjectToDatabase(lectureInfo);
             } else if (tokens[1].equals("past") && tokens.length > 2) {
                 // 5. 과거 시간표 추가(명령에 past가 붙어도 일반 테이블 생성처럼 작동)
                 int year = Integer.parseInt(tokens[2]);
                 int semester = Integer.parseInt(tokens[3]);
-                createTimetable(year, semester);
-
+                add_utilitySet.createTimetable(year, semester);
             } else {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
-
         } catch (Exception e) {
             System.out.println("명령어 처리 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
-    public void print_add_timetable(int year, int semester){
 
+    public void print_add_timetable(int year, int semester) {
         Timetable temp = new Timetable(year, semester);
         TimetableManager.addTimeTabletoManager(temp);
-
         System.out.println("[ " + year + "학년 " + semester + "학기 시간표가 생성되었습니다. ]");
     }
 
-    public void print_add_timetable_setcurrent(int year, int semester){
+    public void print_add_timetable_setcurrent(int year, int semester) {
         Timetable temp = new Timetable(year, semester);
-        if(!TimetableManager.timetableSets.contains(temp)){
+        if (!TimetableManager.timetableSets.contains(temp)) {
             TimetableManager.addTimeTabletoManager(temp);
-        }else{
-            for(var i : TimetableManager.timetableList){
-                if(i.equals(temp)){
+        } else {
+            for (var i : TimetableManager.timetableList) {
+                if (i.equals(temp)) {
                     temp = i;
                     break;
                 }
             }
         }
-        currentTable = temp;
+        add_utilitySet.currentTable = temp;
         System.out.println("[ 현재 시간표가 " + year + "학년 " + semester + "학기로 설정되었습니다. ]");
     }
 
-    public void print_add_course_current(String[] tuples){
+    public void print_add_course_current(String[] tuples) {
         Subject temp = findSubjectClass.findSubject(tuples);
-
-        if(temp != null){
+        if (temp != null) {
             subjectManager.addSubjectToManager(temp);
             System.out.println("[ 과목 '" + temp.toString() + "'가 현재 시간표에 추가되었습니다.]");
-        }else{
-            System.out.println("잘못된 과목 튜플 입력입니다");
+        } else {
+            System.out.println("잘못된 과목 튜플 입력입니다.");
         }
-    }
-
-    public void print_add_course_database(String coursename){
-        System.out.println("[ 과목 '" + coursename + "'가 데이터베이스에 등록되었습니다. ]");
     }
 
     private static boolean isNumeric(String str) {
         return str.matches("\\d+");
     }
 }
+
+
+
