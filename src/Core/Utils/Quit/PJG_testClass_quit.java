@@ -1,7 +1,6 @@
 package Core.Utils.Quit;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.Timetable;
+import Core.DataStructure.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
