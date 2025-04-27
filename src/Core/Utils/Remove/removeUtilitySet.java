@@ -1,9 +1,11 @@
 package Core.Utils.Remove;
 
 import Core.DataStructure.*;
+import Core.Utils.findSubjectClass;
 import Core.Exception.removeException;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class removeUtilitySet {
     /**
@@ -11,6 +13,29 @@ public class removeUtilitySet {
      * @param timetable 삭제할 시간표
      * @return 삭제 성공 여부
      */
+    public static void removeMain(String input) {
+        String[] tokens = input.split("\\s+");
+
+        if (tokens[1].equals("subject") || tokens[2].equals("all")) {
+            removeAllSubjectToTimetable();
+        } else if(tokens[1].equals("subject") || tokens[-1].equals("database")) {
+            Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+            removeSubjectToDatabase(token);
+        } else if(tokens[1].matches("\\d+") && tokens[2].matches("\\d+")) {
+            Timetable timetable = TimetableManager.getTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+
+            if (tokens[3].equals("subject") && tokens[4].equals("all")) {
+                removeAllSubjectToTimetable(timetable);
+            }
+            else if(tokens[3].equals("subject") && !tokens[4].equals("all")) {
+                Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
+                removeSubjectToTimetable(token, timetable);
+            }
+            else if(tokens[3].equals("timetable")) {
+                removeTimetableToManager(timetable);
+            }
+        }
+    }
     public static boolean removeTimetableToManager(Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {

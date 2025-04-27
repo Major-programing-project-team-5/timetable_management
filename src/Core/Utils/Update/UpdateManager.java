@@ -17,8 +17,21 @@ public class UpdateManager {
      * 전체 txt 파일에서 데이터를 읽어서 업데이트합니다.
      */
 
-    public void updateAll(){
+    public void updateInput(String input) {
+        String[] tokens = input.split("\\s+");
+        if(tokens.length != 1) {
+            System.out.println("잘못된 update 명령 형식입니다.");
+            return;
+        }
+        updateAll();
+    }
 
+    public void updateAll(){
+        System.out.println("데이터 업데이트를 시도합니다.");
+        updateSubjectManager("src/resources/subject.txt");
+        updateTimetableManager("src/resources/timetable.txt");
+        updateGraduate("src/resources/graduate.txt");
+        System.out.println("데이터 업데이트를 완료하였습니다.");
     }
 
     /**

@@ -1,9 +1,28 @@
-package Core.Utils;
+package Core.Utils.Verify;
 
 import Core.DataStructure.Subject;
 import Core.DataStructure.Timetable;
 import Core.DataStructure.TimetableManager;
+import Core.Utils.findSubjectClass;
+
+import java.util.Arrays;
+
 public class PJG_testClass_verify {
+
+    public static void verifyMain(String input) {
+        String[] tokens = input.split("[ \t\n\r\f\u000B]");
+
+        if (tokens.length == 1) {
+            verifyTimetable(0, 0);
+        }
+        else if (tokens[1].equals("subject")) {
+            String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
+            verifySubject(output);
+        }
+        else if(tokens.length == 3 && tokens[1].matches("\\d") && tokens[2].matches("\\d") ){
+            verifyTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+        }
+    }
 
     public static void verifySubject(String[] tuples) {
         Subject subject = findSubjectClass.findSubject(tuples);

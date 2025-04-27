@@ -9,12 +9,12 @@ import java.util.List;
 
 public class PJG_testClass_quit {
 
-    private List<Subject> subjectBuffer;
-    private Timetable timetableBuffer;
+    private final List<Subject> subjectBuffer;
+    private final Timetable timetableBuffer;
 
-    public PJG_testClass_quit(List<Subject> subjectBuffer, Timetable timetableBuffer) {
-        this.subjectBuffer = subjectBuffer;
-        this.timetableBuffer = timetableBuffer;
+    public PJG_testClass_quit() {
+        this.subjectBuffer = subjectManager.subjectList;
+        this.timetableBuffer = TimetableManager.timetableList;
     }
 
     public void quit() {
