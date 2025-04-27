@@ -5,6 +5,8 @@ import Core.DataStructure.subjectManager;
 import Core.DataStructure.Timetable;
 import Core.DataStructure.TimetableManager;
 import Core.DataStructure.Graduation;
+import Core.Utils.findSubjectClass;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -27,8 +29,8 @@ public class UpdateManager {
      * @param filePath
      * @return
      */
-    public subjectManager updateSubjectManager(String filePath) {
-        subjectManager subjectManager = new subjectManager();
+    public void updateSubjectManager(String filePath) {
+
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             subjectManager.subjectSets = new HashSet<>();
@@ -89,36 +91,29 @@ public class UpdateManager {
         } catch (Exception e) {
             System.out.println("updateSubjectManager 에러 : " + e.getMessage());
         }
-        return subjectManager;
     }
 
-    public TimetableManager updateTimetableManager(String filePath) {
-        TimetableManager timetableManager = new TimetableManager();
+    public void updateTimetableManager(String filePath) {
+
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
-            timetableManager.timetableSets = new HashSet<>();
-            timetableManager.timetableList = new ArrayList<>();
+            TimetableManager.timetableSets = new HashSet<>();
+            TimetableManager.timetableList = new ArrayList<>();
 
             String line;
             while ((line = br.readLine()) != null) {
-                // 예시 : 2025 1 자료구조,알고리즘,컴퓨터구조
+
                 String[] tokens = line.split(" ");
                 int year = Integer.parseInt(tokens[0]);
                 int semester = Integer.parseInt(tokens[1]);
                 ArrayList<Subject> subjects = new ArrayList<>();
 
-                if (tokens.length > 2) {
-                    String[] subjectNames = tokens[2].split(",");
-                    for (String subjectName : subjectNames) {
-                        // subjectName으로 Subject 찾기
-                        for (Subject s : subjectManager.subjectList) {
-                            if (s.getSubjectName().equals(subjectName)) {
-                                subjects.add(s);
-                                break;
-                            }
-                        }
-                    }
-                }
+                line = br.readLine();
+
+                //과목찾기찾기
+                String[] tuples = line.split(" ");
+                Subject subject = findSubjectClass.findSubject(tuples);
+
 
                 Timetable timetable = new Timetable(year, semester, subjects);
                 TimetableManager.addTimeTabletoManager(timetable);
@@ -129,16 +124,15 @@ public class UpdateManager {
         }
     }
 
-    public Graduation updateGraduate(String filePath) {
+    public void updateGraduate(String filePath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = br.readLine();
             int totalCreditsRequired = Integer.parseInt(line.trim());
             br.close();
-            return new Graduation(totalCreditsRequired);
+            Graduation.resetGraduation(totalCreditsRequired);
         } catch (Exception e) {
             System.out.println("updateGraduate 에러 : " + e.getMessage());
-            return null;
         }
     }
 }
