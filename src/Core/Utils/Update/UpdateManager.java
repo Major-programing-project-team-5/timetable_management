@@ -9,10 +9,7 @@ import Core.Utils.findSubjectClass;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.HashMap;
+import java.util.*;
 
 public class UpdateManager {
 
@@ -69,7 +66,7 @@ public class UpdateManager {
                 // 선수 과목 처리
                 List<String> previousSubjects = null;
                 if (tuples.length > 8) {
-                    previousSubjects = List.of(tuples[7].split(","));
+                    previousSubjects = Arrays.asList(tuples[7].split(","));
                 }
 
                 // Subject 객체 생성
@@ -91,6 +88,7 @@ public class UpdateManager {
             br.close();
         } catch (Exception e) {
             System.out.println("updateSubjectManager 에러 : " + e.getMessage());
+            System.out.println("과목 데이터 파일을 업데이트 할 수 없습니다.");
         }
 
     }
@@ -124,6 +122,7 @@ public class UpdateManager {
             br.close();
         } catch (Exception e) {
             System.out.println("updateTimetableManager 에러 : " + e.getMessage());
+            System.out.println("시간표 데이터 파일을 업데이트 할 수 없습니다.");
         }
     }
 
@@ -136,6 +135,7 @@ public class UpdateManager {
             Graduation.resetGraduation(totalCreditsRequired);
         } catch (Exception e) {
             System.out.println("updateGraduate 에러 : " + e.getMessage());
+            System.out.println("학점 데이터 파일을 업데이트 할 수 없습니다.");
         }
     }
 }
