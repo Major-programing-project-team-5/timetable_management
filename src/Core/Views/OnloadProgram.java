@@ -6,7 +6,7 @@ import Core.Utils.Update.UpdateManager;
 import Core.Utils.Add.add_utilitySet;
 import Core.Utils.Calc.calc_utilitySets;
 import Core.Utils.Quit.PJG_testClass_quit;
-import Core.Utils.Remove.removeUtilitySet;
+import Core.Utils.Remove.remove_utilitySet;
 import Core.Utils.Verify.*;
 
 public class OnloadProgram {
@@ -95,7 +95,7 @@ public class OnloadProgram {
             case "REMOVE":
             case "삭제":
             case "제거":
-                removeUtilitySet.removeMain(ans);
+                remove_utilitySet.removeMain(ans);
                 break;
             case "update":
             case "Update":
