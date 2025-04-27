@@ -3,7 +3,9 @@ package Core.Utils.Calc;
 import Core.DataStructure.Subject;
 import Core.Utils.findSubjectClass;
 
-public class calc_utilitySets(String userInput) {
+import java.io.*;
+
+public class calc_utilitySets {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
 //    2. <calc> <term> 특정 학기 내 학점 계산
 //    3. <calc> <remain> 잔여 학점(전 학기 시간표 대상) 계산
@@ -13,36 +15,38 @@ public class calc_utilitySets(String userInput) {
     static final String TIMETABLE_DIR = "data/";
     static final int GRADUATION_CREDIT = 130;
 
-    String[] tokens = userInput.trim().split("\\s+");
+    private final String[] tokens;
 //    if (tokens.length < 2 || !tokens[0].equals("calc") || !tokens[0].equals("계산") || !tokens[0].equals("학점")) {
 //        System.out.println("올바르지 않은 명령입니다.");
 //        return;
 //    } --> 삭제(메인함수에서 명령어 검증.)
 
+    public calc_utilitySets(String userInput) {
+        tokens = userInput.trim().split("\\s+");
 
-    switch (tokens[1]) {
-        case "total":
-            calculateTotalCredits();
-            break;
+        switch (tokens[1]) {
+            case "total":
+                calculateTotalCredits();
+                break;
 
-        case "term":
-            if (tokens.length != 4) {
-                System.out.println("잘못된 calc term 명령 형식입니다.");
-                return;
-            }
-            int year = Integer.parseInt(tokens[2]);
-            int semester = Integer.parseInt(tokens[3]);
-            calculateTermCredits(year, semester);
-            break;
+            case "term":
+                if (tokens.length != 4) {
+                    System.out.println("잘못된 calc term 명령 형식입니다.");
+                    return;
+                }
+                int year = Integer.parseInt(tokens[2]);
+                int semester = Integer.parseInt(tokens[3]);
+                calculateTermCredits(year, semester);
+                break;
 
-        case "remain":
-            calculateRemainingCredits();
-            break;
+            case "remain":
+                calculateRemainingCredits();
+                break;
 
-        default:
-            System.out.println("알 수 없는 calc 명령입니다.");
+            default:
+                System.out.println("알 수 없는 calc 명령입니다.");
+        }
     }
-
 
     // 조건문에 사용되는 함수들
     // 1. 총 학점을 계산하는 함수
