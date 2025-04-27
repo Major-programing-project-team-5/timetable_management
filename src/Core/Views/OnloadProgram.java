@@ -2,18 +2,19 @@ package Core.Views;
 
 import java.util.Scanner;
 
+import Core.Utils.Add.add_promptSet;
+import Core.Utils.Calc.calc_utilitySet;
+import Core.Utils.Quit.quit_utilitySet;
 import Core.Utils.Update.UpdateManager;
-import Core.Utils.Add.add_utilitySet;
-import Core.Utils.Calc.calc_utilitySets;
-import Core.Utils.Quit.PJG_testClass_quit;
+import Core.Utils.Verify.verify_utilitySet;
 import Core.Utils.Remove.remove_utilitySet;
-import Core.Utils.Verify.*;
 
 public class OnloadProgram {
     private final Scanner sc = new Scanner(System.in);
     private helpPrompt help = new helpPrompt();
-    private calc_utilitySets calc = new calc_utilitySets();
-    private PJG_testClass_quit quit = new PJG_testClass_quit();
+    private add_promptSet add = new add_promptSet();
+    private calc_utilitySet calc = new calc_utilitySet();
+    private quit_utilitySet quit = new quit_utilitySet();
     private UpdateManager update = new UpdateManager();
 
     public void run(){
@@ -73,7 +74,7 @@ public class OnloadProgram {
             case "Add":
             case "ADD":
             case "추가":
-                add_utilitySet.AddCommand(ans);
+                add.addMain(ans);
                 break;
             case "verify":
             case "Verify":
@@ -81,7 +82,7 @@ public class OnloadProgram {
             case "확인":
             case "불러오기":
             case "표시":
-                PJG_testClass_verify.verifyMain(ans);
+                verify_utilitySet.verifyMain(ans);
                 break;
             case "calc":
             case "Calc":

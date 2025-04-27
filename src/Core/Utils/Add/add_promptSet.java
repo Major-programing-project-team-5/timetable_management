@@ -11,6 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class add_promptSet {
+    public void addMain(String args) {
+        String[] tokens = args.split("\\n+");
+        Select_add_prompt(tokens);
+    }
+
     public void Select_add_prompt(String[] tokens) {
         try {
             if (isNumeric(tokens[1]) && isNumeric(tokens[2])) {
@@ -37,6 +42,10 @@ public class add_promptSet {
                 int semester = Integer.parseInt(tokens[2]);
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 3, tokens.length);
                 print_add_course_timetable(year, semester, lectureInfo);
+            } else if (tokens[1].equals("past")) {
+                int year = Integer.parseInt(tokens[2]);
+                int semester = Integer.parseInt(tokens[3]);
+                TimetableManager.presentTimetable = TimetableManager.getTimetable(year, semester);
             } else {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
@@ -45,8 +54,7 @@ public class add_promptSet {
         }
     }
 
-    private void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
-    }
+
 
     public void print_add_timetable(int year, int semester) {
         Timetable temp = new Timetable(year, semester);
@@ -65,24 +73,26 @@ public class add_promptSet {
             TimetableManager.addTimeTabletoManager(temp);
             System.out.println("[ " + year + "학년 " + semester + "학기 시간표가 생성되었습니다. ]");
         } else {
-            for (var i : TimetableManager.timetableList) {
+            for (Timetable i : TimetableManager.timetableList) {
                 if (i.equals(temp)) {
                     temp = i;
                     break;
                 }
             }
         }
-        add_utilitySet.currentTable = temp;
+        TimetableManager.presentTimetable = temp;
         System.out.println("[ 현재 시간표가 " + year + "학년 " + semester + "학기로 설정되었습니다. ]");
     }
 
     public void print_add_course_current(String[] tuples) {
         Subject temp = findSubjectClass.findSubject(tuples);
-        if (temp != null) {
-            subjectManager.addSubjectToManager(temp);
-            System.out.println("[ 과목 '" + temp.toString() + "'가 현재 시간표에 추가되었습니다.]");
-        } else {
+        if (temp == null) {
             System.out.println("잘못된 과목 튜플 입력입니다.");
+        } else if (isTimeConflicted(temp, TimetableManager.presentTimetable)) {
+            System.out.println("겹치는 시간표가 있습니다.");
+        } else {
+            TimetableManager.presentTimetable.addSubject(temp);
+            System.out.println("[ 과목 '" + temp.toString() + "'가 현재 시간표에 추가되었습니다.]");
         }
     }
 
@@ -109,13 +119,44 @@ public class add_promptSet {
         }
     }
 
+    public void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
+        Subject temp = findSubjectClass.findSubject(lectureInfo);
+        Timetable table = TimetableManager.getTimetable(year, semester);
 
+        if(temp == null){
+            System.out.println("잘못된 과목 튜플 입력입니다.");
 
+        } else if (isTimeConflicted(temp, table)) {
+            System.out.println("겹치는 시간표가 있습니다.");
+        }
+        else {
+            table.addSubject(temp);
+            System.out.println("[ 과목 '" + temp.toString() + "'가 시간표에 추가되었습니다.]");
+        }
 
-private static boolean isNumeric(String str) {
-    return str.matches("\\d+");
+    }
+
+    public static boolean isTimeConflicted(Subject subject, Timetable timetable) {
+        if (timetable == null) {
+            return false;
+        }
+
+        for (Subject existingSubject : timetable.getSubjects()) {
+            // 기존 시간표의 과목과 비교하여 시간 겹침 여부를 확인
+            if (existingSubject.getSubjectCode().equals(subject.getSubjectCode()) ||
+                    existingSubject.getCategory().equals(subject.getCategory())) {
+                return true; // 겹치는 과목이 존재하면 true 반환
+            }
+        }
+        return false;  // 겹치는 과목이 없으면 false
+    }
+
+    private static boolean isNumeric(String str) {
+        return str.matches("\\d+");
+    }
 }
-}
+
+
 
 
 
