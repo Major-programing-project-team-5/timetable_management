@@ -122,7 +122,7 @@ public class help {
         System.out.println("-> 현재 시간표에 운영체제 화요일 14:00~16:00 수업 등록");
         System.out.println("\nadd past <학년> <학기> <과목 튜플>\n\n\n\n\n");
 
-        String ans = null;
+        String ans;
         while(true) {
             System.out.println("다음 페이지로 이동하려면 '+', 이전 페이지는 '-', 종료하려면 'exit' 또는 'q'를 입력하세요 > ");
             ans = sc.next();
@@ -151,7 +151,7 @@ public class help {
         System.out.println("- 과목을 시간표에 추가할 때, 그 과목이 데이터베이스에 존재하여야 합니다.");
         System.out.println("새 과목을 시간표에 추가할 때는, 모든 인자가 정확히 제공되어야 하며, 누락 시 오류가 발생합니다.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-        String ans = null;
+        String ans;
         while(true) {
             System.out.println("다음 페이지로 이동하려면 '+', 이전 페이지는 '-', 종료하려면 'exit' 또는 'q'를 입력하세요 > ");
             ans = sc.next();
@@ -236,7 +236,7 @@ public class help {
         System.out.println("예) remove 2 1subject all");
         System.out.println("-> 2학년 1학기 시간표에서 모든 과목 삭제\n\n\n\n\n\n");
 
-        String ans = null;
+        String ans;
         while(true) {
             System.out.println("페이지 번호를 입력하거나 다음 페이지로 이동하려면 '+', 이전 페이지는 '-', 종료하려면 'exit' 또는 'q'를 입력하세요 > ");
             ans = sc.next();
@@ -268,7 +268,7 @@ public class help {
         System.out.println("- 해당하는 과목이나 시간표가 없다면 각각 과목이 없습니다, 시간표가 없습니다를 출력합니다.");
         System.out.println("- 만일 모종의 이유로 삭제에 실패하게 되면 삭제에 실패했다고 출력합니다.\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-        String ans = null;
+        String ans;
         while(true) {
             System.out.println("페이지 번호를 입력하거나 다음 페이지로 이동하려면 '+', 이전 페이지는 '-', 종료하려면 'exit' 또는 'q'를 입력하세요 > ");
             ans = sc.next();
