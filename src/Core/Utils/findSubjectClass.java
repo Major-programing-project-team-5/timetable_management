@@ -41,7 +41,7 @@ public class findSubjectClass {
 
          Subject tempsubject = new Subject(tuples[0], day, tuples[3]);
         if(subjectManager.subjectSets.contains(tempsubject)){
-            for(var i : subjectManager.subjectList){
+            for(Subject i : subjectManager.subjectList){
                 if(i.equals(tempsubject)){
                     return i;
                 }
@@ -50,20 +50,6 @@ public class findSubjectClass {
         return null;
 
 
-        //만약 튜플 개수 다 구현해야 하는 쪽으로 갈거면 이 쪽도 구현
-//        switch (tuples.length){
-//            case 4:
-//
-//                break;
-//            case 3:
-//                break;
-//            case 2:
-//                break;
-//            case 1:
-//                break;
-//            default:
-//                return null;
-//                break;
-//        }
+
     }
 }

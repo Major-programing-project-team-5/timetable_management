@@ -25,6 +25,18 @@ public class Subject {
     만약 임시로 생성된 변수라면 -1로 고정.
      */
 
+    public String getLectureRoom() {
+        return lectureRoom;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public String[] getSubjectDayTime() {
+        return subjectDayTime;
+    }
+
     private String category; // 이수구분
     /*
     예시 : 전공필수, 전공선택
@@ -58,7 +70,7 @@ public class Subject {
         this.courseCode = courseCode;
         this.lectureRoom = lectureRoom;
         if(previousSubjectCodes != null){
-            for(var i : previousSubjectCodes){
+            for(String i : previousSubjectCodes){
                 String[] tempstr = {i};
                 Subject tempsubject = findSubjectClass.findSubject(tempstr);
                 if(tempsubject != null){
