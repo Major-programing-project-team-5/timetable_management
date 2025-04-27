@@ -30,6 +30,7 @@ public class quit_utilitySet {
     }
 
     private void pushSubjectFileToDatabase() {
+        if(subjectBuffer == null) return;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("./src/resources/subject.txt"))) {
             for (Subject subject : subjectBuffer) {
                 writer.write(subject.toString());
@@ -44,6 +45,7 @@ public class quit_utilitySet {
     }
 
     private void pushTimetableFileToDatabase() {
+        if(timetableBuffer == null) return;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("./src/resources/timetable.txt"))) {
             for (Timetable timetable : timetableBuffer) {
                 writer.write(timetable.getYear() + " " + timetable.getSemester());
