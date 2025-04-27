@@ -1,4 +1,3 @@
-
 import Core.Views.OnloadProgram;
 
 public class Program {
