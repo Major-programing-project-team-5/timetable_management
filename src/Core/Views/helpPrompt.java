@@ -6,7 +6,7 @@ public class helpPrompt {
     private final Scanner sc = new Scanner(System.in);
 
     public void helpMain(String input) {
-        String[] inputList = input.split("[ \t\r\n\f\u000B]");
+        String[] inputList = input.split("[ \t\n\r\f\u000B]");
         clear();
 
         if(inputList.length == 1) {
@@ -147,7 +147,7 @@ public class helpPrompt {
         System.out.println("-> 2학년 1학기 시간표를 현재 시간표로 설정하고 운영체제 화요일 14:00~16:00 수업 등록");
         System.out.println("\n3. 데이터베이스에 과목 등록");
         System.out.println("add subject <강의정보>");
-        System.out.println("예) add subject 과목 운영체제 CS101-01 3 전공 화 14:00~16:00 CS101 3공학관201 없음");
+        System.out.println("예) add subject 과목 운영체제 CS101-01 3 전공 화 14:00~16:00 CS101 3공학관201");
         System.out.println("-> 운영체제 과목을 데이터베이스에 등록");
         System.out.println("________________________________________________________________________________________________________________________");
         System.out.println("유의사항");

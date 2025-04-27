@@ -11,7 +11,7 @@ import Core.Utils.*;
 public class add_utilitySet {
     // 명령어가 add인 것을 외부에서 확인 후 접근.
     public static void AddCommand(String input){
-        String[] tokens = input.trim().split(" ");
+        String[] tokens = input.trim().split("[ \t\n\r\f\u000B]");
         String currentTable = null;
 
         try {
