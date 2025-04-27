@@ -58,7 +58,7 @@ public class Subject {
         this.courseCode = courseCode;
         this.lectureRoom = lectureRoom;
         if(previousSubjectCodes != null){
-            for(var i : previousSubjectCodes){
+            for(String i : previousSubjectCodes){
                 String[] tempstr = {i};
                 Subject tempsubject = findSubjectClass.findSubject(tempstr);
                 if(tempsubject != null){

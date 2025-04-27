@@ -1,12 +1,16 @@
 package Core.Utils.Add;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import Core.DataStructure.*;
+import Core.Utils.*;
 
 public class add_utilitySet {
-    public static void AddCommand(String input) {
+    // 명령어가 add인 것을 외부에서 확인 후 접근.
+    public static void AddCommand(String input){
         String[] tokens = input.trim().split(" ");
         String currentTable = null;
 
@@ -33,6 +37,12 @@ public class add_utilitySet {
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 addSubjectToDatabase(lectureInfo);
 
+            } else if (tokens[1].equals("past") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
+                // 5. 과거 시간표 추가(명령에 past가 붙어도 일반 테이블 생성처럼 작동)
+                int year = Integer.parseInt(tokens[2]);
+                int semester = Integer.parseInt(tokens[3]);
+                createTimetable(year, semester);
+
             } else {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
@@ -42,24 +52,9 @@ public class add_utilitySet {
         }
     }
 
-    // 시간표 생성 메서드
-    public static void createTimetable(int year, int semester) {
-        // 기존 시간표 파일을 읽어와 해당 학기의 시간표가 존재하는지 확인 후 없으면 새로 추가
-        String filename = "timetable.txt";
-        Timetable newTimetable = new Timetable(year, semester, new ArrayList<>());
-        TimetableManager.addTimeTabletoManager(newTimetable);
-
-        // 이 파일에 시간표 정보를 저장
-        try (FileWriter writer = new FileWriter(filename, true)) {
-            writer.write(newTimetable.toString());
-            System.out.println(year + "학기 " + semester + " 시간표가 생성되었습니다.");
-        } catch (IOException e) {
-            System.out.println("파일 저장 중 오류가 발생했습니다: " + e.getMessage());
-        }
-    }
-
-    // 과목을 현재 시간표에 추가하는 메서드
+    // 현재 시간표에 과목 추가
     public static void addSubjectToCurrentTimetable(String[] subjectInfo, String current) {
+        // subjectInfo 배열에서 과목 정보 추출
         Subject foundSubject = findSubjectClass.findSubject(subjectInfo);
 
         if (foundSubject == null) {
@@ -67,21 +62,40 @@ public class add_utilitySet {
             return;
         }
 
-        // 현재 시간표에 과목 추가
+        // 현재 시간표에 과목 추가 시 시간 겹침 체크
+        if (isTimeConflicted(current, foundSubject)) {
+            System.out.println("시간이 겹치는 과목이 이미 있습니다.");
+            return;
+        }
+
+        // 과목을 현재 시간표에 추가
         Timetable currentTimetable = getCurrentTimetable(current);  // current로 시간표 객체 가져오기
         if (currentTimetable != null) {
-            if (!currentTimetable.getSubjects().contains(foundSubject)) {
-                currentTimetable.getSubjects().add(foundSubject);
-                System.out.println("과목이 시간표에 추가되었습니다: " + foundSubject);
-            } else {
-                System.out.println("이미 해당 과목이 시간표에 존재합니다.");
-            }
+            currentTimetable.addSubject(foundSubject);
+            System.out.println("과목이 시간표에 추가되었습니다: " + foundSubject);
         } else {
             System.out.println("현재 시간표를 찾을 수 없습니다.");
         }
     }
 
-    // 현재 시간표 객체를 반환하는 메서드
+    // 과목이 시간표에 겹치는지 체크
+    public static boolean isTimeConflicted(String current, Subject subject) {
+        Timetable timetable = getCurrentTimetable(current);
+        if (timetable == null) {
+            return false;
+        }
+
+        for (Subject existingSubject : timetable.getSubjects()) {
+            // 기존 시간표의 과목과 비교하여 시간 겹침 여부를 확인
+            if (existingSubject.getSubjectCode().equals(subject.getSubjectCode()) ||
+                    existingSubject.getCategory().equals(subject.getCategory())) {
+                return true; // 겹치는 과목이 존재하면 true 반환
+            }
+        }
+        return false;  // 겹치는 과목이 없으면 false
+    }
+
+    // 현재 시간표 객체를 반환하는 메서드 (current를 통해 시간표를 찾는 로직)
     public static Timetable getCurrentTimetable(String current) {
         for (Timetable timetable : TimetableManager.timetableList) {
             if (timetable.equals(current)) {
@@ -91,36 +105,80 @@ public class add_utilitySet {
         return null;  // 시간표가 없으면 null 반환
     }
 
-    // 데이터베이스에 과목 추가하는 메서드
-    public static void addSubjectToDatabase(String[] subjectInfo) {
-        // 과목 정보를 데이터베이스에 저장하는 로직 추가
-        // 예를 들어, subjectInfo가 과목명, 교수명, 학점 등을 포함한다고 가정
+    // 데이터베이스에 과목을 추가하는 메서드
+    public static void addSubjectToDatabase(String[] lectureInfo) {
+        List<String> previousSubjectCode = new ArrayList<>();
+        if (lectureInfo.length < 8) {
+            System.out.println("과목 정보가 부족합니다.");
+            return;
+        } else if (lectureInfo.length == 8) {
+            previousSubjectCode.add(null);
+        }
+        else {
+            previousSubjectCode = Arrays.asList(lectureInfo).subList(8, lectureInfo.length);
+        }
 
-        // 각 항목을 공백으로 구분하여 데이터베이스에 추가
-        if (subjectInfo.length != 9) {
-            System.out.println("잘못된 과목 정보입니다. 모든 항목을 입력해야 합니다.");
+        // 과목 정보에서 튜플을 생성하고 데이터베이스에 추가
+        String[] lectureDate = Arrays.copyOfRange(lectureInfo, 1, 2);
+        Subject subject = new Subject(lectureInfo[0], lectureDate, lectureInfo[3], Integer.parseInt(lectureInfo[4]), lectureInfo[5], lectureInfo[6], lectureInfo[7], previousSubjectCode);
+        boolean success = subjectManager.addSubjectToManager(subject);
+        if (success) {
+            System.out.println("과목이 데이터베이스에 추가되었습니다.");
+        } else {
+            System.out.println("과목 추가에 실패했습니다.");
+        }
+    }
+
+    // 시간표 생성 메서드 (기존 로직 사용)
+    public static void createTimetable(int year, int semester) {
+        String dirName = "data";
+        String fileName = year + "_" + semester + "_timetable.csv";
+        File dir = new File(dirName);
+        File file = new File(dirName + "/" + fileName);
+
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
+        if (file.exists()) {
+            System.out.println("이미 존재하는 시간표입니다: " + file.getName());
             return;
         }
 
-        String subjectName = subjectInfo[0];   // 과목명
-        String dayOfWeek = subjectInfo[1];     // 요일
-        String time = subjectInfo[2];          // 시간
-        String subjectNumber = subjectInfo[3]; // 과목번호
-        int credit = Integer.parseInt(subjectInfo[4]);  // 학점
-        String courseType = subjectInfo[5];    // 이수구분
-        String semester = subjectInfo[6];      // 학기
-        String courseCode = subjectInfo[7];    // 학수번호
-        String classroom = subjectInfo[8];     // 강의실
-
-        // 데이터베이스에 과목을 추가하는 코드
-        // 예를 들어, CSV 파일에 저장
-        String dbPath = "data/database.txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dbPath, true))) {
-            writer.write(subjectName + " " + dayOfWeek + " " + time + " " + subjectNumber + " " +
-                    credit + " " + courseType + " " + semester + " " + courseCode + " " + classroom + "\n");
-            System.out.println("과목이 데이터베이스에 추가되었습니다: " + subjectName);
+        try (FileWriter writer = new FileWriter(file)) {
+            System.out.println(year + "학년 " + semester + "학기 시간표가 생성되었습니다.");
         } catch (IOException e) {
-            System.out.println("데이터베이스에 과목을 추가하는 중 오류가 발생했습니다: " + e.getMessage());
+            System.out.println("시간표 파일 생성 중 오류 발생: " + e.getMessage());
         }
+    }
+
+    // 현재 시간표를 설정하는 메서드
+    public static String createAndSetCurrentTimetable(int year, int semester) {
+        String dirName = "data";
+        String fileName = year + "_" + semester + "_timetable.csv";
+        File dir = new File(dirName);
+        File file = new File(dirName + "/" + fileName);
+
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                System.out.println(year + "학년 " + semester + "학기 시간표가 현재 시간표로 설정됨.");
+                return fileName;
+            } catch (IOException e) {
+                System.out.println("파일 생성 중 오류: " + e.getMessage());
+                return null;
+            }
+        } else {
+            System.out.println(year + "학년 " + semester + "학기 시간표가 현재 시간표로 설정됨.");
+            return fileName;
+        }
+    }
+
+    // 유틸 함수
+    private static boolean isNumeric(String str) {
+        return str.matches("\\d+");
     }
 }
