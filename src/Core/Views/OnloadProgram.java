@@ -49,63 +49,69 @@ public class OnloadProgram {
     }
 
     public void getInput () {
-        sc.skip("\r\n");
-        String ans = sc.nextLine();
-        String[] args = ans.split("[ \t\n\r\f\u000B]");
+        while(true){
+            System.out.print("> ");
+            String ans = sc.nextLine();
+            String[] args = ans.split("[ \t\n\r\f\u000B]");
 
-        switch (args[0]) {
-            case "help":
-            case "Help":
-            case "HELP":
-            case "도움말":
-            case "도움":
-            case "명령어":
-            case "목록":
-            case "?":
-                help.helpMain(ans);
-                break;
-            case "quit":
-            case "Quit":
-            case "QUIT":
-            case "종료":
-                quit.quit();
-                break;
-            case "add":
-            case "Add":
-            case "ADD":
-            case "추가":
-                add.addMain(ans);
-                break;
-            case "verify":
-            case "Verify":
-            case "VERIFY":
-            case "확인":
-            case "불러오기":
-            case "표시":
-                verify_utilitySet.verifyMain(ans);
-                break;
-            case "calc":
-            case "Calc":
-            case "CALC":
-            case "계산":
-            case "학점":
-                calc.calcInput(ans);
-                break;
-            case "remove":
-            case "Remove":
-            case "REMOVE":
-            case "삭제":
-            case "제거":
-                remove_utilitySet.removeMain(ans);
-                break;
-            case "update":
-            case "Update":
-            case "UPDATE":
-            case "갱신":
-            case "업데이트":
-                update.updateInput(ans);
-                break;
+            switch (args[0]) {
+                case "help":
+                case "Help":
+                case "HELP":
+                case "도움말":
+                case "도움":
+                case "명령어":
+                case "목록":
+                case "?":
+                    help.helpMain(ans);
+                    break;
+                case "quit":
+                case "Quit":
+                case "QUIT":
+                case "종료":
+                    quit.quit();
+                    break;
+                case "add":
+                case "Add":
+                case "ADD":
+                case "추가":
+                    add.addMain(ans);
+                    break;
+                case "verify":
+                case "Verify":
+                case "VERIFY":
+                case "확인":
+                case "불러오기":
+                case "표시":
+                    verify_utilitySet.verifyMain(ans);
+                    break;
+                case "calc":
+                case "Calc":
+                case "CALC":
+                case "계산":
+                case "학점":
+                    calc.calcInput(ans);
+                    break;
+                case "remove":
+                case "Remove":
+                case "REMOVE":
+                case "삭제":
+                case "제거":
+                    remove_utilitySet.removeMain(ans);
+                    break;
+                case "update":
+                case "Update":
+                case "UPDATE":
+                case "갱신":
+                case "업데이트":
+                    update.updateInput(ans);
+                    break;
+                default:
+                    System.out.println("올바르지 않은 명령어 입니다. help 목록을 불러옵니다.");
+                    help.helpNoarg();
+            }
         }
+
     }
 
 }
