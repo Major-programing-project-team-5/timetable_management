@@ -13,6 +13,7 @@ import java.util.List;
 public class add_promptSet {
     public void addMain(String args) {
         String[] tokens = args.split("\\n+");
+        System.out.println(Arrays.toString(tokens));
         Select_add_prompt(tokens);
     }
 

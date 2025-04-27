@@ -30,21 +30,21 @@ public class quit_utilitySet {
     }
 
     private void pushSubjectFileToDatabase() {
-        if(subjectBuffer == null) return;
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("subject.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./src/resources/subject.txt"))) {
             for (Subject subject : subjectBuffer) {
                 writer.write(subject.toString());
                 writer.newLine();
             }
             System.out.println("subject.txt에 저장 완료");
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             System.out.println("subject.txt 저장 실패: " + e.getMessage());
         }
     }
 
     private void pushTimetableFileToDatabase() {
-        if(timetableBuffer == null) return;
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("timetable.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./src/resources/timetable.txt"))) {
             for (Timetable timetable : timetableBuffer) {
                 writer.write(timetable.getYear() + " " + timetable.getSemester());
                 writer.newLine();
@@ -56,6 +56,8 @@ public class quit_utilitySet {
                 }
             }
             System.out.println("timetable.txt에 저장 완료");
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             System.out.println("timetable.txt 저장 실패: " + e.getMessage());
         }
