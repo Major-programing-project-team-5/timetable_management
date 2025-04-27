@@ -13,6 +13,13 @@ public class Timetable {
         this.subjects = subjects;
         this.year = year;
     }
+
+    public Timetable(int year, int semester) {
+        this.year = year;
+        this.semester = semester;
+        this.subjects = new ArrayList<>();
+    }
+
     public void addSubject(Subject subject){
         subjects.add(subject);
     }
@@ -45,5 +52,14 @@ public class Timetable {
     @Override
     public int hashCode() {
         return Objects.hash(semester, year);
+    }
+
+    @Override
+    public String toString() {
+        return "Timetable{" +
+                "subjects=" + subjects +
+                ", semester=" + semester +
+                ", year=" + year +
+                '}';
     }
 }
