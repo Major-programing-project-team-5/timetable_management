@@ -31,17 +31,21 @@ public class add_promptSet {
                 // 4. 데이터베이스에 과목 추가
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 add_utilitySet.addSubjectToDatabase(lectureInfo);
-            } else if (tokens[1].equals("past") && tokens.length > 2) {
-                // 5. 과거 시간표 추가(명령에 past가 붙어도 일반 테이블 생성처럼 작동)
-                int year = Integer.parseInt(tokens[2]);
-                int semester = Integer.parseInt(tokens[3]);
-                add_utilitySet.createTimetable(year, semester);
+            } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && tokens.length > 2) {
+                // 5. add 학년 학기 <과목 정보> 로 입력시 해당 시간표에 과목 추가
+                int year = Integer.parseInt(tokens[1]);
+                int semester = Integer.parseInt(tokens[2]);
+                String[] lectureInfo = Arrays.copyOfRange(tokens, 3, tokens.length);
+                print_add_course_timetable(lectureInfo);
             } else {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
         } catch (Exception e) {
             System.out.println("명령어 처리 중 오류가 발생했습니다: " + e.getMessage());
         }
+    }
+
+    private void print_add_course_timetable(String[] lectureInfo) {
     }
 
     public void print_add_timetable(int year, int semester) {
@@ -104,11 +108,13 @@ public class add_promptSet {
             System.out.println("과목 추가에 실패했습니다.");
         }
     }
-    }
+}
 
-    private static boolean isNumeric(String str) {
-        return str.matches("\\d+");
-    }
+public void print_add_course_
+
+private static boolean isNumeric(String str) {
+    return str.matches("\\d+");
+}
 }
 
 
