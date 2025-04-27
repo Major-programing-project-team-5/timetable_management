@@ -55,7 +55,6 @@ public class add_utilitySet {
         String subjectName = foundSubject.getSubjectName();
         String[] subjectDayTime = foundSubject.getSubjectDayTime(); // 요일, 시간 합쳐진 배열
         String subjectCode = foundSubject.getSubjectCode();
-
         String dayTimeStr = String.join(" / ", subjectDayTime);
 
         String targetLine = subjectName + "," + dayTimeStr + "," + subjectCode;

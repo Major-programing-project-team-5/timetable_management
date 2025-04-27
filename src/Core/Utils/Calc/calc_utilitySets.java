@@ -1,5 +1,8 @@
 package Core.Utils.Calc;
 
+import Core.DataStructure.Subject;
+import Core.Utils.findSubjectClass;
+
 public class calc_utilitySets(String userInput) {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
 //    2. <calc> <term> 특정 학기 내 학점 계산
@@ -65,7 +68,10 @@ public class calc_utilitySets(String userInput) {
                     String[] tokens = line.split(",");
                     if (tokens.length >= 1) {
                         String subjectName = tokens[0].trim(); // 과목명 추출
-                        totalCredits += getCreditFromDatabase(subjectName); // 학점 누적
+                        Subject subject = findSubjectClass.findSubject(new String[] {subjectName});
+                        if (subject != null) {
+                            totalCredits += subject.getCredit();
+                        }
                     }
                 }
             } catch (IOException e) {
@@ -77,23 +83,23 @@ public class calc_utilitySets(String userInput) {
         System.out.println("전체 이수 학점: " + totalCredits);
     }
 
-    // 2. 이수한 학기의 총 credit을 계산
-    private static int getCreditFromDatabase(String subjectName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(DB_PATH))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] tokens = line.split(" ");
-                if (tokens.length >= 5 && tokens[0].equals(subjectName)) {
-                    return Integer.parseInt(tokens[4]); // 5번째 요소가 학점
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("데이터베이스 읽기 오류: " + e.getMessage());
-        }
-        return 0;
-    }
+//    // 2. 이수한 학기의 총 credit을 계산
+//    private static int getCreditFromDatabase(String subjectName) {
+//        try (BufferedReader reader = new BufferedReader(new FileReader(DB_PATH))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                String[] tokens = line.split(" ");
+//                if (tokens.length >= 5 && tokens[0].equals(subjectName)) {
+//                    return Integer.parseInt(tokens[4]); // 5번째 요소가 학점
+//                }
+//            }
+//        } catch (IOException e) {
+//            System.out.println("데이터베이스 읽기 오류: " + e.getMessage());
+//        }
+//        return 0;
+//    } --> findSubject 사용하면서 불필요해짐.
 
-    // 3. 특정 학기의 학점 계산
+    // 2. 특정 학기의 학점 계산
     public static void calculateTermCredits(int year, int semester) {
         String fileName = TIMETABLE_DIR + year + "_" + semester + "_timetable.csv";
         File file = new File(fileName);
@@ -114,11 +120,12 @@ public class calc_utilitySets(String userInput) {
                 String[] tokens = line.split(",");
                 if (tokens.length >= 1) {
                     String subjectName = tokens[0].trim();
-                    int credit = getCreditFromDatabase(subjectName);
-
-                    System.out.println(" - " + subjectName + ": " + credit + "학점");
-
-                    totalCredits += credit;
+                    Subject subject = findSubjectClass.findSubject(new String[] {subjectName});
+                    if (subject != null) {
+                        int credit = subject.getCredit();
+                        System.out.println(" - " + subjectName + ": " + credit + "학점");
+                        totalCredits += credit;
+                    }
                 }
             }
 
@@ -128,7 +135,7 @@ public class calc_utilitySets(String userInput) {
         }
     }
 
-    // 4. 남은 학점 계산
+    // 3. 남은 학점 계산
     public static void calculateRemainingCredits() {
         int totalCredits = 0;
 
@@ -149,7 +156,10 @@ public class calc_utilitySets(String userInput) {
                     String[] tokens = line.split(",");
                     if (tokens.length >= 1) {
                         String subjectName = tokens[0].trim();
-                        totalCredits += getCreditFromDatabase(subjectName);
+                        Subject subject = findSubjectClass.findSubject(new String[]{subjectName});
+                        if (subject != null) {
+                            totalCredits += subject.getCredit();
+                        }
                     }
                 }
 
