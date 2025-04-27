@@ -13,6 +13,13 @@ public class Timetable {
         this.subjects = subjects;
         this.year = year;
     }
+
+    public Timetable(int year, int semester) {
+        this.year = year;
+        this.semester = semester;
+        this.subjects = new ArrayList<>();
+    }
+
     public void addSubject(Subject subject){
         subjects.add(subject);
     }

@@ -1,6 +1,6 @@
 package Core.Utils.Calc;
 
-import Core.DataStructure.Subject;
+import Core.DataStructure.*;
 import Core.Utils.findSubjectClass;
 import Core.DataStructure.TimetableManager;
 
