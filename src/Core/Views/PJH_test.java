@@ -119,12 +119,7 @@ public class PJH_test {
 
         }
 
-        public void print_quit(){
-            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
-            System.out.println("모든 변경 사항이 저장되었습니다.");
-            System.out.println("프로그램을 종료합니다.");
-            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━"); //이거 구분하는 선 통일하면 깔끔할듯
-        }
+
 
         public void print_quit_error(){
             System.out.println("> quit");
@@ -135,21 +130,6 @@ public class PJH_test {
 
         }
 
-        public void print_add_timetable(int year, int semester){
-            System.out.println("[ " + year + "학년 " + semester + "학기 시간표가 생성되었습니다. ]");
-        }
-
-        public void print_add_timetable_setcurrent(int year, int semester){
-            System.out.println("[ 현재 시간표가 " + year + "학년 " + semester + "학기로 설정되었습니다. ]");
-        }
-
-        public void print_add_course_current(String coursename){
-            System.out.println("[ 과목 '" + coursename + "'가 현재 시간표에 추가되었습니다.]");
-        }
-
-        public void print_add_course_database(String coursename){
-            System.out.println("[ 과목 '" + coursename + "'가 데이터베이스에 등록되었습니다. ]");
-        }
 
         public void print_verify(){
 

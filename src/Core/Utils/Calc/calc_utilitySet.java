@@ -5,7 +5,7 @@ import Core.Utils.findSubjectClass;
 
 import java.io.*;
 
-public class calc_utilitySets {
+public class calc_utilitySet {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
 //    2. <calc> <term> 특정 학기 내 학점 계산
 //    3. <calc> <remain> 잔여 학점(전 학기 시간표 대상) 계산
