@@ -119,12 +119,7 @@ public class PJH_test {
 
         }
 
-        public void print_quit(){
-            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
-            System.out.println("모든 변경 사항이 저장되었습니다.");
-            System.out.println("프로그램을 종료합니다.");
-            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━"); //이거 구분하는 선 통일하면 깔끔할듯
-        }
+
 
         public void print_quit_error(){
             System.out.println("> quit");

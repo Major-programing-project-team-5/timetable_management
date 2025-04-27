@@ -83,7 +83,6 @@ public class UpdateManager {
                         lectureRoom,
                         previousSubjects
                 );
-                System.out.println(subject.toString());
 
                 // subjectManager에 과목 추가
                 subjectManager.addSubjectToManager(subject);

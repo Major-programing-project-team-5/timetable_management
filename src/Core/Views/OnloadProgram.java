@@ -10,16 +10,33 @@ public class OnloadProgram {
     public void run(){
         update();
         help_onStart();
+        String input;
+        while(true){
+            if(getInput()) continue;
+            else break;
+        }
+        Quit();
+    }
+
+    private void Quit() {
+        //Quit 메서드 넣어서 종료하는 것 다 구현.
+        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━");
+        System.out.println("모든 변경 사항이 저장되었습니다.");
+        System.out.println("프로그램을 종료합니다.");
+        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━"); //이거 구분하는 선 통일하면 깔끔할듯
 
     }
+
+    private boolean getInput() {
+    }
+
     public void update(){
         UpdateManager updateManager = new UpdateManager();
         updateManager.updateSubjectManager("src/resources/subject.txt");
         updateManager.updateTimetableManager("src/resources/timetable.txt");
         updateManager.updateGraduate("src/resources/graduate.txt");
     }
-    public void help_onStart(){
-
+    private void help_onStart(){
         //'='는 한 줄에 30개
         System.out.println("==============================");
         System.out.println("시간표 관리 프로그램 시작");
@@ -41,6 +58,7 @@ public class OnloadProgram {
         System.out.println();
         System.out.println("무엇을 도와드릴까요?");
         System.out.print("> ");
+
     }
 
 
