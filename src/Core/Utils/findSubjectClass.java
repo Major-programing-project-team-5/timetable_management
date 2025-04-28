@@ -23,6 +23,10 @@ public class findSubjectClass {
                 return null;
             }
         }
+        if(tuples.length < 4){
+            System.out.println("과목 튜플의 정보가 부족합니다.");
+            return null;
+        }
         //일반적인 과목 찾기용
         String[] day = tuples[1].split(",");
         String[] time = tuples[2].split(",");
@@ -39,7 +43,7 @@ public class findSubjectClass {
             day[0] = day[0] + ","  + time[0];
         }
 
-         Subject tempsubject = new Subject(tuples[0], day, tuples[3]);
+        Subject tempsubject = new Subject(tuples[0], day, tuples[3]);
         if(subjectManager.subjectSets.contains(tempsubject)){
             for(Subject i : subjectManager.subjectList){
                 if(i.equals(tempsubject)){

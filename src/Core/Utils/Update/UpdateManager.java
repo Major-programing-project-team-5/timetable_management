@@ -27,10 +27,11 @@ public class UpdateManager {
     }
 
     public void updateAll(){
+        String test = "C:/Users/rlawh/IdeaProjects/timetable/";
         System.out.println("데이터 업데이트를 시도합니다.");
-        updateSubjectManager("src/resources/subject.txt");
-        updateTimetableManager("src/resources/timetable.txt");
-        updateGraduate("src/resources/graduate.txt");
+        updateSubjectManager(test + "./data/subject.txt");
+        updateTimetableManager(test + "./data/timetable.txt");
+        updateGraduate(test + "./data/graduate.txt");
         System.out.println("데이터 업데이트를 완료하였습니다.");
     }
 
@@ -40,6 +41,7 @@ public class UpdateManager {
      * @return
      */
     public void updateSubjectManager(String filePath) {
+
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -124,6 +126,9 @@ public class UpdateManager {
                     line = br.readLine();
                     String[] tuples = line.split(" ");
                     Subject subject = findSubjectClass.findSubject(tuples);
+                    if(subject == null) {
+                        continue;
+                    }
                     subjects.add(subject);
                 }
 

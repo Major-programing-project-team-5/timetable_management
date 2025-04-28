@@ -4,13 +4,18 @@ import java.util.Scanner;
 
 public class helpPrompt {
     private final Scanner sc = new Scanner(System.in);
-    
+
     public void helpMain(String input) {
         String[] inputList = input.split("[ \t\n\r\f\u000B]");
         clear();
 
         if(inputList.length == 1) {
             helpNoarg();
+            return;
+        }
+
+        if(inputList.length > 2) {
+            helpHelp();
             return;
         }
 
@@ -37,7 +42,7 @@ public class helpPrompt {
                 helpUpdate();
                 break;
             default:
-                helpHelp();
+                System.out.println("존재하지 않는 명령어입니다.");
         }
     }
     public void clear() {

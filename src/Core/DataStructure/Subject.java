@@ -136,6 +136,28 @@ public class Subject {
         this.category = category;
     }
 
+    public String toSave() {
+        if (subjectDayTime.length < 2) {
+            return subjectName + " " + subjectDayTime[0].charAt(0) + " " + subjectDayTime[0].split(",")[1] + " " +
+                    subjectCode + " " + credit + " " + category + " " + courseCode + " " + lectureRoom;
+        }
+        else {
+            return subjectName + " " + subjectDayTime[0].charAt(0) + "," + subjectDayTime[1].charAt(0) + " " + subjectDayTime[0].split(",")[1] + "," + subjectDayTime[1].split(",")[1] + " " +
+                    subjectCode + " " + credit + " " + category + " " + courseCode + " " + lectureRoom;
+        }
+    }
+
+    public String toTable() {
+        if (subjectDayTime.length < 2) {
+            return subjectName + " " + subjectDayTime[0].charAt(0) + " " + subjectDayTime[0].split(",")[1] + " " +
+                    subjectCode;
+        }
+        else {
+            return subjectName + " " + subjectDayTime[0].charAt(0) + "," + subjectDayTime[1].charAt(0) + " " + subjectDayTime[0].split(",")[1] + "," + subjectDayTime[1].split(",")[1] + " " +
+                    subjectCode;
+        }
+    }
+
     @Override
     public String toString() {
         return "[" + subjectCode + "] " + subjectName + " (" + credit + "학점, " + category + ")";
