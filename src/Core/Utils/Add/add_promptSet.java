@@ -12,24 +12,29 @@ import java.util.List;
 
 public class add_promptSet {
     public void addMain(String args) {
-        String[] tokens = args.split("\\n+");
-        System.out.println(Arrays.toString(tokens));
+        String[] tokens = args.split("\\s+");
         Select_add_prompt(tokens);
     }
 
     public void Select_add_prompt(String[] tokens) {
         try {
-            if (isNumeric(tokens[1]) && isNumeric(tokens[2])) {
+            if (tokens.length < 3) {
+                System.out.println("잘못된 add 명령 형식입니다.");
+            } else if ( tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])  ) {
                 // 1. 지정 학기 시간표 생성 (학년, 학기) - 검사완
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
+                if(year > 4 || year < 1 || semester > 2 || semester < 1) {
+                    System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
+                    return;
+                }
                 print_add_timetable(year, semester);
             } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
                 // 2. 현재 시간표 생성 및 설정
                 int year = Integer.parseInt(tokens[2]);
                 int semester = Integer.parseInt(tokens[3]);
                 print_add_timetable_setcurrent(year, semester);
-            } else if (tokens[1].equals("current") && tokens.length > 2) {
+            } else if (tokens[1].equals("current") && tokens.length > 5) {
                 // 3. 시간표에 과목 추가
                 String[] subjectInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 print_add_course_current(subjectInfo);
@@ -37,21 +42,27 @@ public class add_promptSet {
                 // 4. 데이터베이스에 과목 추가
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 print_add_course_database(lectureInfo);
-            } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && tokens.length > 2) {
+            } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && tokens.length > 5) {
                 // 5. add 학년 학기 <과목 정보> 로 입력시 해당 시간표에 과목 추가
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 3, tokens.length);
                 print_add_course_timetable(year, semester, lectureInfo);
-            } else if (tokens[1].equals("past")) {
+            } else if (tokens[1].equals("past") && isNumeric(tokens[2]) && isNumeric(tokens[3]) && tokens.length == 4) {
                 int year = Integer.parseInt(tokens[2]);
                 int semester = Integer.parseInt(tokens[3]);
+                Timetable tmp = TimetableManager.getTimetable(year, semester);
+                if (tmp == null) {
+                    System.out.println("대상 시간표가 존재하지 않습니다.");
+                    return;
+                }
                 TimetableManager.presentTimetable = TimetableManager.getTimetable(year, semester);
+                System.out.println("[ 현재 시간표가 " + year + "학년 " + semester + "학기로 설정되었습니다. ]");
             } else {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
         } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다: " + e.getMessage());
+            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e.toString());
         }
     }
 
@@ -90,7 +101,7 @@ public class add_promptSet {
         if (temp == null) {
             System.out.println("잘못된 과목 튜플 입력입니다.");
         } else if (isTimeConflicted(temp, TimetableManager.presentTimetable)) {
-            System.out.println("겹치는 시간표가 있습니다.");
+            System.out.println("겹치는 강의가 있습니다.");
         } else {
             TimetableManager.presentTimetable.addSubject(temp);
             System.out.println("[ 과목 '" + temp.toString() + "'가 현재 시간표에 추가되었습니다.]");
@@ -124,13 +135,13 @@ public class add_promptSet {
         Subject temp = findSubjectClass.findSubject(lectureInfo);
         Timetable table = TimetableManager.getTimetable(year, semester);
 
-        if(temp == null){
+        if(table == null){
+            System.out.println("이미 존재하는 시간표입니다.");
+        } else if(temp == null){
             System.out.println("잘못된 과목 튜플 입력입니다.");
-
         } else if (isTimeConflicted(temp, table)) {
-            System.out.println("겹치는 시간표가 있습니다.");
-        }
-        else {
+            System.out.println("겹치는 강의가 있습니다.");
+        } else {
             table.addSubject(temp);
             System.out.println("[ 과목 '" + temp.toString() + "'가 시간표에 추가되었습니다.]");
         }
@@ -153,7 +164,7 @@ public class add_promptSet {
     }
 
     private static boolean isNumeric(String str) {
-        return str.matches("\\d+");
+        return str.matches("\\d");
     }
 }
 

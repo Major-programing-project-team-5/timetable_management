@@ -9,26 +9,39 @@ import java.util.Arrays;
 
 public class remove_utilitySet {
     public static void removeMain(String input) {
-        String[] tokens = input.split("\\s+");
+        try {
+            String[] tokens = input.split("\\s+");
 
-        if (tokens[1].equals("subject") || tokens[2].equals("all")) {
-            removeAllSubjectToTimetable(TimetableManager.presentTimetable);
-        } else if(tokens[1].equals("subject") || tokens[-1].equals("database")) {
-            Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
-            removeSubjectToDatabase(token);
-        } else if(tokens[1].matches("\\d+") && tokens[2].matches("\\d+")) {
-            Timetable timetable = TimetableManager.getTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+            if (tokens.length < 3) {
+                System.out.println("인자가 올바르지 않습니다.");
+                return;
+            }
 
-            if (tokens[3].equals("subject") && tokens[4].equals("all")) {
-                removeAllSubjectToTimetable(timetable);
+            if (tokens[1].equals("subject") && tokens[2].equals("all")) {
+                removeAllSubjectToTimetable(TimetableManager.presentTimetable);
+            } else if (tokens[1].equals("subject") && tokens[-1].equals("database")) {
+                Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+                removeSubjectToDatabase(token);
+            } else if (tokens[1].equals("subject") && tokens.length > 5) {
+                Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+                removeSubjectToTimetable(token, TimetableManager.presentTimetable);
+            } else if (tokens[1].matches("\\d") && tokens[2].matches("\\d")) {
+                Timetable timetable = TimetableManager.getTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+                if (tokens[3].equals("subject") && tokens[4].equals("all")) {
+                    removeAllSubjectToTimetable(timetable);
+                } else if (tokens[3].equals("subject")) {
+                    Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
+                    removeSubjectToTimetable(token, timetable);
+                } else if (tokens[3].equals("timetable")) {
+                    removeTimetableToManager(timetable);
+                } else {
+                    System.out.println("인자가 올바르지 않습니다.");
+                }
+            } else {
+                System.out.println("인자가 올바르지 않습니다.");
             }
-            else if(tokens[3].equals("subject") && !tokens[4].equals("all")) {
-                Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
-                removeSubjectToTimetable(token, timetable);
-            }
-            else if(tokens[3].equals("timetable")) {
-                removeTimetableToManager(timetable);
-            }
+        } catch (Exception e) {
+            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e.toString());
         }
     }
     /**
@@ -43,6 +56,7 @@ public class remove_utilitySet {
             }
             TimetableManager.timetableSets.remove(timetable);
             TimetableManager.timetableList.remove(timetable);
+            System.out.println("시간표를 지웠습니다.");
             return true;
         } catch (removeException e) {
             System.out.println(e.getMessage());
@@ -65,6 +79,7 @@ public class remove_utilitySet {
                 if (t.equals(timetable)) {
                     if (t.getSubjects().contains(subject)) {
                         t.getSubjects().remove(subject);
+                        System.out.println("현재 시간표에서 과목을 삭제하였습니다.");
                         return true;
                     } else {
                         throw new removeException("removeUtilitySet - removeSubjectToTimetable : 시간표에 해당 과목이 없습니다.");
@@ -91,6 +106,7 @@ public class remove_utilitySet {
             for (Timetable t : TimetableManager.timetableList) {
                 if (t.equals(timetable)) {
                     t.getSubjects().clear();
+                    System.out.println("시간표에 있는 모든 과목을 지웠습니다.");
                     return true;
                 }
             }

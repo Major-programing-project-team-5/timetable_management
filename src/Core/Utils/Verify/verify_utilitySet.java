@@ -5,23 +5,38 @@ import Core.DataStructure.Timetable;
 import Core.DataStructure.TimetableManager;
 import Core.Utils.findSubjectClass;
 
+import javax.swing.table.TableModel;
 import java.util.Arrays;
 
 public class verify_utilitySet {
 
     public static void verifyMain(String input) {
-        String[] tokens = input.split("[ \t\n\r\f\u000B]");
+        try {
+            String[] tokens = input.split("\\s+");
 
-        if (tokens.length == 1) {
-            Timetable table = TimetableManager.presentTimetable;
-            verifyTimetable(table.getYear(), table.getSemester());
-        }
-        else if (tokens[1].equals("subject")) {
-            String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
-            verifySubject(output);
-        }
-        else if(tokens.length == 3 && tokens[1].matches("\\d") && tokens[2].matches("\\d") ){
-            verifyTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+            if (tokens.length == 1) {
+                if (TimetableManager.presentTimetable == null) {
+                    System.out.println("현재 대상으로 지정된 시간표가 없습니다.");
+                    return;
+                }
+                Timetable table = TimetableManager.presentTimetable;
+                verifyTimetable(table.getYear(), table.getSemester());
+            } else if (tokens[1].equals("subject")) {
+                String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
+                verifySubject(output);
+            } else if (tokens.length == 3 && tokens[1].matches("\\d") && tokens[2].matches("\\d")) {
+                int year = Integer.parseInt(tokens[1]);
+                int semester = Integer.parseInt(tokens[2]);
+                if (year > 4 || year < 1 || semester > 2 || semester < 1) {
+                    System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
+                    return;
+                }
+                verifyTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+            } else {
+                System.out.println("올바른 인자가 아닙니다.");
+            }
+        } catch (Exception e) {
+            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e.toString());
         }
     }
 

@@ -33,11 +33,9 @@ public class TimetableManager {
     }
     public static Timetable getTimetable(int year, int semester){
         Timetable temptimeTable = new Timetable(year, semester);
-        if(timetableSets.contains(timetableSets)){
-            for(Timetable temp : timetableList){
-                if(temp.equals(temptimeTable)){
-                    return temp;
-                }
+        for(Timetable temp : timetableList){
+            if(temp.equals(temptimeTable)){
+                return temp;
             }
         }
         return null;
