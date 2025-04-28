@@ -2,6 +2,7 @@ package Core.Views;
 
 import java.util.Scanner;
 
+import Core.DataStructure.TimetableManager;
 import Core.Utils.Add.add_promptSet;
 import Core.Utils.Calc.calc_utilitySet;
 import Core.Utils.Quit.quit_utilitySet;
@@ -69,6 +70,10 @@ public class OnloadProgram {
                 case "Quit":
                 case "QUIT":
                 case "종료":
+                    if (args.length > 1) {
+                        System.out.println("올바른 인자가 아닙니다.");
+                        break;
+                    }
                     quit.quit();
                     break;
                 case "add":

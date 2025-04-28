@@ -8,15 +8,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class quit_utilitySet {
-
-    private final List<Subject> subjectBuffer;
-    private final List<Timetable> timetableBuffer;
-
-    public quit_utilitySet() {
-        this.subjectBuffer = subjectManager.subjectList;
-        this.timetableBuffer = TimetableManager.timetableList;
-    }
-
     public void quit() {
         uploadAllFileToDatabase();
         System.out.println("프로그램을 종료합니다.");
@@ -31,13 +22,12 @@ public class quit_utilitySet {
 
     private void pushSubjectFileToDatabase() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("./src/resources/subject.txt"))) {
-            for (Subject subject : subjectBuffer) {
-                writer.write(subject.toString());
+            for (Subject subject : subjectManager.subjectList) {
+                writer.write(subject.toSave());
                 writer.newLine();
             }
             System.out.println("subject.txt에 저장 완료");
             writer.flush();
-            writer.close();
         } catch (IOException e) {
             System.out.println("subject.txt 저장 실패: " + e.getMessage());
         }
@@ -45,19 +35,18 @@ public class quit_utilitySet {
 
     private void pushTimetableFileToDatabase() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("./src/resources/timetable.txt"))) {
-            for (Timetable timetable : timetableBuffer) {
+            for (Timetable timetable : TimetableManager.timetableList) {
                 writer.write(timetable.getYear() + " " + timetable.getSemester());
                 writer.newLine();
-                writer.write(timetable.getSubjects().size());
+                writer.write(Integer.toString(timetable.getSubjects().size()));
                 writer.newLine();
                 for (Subject subject : timetable.getSubjects()) {
-                    writer.write(subject.toString());
+                    writer.write(subject.toTable());
                     writer.newLine();
                 }
             }
             System.out.println("timetable.txt에 저장 완료");
             writer.flush();
-            writer.close();
         } catch (IOException e) {
             System.out.println("timetable.txt 저장 실패: " + e.getMessage());
         }
