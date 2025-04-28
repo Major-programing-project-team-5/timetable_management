@@ -29,9 +29,9 @@ public class UpdateManager {
     public void updateAll(){
         String test = "C:/Users/rlawh/IdeaProjects/timetable/";
         System.out.println("데이터 업데이트를 시도합니다.");
-        updateSubjectManager(test + "src/resources/subject.txt");
-        updateTimetableManager(test + "src/resources/timetable.txt");
-        updateGraduate(test + "src/resources/graduate.txt");
+        updateSubjectManager(test + "./data/subject.txt");
+        updateTimetableManager(test + "./data/timetable.txt");
+        updateGraduate(test + "./data/graduate.txt");
         System.out.println("데이터 업데이트를 완료하였습니다.");
     }
 
