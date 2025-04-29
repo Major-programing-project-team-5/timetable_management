@@ -2,12 +2,12 @@ package com.majorbasic.project.views;
 
 import java.util.Scanner;
 
-import com.majorbasic.project.utils.add.AddManager;
-import com.majorbasic.project.utils.calc.CalcManager;
-import com.majorbasic.project.utils.quit.QuitManager;
-import com.majorbasic.project.utils.update.UpdateManager;
-import com.majorbasic.project.utils.verify.VerifyManager;
-import com.majorbasic.project.utils.remove.RemoveManager;
+import com.majorbasic.project.utils.AddManager;
+import com.majorbasic.project.utils.CalcManager;
+import com.majorbasic.project.utils.QuitManager;
+import com.majorbasic.project.utils.UpdateManager;
+import com.majorbasic.project.utils.VerifyManager;
+import com.majorbasic.project.utils.RemoveManager;
 
 public class OnloadProgram {
     private final Scanner sc = new Scanner(System.in);

@@ -1,4 +1,4 @@
-package com.majorbasic.project.utils.remove;
+package com.majorbasic.project.utils;
 
 import com.majorbasic.project.datastructure.SubjectManager;
 import com.majorbasic.project.datastructure.Subject;

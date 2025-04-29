@@ -1,4 +1,4 @@
-package com.majorbasic.project.utils.verify;
+package com.majorbasic.project.utils;
 
 import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.Timetable;
