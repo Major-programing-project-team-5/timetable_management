@@ -3,11 +3,11 @@ package com.majorbasic.project.utils.verify;
 import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.subjectManager;
+import com.majorbasic.project.datastructure.SubjectManager;
 
 import java.util.Arrays;
 
-public class verify_utilitySet {
+public class VerifyManager {
 
     public static void verifyMain(String input) {
         try {
@@ -40,7 +40,7 @@ public class verify_utilitySet {
     }
 
     public static void verifySubject(String[] tuples) {
-        Subject subject = subjectManager.findSubject(tuples);
+        Subject subject = SubjectManager.findSubject(tuples);
 
         if (subject == null) {
             System.out.println("해당 과목을 찾을 수 없습니다.");

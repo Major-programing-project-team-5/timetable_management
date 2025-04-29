@@ -1,12 +1,12 @@
 package com.majorbasic.project.datastructure;
 
-import com.majorbasic.project.exception.addException;
+import com.majorbasic.project.exception.AddException;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class subjectManager {
+public class SubjectManager {
     //튜플 찾기용으로 사용하는, 해쉬맵이 담겨 있는 객체입니다.
 
     public static HashSet<Subject> subjectSets;
@@ -25,7 +25,7 @@ public class subjectManager {
     public static boolean addSubjectToManager(Subject subject){
         try{
             if(subjectSets.contains(subject)){
-                throw new addException("subjectManager - addSubjectToManager : 과목이 이미 존재함.");
+                throw new AddException("subjectManager - addSubjectToManager : 과목이 이미 존재함.");
             }else{
                 subjectSets.add(subject);
                 subjectList.add(subject);
@@ -35,7 +35,7 @@ public class subjectManager {
                 }
                 return true;
             }
-        }catch (addException e){
+        }catch (AddException e){
             System.out.println(e.getMessage());
             return false;
         }
@@ -54,8 +54,8 @@ public class subjectManager {
         if(tuples.length == 1){
             //선수과목용 : 만약 선수과목의 추가용으로 과목코드만 날아왔을시
             //이 경우 과목 코드만 가지고 판별함.
-            if(subjectManager.subjectSets_fineNameUseCode.containsKey(tuples[0])){
-                String sujectname = subjectManager.subjectSets_fineNameUseCode.get(tuples[0]);
+            if(SubjectManager.subjectSets_fineNameUseCode.containsKey(tuples[0])){
+                String sujectname = SubjectManager.subjectSets_fineNameUseCode.get(tuples[0]);
                 return new Subject(sujectname, tuples[0]);
             }
             else{
@@ -83,8 +83,8 @@ public class subjectManager {
         }
 
         Subject tempsubject = new Subject(tuples[0], day, tuples[3]);
-        if(subjectManager.subjectSets.contains(tempsubject)){
-            for(Subject i : subjectManager.subjectList){
+        if(SubjectManager.subjectSets.contains(tempsubject)){
+            for(Subject i : SubjectManager.subjectList){
                 if(i.equals(tempsubject)){
                     return i;
                 }

@@ -2,7 +2,7 @@
 package com.majorbasic.project.views;
 import java.util.Scanner;
 
-public class helpPrompt {
+public class HelpPrompt {
     private final Scanner sc = new Scanner(System.in);
 
     public void helpMain(String input) {

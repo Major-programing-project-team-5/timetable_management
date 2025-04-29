@@ -1,15 +1,15 @@
 package com.majorbasic.project.utils.remove;
 
-import com.majorbasic.project.datastructure.subjectManager;
+import com.majorbasic.project.datastructure.SubjectManager;
 import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.exception.removeException;
+import com.majorbasic.project.exception.RemoveException;
 
 import java.io.*;
 import java.util.Arrays;
 
-public class remove_utilitySet {
+public class RemoveManager {
     public static void removeMain(String input) {
         try {
             String[] tokens = input.split("\\s+");
@@ -23,10 +23,10 @@ public class remove_utilitySet {
                 if(tokens[2].equals("all")) {
                     removeAllSubjectToTimetable(TimetableManager.presentTimetable);
                 } else if (tokens[tokens.length - 1].equals("database")) {
-                    Subject token = subjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+                    Subject token = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
                     removeSubjectToDatabase(token);
                 } else if (tokens.length > 5) {
-                    Subject token = subjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+                    Subject token = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
                     removeSubjectToTimetable(token, TimetableManager.presentTimetable);
                 } else {
                     System.out.println("인자가 올바르지 않습니다.");
@@ -37,7 +37,7 @@ public class remove_utilitySet {
                 if (tokens[3].equals("subject") && tokens[4].equals("all")) {
                     removeAllSubjectToTimetable(timetable);
                 } else if (tokens[3].equals("subject")) {
-                    Subject token = subjectManager.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
+                    Subject token = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
                     removeSubjectToTimetable(token, timetable);
                 } else if (tokens[3].equals("timetable")) {
                     removeTimetableToManager(timetable);
@@ -58,12 +58,12 @@ public class remove_utilitySet {
     public static void removeTimetableToManager(Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {
-                throw new removeException("removeUtilitySet - removeTimetableToManager : 존재하지 않는 시간표입니다.");
+                throw new RemoveException("removeUtilitySet - removeTimetableToManager : 존재하지 않는 시간표입니다.");
             }
             TimetableManager.timetableSets.remove(timetable);
             TimetableManager.timetableList.remove(timetable);
             System.out.println("시간표를 지웠습니다.");
-        } catch (removeException e) {
+        } catch (RemoveException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -76,7 +76,7 @@ public class remove_utilitySet {
     public static void removeSubjectToTimetable(Subject subject, Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {
-                throw new removeException("removeUtilitySet - removeSubjectToTimetable : 해당 시간표가 존재하지 않습니다.");
+                throw new RemoveException("removeUtilitySet - removeSubjectToTimetable : 해당 시간표가 존재하지 않습니다.");
             }
             for (Timetable t : TimetableManager.timetableList) {
                 if (t.equals(timetable)) {
@@ -85,11 +85,11 @@ public class remove_utilitySet {
                         System.out.println("현재 시간표에서 과목을 삭제하였습니다.");
                         return;
                     } else {
-                        throw new removeException("removeUtilitySet - removeSubjectToTimetable : 시간표에 해당 과목이 없습니다.");
+                        throw new RemoveException("removeUtilitySet - removeSubjectToTimetable : 시간표에 해당 과목이 없습니다.");
                     }
                 }
             }
-        } catch (removeException e) {
+        } catch (RemoveException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -101,7 +101,7 @@ public class remove_utilitySet {
     public static void removeAllSubjectToTimetable(Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {
-                throw new removeException("removeUtilitySet - removeAllSubjectToTimetable : 존재하지 않는 시간표입니다.");
+                throw new RemoveException("removeUtilitySet - removeAllSubjectToTimetable : 존재하지 않는 시간표입니다.");
             }
             for (Timetable t : TimetableManager.timetableList) {
                 if (t.equals(timetable)) {
@@ -110,7 +110,7 @@ public class remove_utilitySet {
                     return;
                 }
             }
-        } catch (removeException e) {
+        } catch (RemoveException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -121,14 +121,14 @@ public class remove_utilitySet {
      */
     public static void removeSubjectToDatabase(Subject subject) {
         try {
-            if (!subjectManager.subjectSets.contains(subject)) {
-                throw new removeException("removeUtilitySet - removeSubjectToDatabase : 존재하지 않는 과목입니다.");
+            if (!SubjectManager.subjectSets.contains(subject)) {
+                throw new RemoveException("removeUtilitySet - removeSubjectToDatabase : 존재하지 않는 과목입니다.");
             }
 
             // 메모리 상에서도 삭제
-            subjectManager.subjectSets.remove(subject);
-            subjectManager.subjectList.remove(subject);
-            subjectManager.subjectSets_fineNameUseCode.remove(subject.getSubjectCode());
+            SubjectManager.subjectSets.remove(subject);
+            SubjectManager.subjectList.remove(subject);
+            SubjectManager.subjectSets_fineNameUseCode.remove(subject.getSubjectCode());
 
             // 파일에서도 삭제
             File inputFile = new File("subject.txt");

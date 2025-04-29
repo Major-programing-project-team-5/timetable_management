@@ -7,6 +7,4 @@ public class Program {
         OnloadProgram onloadProgram = new OnloadProgram();
         onloadProgram.run();
     }
-
-
 }

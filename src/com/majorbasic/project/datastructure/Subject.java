@@ -70,7 +70,7 @@ public class Subject {
         if(previousSubjectCodes != null){
             for(String i : previousSubjectCodes){
                 String[] tempstr = {i};
-                Subject tempsubject = subjectManager.findSubject(tempstr);
+                Subject tempsubject = SubjectManager.findSubject(tempstr);
                 if(tempsubject != null){
                     previousSubject.add(tempsubject);
                 }

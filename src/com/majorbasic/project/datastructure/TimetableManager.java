@@ -1,6 +1,6 @@
 package com.majorbasic.project.datastructure;
 
-import com.majorbasic.project.exception.addException;
+import com.majorbasic.project.exception.AddException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,12 +16,12 @@ public class TimetableManager {
     public static void addTimeTabletoManager(Timetable timetable){
         try{
             if(timetableSets.contains(timetable)){
-                throw new addException("TimetableManager - addTimeTabletoManager : 시간표가 이미 존재함.");
+                throw new AddException("TimetableManager - addTimeTabletoManager : 시간표가 이미 존재함.");
             }else{
                 timetableSets.add(timetable);
                 timetableList.add(timetable);
             }
-        }catch (addException e){
+        }catch (AddException e){
             System.out.println(e.getMessage());
         }
     }

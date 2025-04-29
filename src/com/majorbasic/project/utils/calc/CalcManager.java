@@ -4,7 +4,7 @@ import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
 
-public class calc_utilitySet {
+public class CalcManager {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
 //    2. <calc> <term> 특정 학기 내 학점 계산
 //    3. <calc> <remain> 잔여 학점(전 학기 시간표 대상) 계산

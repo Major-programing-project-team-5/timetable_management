@@ -2,19 +2,19 @@ package com.majorbasic.project.views;
 
 import java.util.Scanner;
 
-import com.majorbasic.project.utils.add.add_promptSet;
-import com.majorbasic.project.utils.calc.calc_utilitySet;
-import com.majorbasic.project.utils.quit.quit_utilitySet;
+import com.majorbasic.project.utils.add.AddManager;
+import com.majorbasic.project.utils.calc.CalcManager;
+import com.majorbasic.project.utils.quit.QuitManager;
 import com.majorbasic.project.utils.update.UpdateManager;
-import com.majorbasic.project.utils.verify.verify_utilitySet;
-import com.majorbasic.project.utils.remove.remove_utilitySet;
+import com.majorbasic.project.utils.verify.VerifyManager;
+import com.majorbasic.project.utils.remove.RemoveManager;
 
 public class OnloadProgram {
     private final Scanner sc = new Scanner(System.in);
-    private final helpPrompt help = new helpPrompt();
-    private final add_promptSet add = new add_promptSet();
-    private final calc_utilitySet calc = new calc_utilitySet();
-    private final quit_utilitySet quit = new quit_utilitySet();
+    private final HelpPrompt help = new HelpPrompt();
+    private final AddManager add = new AddManager();
+    private final CalcManager calc = new CalcManager();
+    private final QuitManager quit = new QuitManager();
     private final UpdateManager update = new UpdateManager();
 
     public void run(){
@@ -86,7 +86,7 @@ public class OnloadProgram {
                 case "확인":
                 case "불러오기":
                 case "표시":
-                    verify_utilitySet.verifyMain(ans);
+                    VerifyManager.verifyMain(ans);
                     break;
                 case "calc":
                 case "Calc":
@@ -100,7 +100,7 @@ public class OnloadProgram {
                 case "REMOVE":
                 case "삭제":
                 case "제거":
-                    remove_utilitySet.removeMain(ans);
+                    RemoveManager.removeMain(ans);
                     break;
                 case "update":
                 case "Update":

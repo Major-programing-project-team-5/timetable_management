@@ -3,13 +3,13 @@ package com.majorbasic.project.utils.add;
 import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.subjectManager;
+import com.majorbasic.project.datastructure.SubjectManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class add_promptSet {
+public class AddManager {
     public void addMain(String args) {
         String[] tokens = args.split("\\s+");
         Select_add_prompt(tokens);
@@ -96,7 +96,7 @@ public class add_promptSet {
     }
 
     public void print_add_course_current(String[] tuples) {
-        Subject temp = subjectManager.findSubject(tuples);
+        Subject temp = SubjectManager.findSubject(tuples);
         if (temp == null) {
             System.out.println("잘못된 과목 튜플 입력입니다.");
         } else if (isTimeConflicted(temp, TimetableManager.presentTimetable)) {
@@ -122,7 +122,7 @@ public class add_promptSet {
         // 과목 정보에서 튜플을 생성하고 데이터베이스에 추가
         String[] lectureDate = Arrays.copyOfRange(lectureInfo, 1, 2);
         Subject subject = new Subject(lectureInfo[0], lectureDate, lectureInfo[3], Integer.parseInt(lectureInfo[4]), lectureInfo[5], lectureInfo[6], lectureInfo[7], previousSubjectCode);
-        boolean success = subjectManager.addSubjectToManager(subject);
+        boolean success = SubjectManager.addSubjectToManager(subject);
         if (success) {
             System.out.println("과목이 데이터베이스에 추가되었습니다.");
         } else {
@@ -131,7 +131,7 @@ public class add_promptSet {
     }
 
     public void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
-        Subject temp = subjectManager.findSubject(lectureInfo);
+        Subject temp = SubjectManager.findSubject(lectureInfo);
         Timetable table = TimetableManager.getTimetable(year, semester);
 
         if(table == null){

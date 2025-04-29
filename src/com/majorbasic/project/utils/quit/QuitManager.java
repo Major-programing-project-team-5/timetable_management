@@ -3,13 +3,13 @@ package com.majorbasic.project.utils.quit;
 import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.subjectManager;
+import com.majorbasic.project.datastructure.SubjectManager;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class quit_utilitySet {
+public class QuitManager {
     public void quit() {
         uploadAllFileToDatabase();
         System.out.println("프로그램을 종료합니다.");
@@ -24,7 +24,7 @@ public class quit_utilitySet {
 
     private void pushSubjectFileToDatabase() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/subject.txt"))) {
-            for (Subject subject : subjectManager.subjectList) {
+            for (Subject subject : SubjectManager.subjectList) {
                 writer.write(subject.toSave());
                 writer.newLine();
             }
