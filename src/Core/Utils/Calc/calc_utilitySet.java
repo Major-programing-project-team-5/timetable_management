@@ -3,9 +3,6 @@ package Core.Utils.Calc;
 import Core.DataStructure.Subject;
 import Core.DataStructure.Timetable;
 import Core.DataStructure.TimetableManager;
-import Core.Utils.findSubjectClass;
-
-import java.io.*;
 
 public class calc_utilitySet {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
@@ -56,7 +53,7 @@ public class calc_utilitySet {
                     System.out.println("인자가 올바르지 않습니다.");
             }
         } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다" + e.toString());
+            System.out.println("명령어 처리 중 오류가 발생했습니다" + e);
         }
     }
 
@@ -81,7 +78,7 @@ public class calc_utilitySet {
             // 총 학점 출력
             System.out.println("전체 이수 학점: " + totalCredits);
         } catch (Exception e) {
-            System.out.println("학점 계산 실패" + e.toString());
+            System.out.println("학점 계산 실패" + e);
         }
     }
 
@@ -120,7 +117,7 @@ public class calc_utilitySet {
             // 총 학점 출력
             System.out.println("학기 이수 학점: " + totalCredits);
         } catch (Exception e) {
-            System.out.println("학점 계산 실패" + e.toString());
+            System.out.println("학점 계산 실패" + e);
         }
     }
 
@@ -149,7 +146,7 @@ public class calc_utilitySet {
             System.out.println("졸업 요건: " + GRADUATION_CREDIT + "학점");
             System.out.println("남은 학점: " + remainingCredits + "학점");
         } catch (Exception e) {
-            System.out.println("학점 계산 실패" + e.toString());
+            System.out.println("학점 계산 실패" + e);
         }
     }
 }

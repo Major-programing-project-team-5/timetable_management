@@ -16,8 +16,7 @@ public class findSubjectClass {
             //이 경우 과목 코드만 가지고 판별함.
             if(subjectManager.subjectSets_fineNameUseCode.containsKey(tuples[0])){
                 String sujectname = subjectManager.subjectSets_fineNameUseCode.get(tuples[0]);
-                Subject tempsubject = new Subject(sujectname, tuples[0]);
-                return tempsubject;
+                return new Subject(sujectname, tuples[0]);
             }
             else{
                 return null;

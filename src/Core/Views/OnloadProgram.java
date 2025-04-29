@@ -2,7 +2,6 @@ package Core.Views;
 
 import java.util.Scanner;
 
-import Core.DataStructure.TimetableManager;
 import Core.Utils.Add.add_promptSet;
 import Core.Utils.Calc.calc_utilitySet;
 import Core.Utils.Quit.quit_utilitySet;
@@ -12,11 +11,11 @@ import Core.Utils.Remove.remove_utilitySet;
 
 public class OnloadProgram {
     private final Scanner sc = new Scanner(System.in);
-    private helpPrompt help = new helpPrompt();
-    private add_promptSet add = new add_promptSet();
-    private calc_utilitySet calc = new calc_utilitySet();
-    private quit_utilitySet quit = new quit_utilitySet();
-    private UpdateManager update = new UpdateManager();
+    private final helpPrompt help = new helpPrompt();
+    private final add_promptSet add = new add_promptSet();
+    private final calc_utilitySet calc = new calc_utilitySet();
+    private final quit_utilitySet quit = new quit_utilitySet();
+    private final UpdateManager update = new UpdateManager();
 
     public void run(){
         update.updateAll();

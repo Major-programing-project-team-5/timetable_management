@@ -27,18 +27,16 @@ public class UpdateManager {
     }
 
     public void updateAll(){
-        String test = "C:/Users/rlawh/IdeaProjects/timetable/";
         System.out.println("데이터 업데이트를 시도합니다.");
-        updateSubjectManager(test + "./data/subject.txt");
-        updateTimetableManager(test + "./data/timetable.txt");
-        updateGraduate(test + "./data/graduate.txt");
+        updateSubjectManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\resources\\subject.txt");
+        updateTimetableManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\resources\\timetable.txt");
+        updateGraduate("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\resources\\graduate.txt");
         System.out.println("데이터 업데이트를 완료하였습니다.");
     }
 
     /**
      * subjectManager을 만들어서 리턴합니다.
-     * @param filePath
-     * @return
+     * @param filePath 파일주소 이름
      */
     public void updateSubjectManager(String filePath) {
 
@@ -134,7 +132,7 @@ public class UpdateManager {
 
                 Timetable timetable = new Timetable(year, semester, subjects);
                 TimetableManager.addTimeTabletoManager(timetable);
-                System.out.println(timetable.toString());
+                System.out.println(timetable);
             }
             br.close();
         } catch (Exception e) {
