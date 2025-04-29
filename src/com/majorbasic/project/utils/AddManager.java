@@ -9,25 +9,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.majorbasic.project.utils.Util.*;
+
 public class AddManager {
     public void addMain(String args) {
         String[] tokens = args.split("\\s+");
         Select_add_prompt(tokens);
     }
 
-    public void Select_add_prompt(String[] tokens) {
+    private void Select_add_prompt(String[] tokens) {
         try {
             if (tokens.length < 3) {
                 System.out.println("잘못된 add 명령 형식입니다.");
             } else if ( tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])  ) {
                 // 1. 지정 학기 시간표 생성 (학년, 학기) - 검사완
-                int year = Integer.parseInt(tokens[1]);
-                int semester = Integer.parseInt(tokens[2]);
-                if(year > 4 || year < 1 || semester > 2 || semester < 1) {
-                    System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
+                if(!isTimetableCorrect(tokens[1], tokens[2])) {
                     return;
                 }
-                print_add_timetable(year, semester);
+                print_add_timetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
             } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
                 // 2. 현재 시간표 생성 및 설정
                 int year = Integer.parseInt(tokens[2]);
@@ -67,7 +66,7 @@ public class AddManager {
 
 
 
-    public void print_add_timetable(int year, int semester) {
+    private void print_add_timetable(int year, int semester) {
         Timetable temp = new Timetable(year, semester);
         if(TimetableManager.timetableSets.contains(temp)){
             System.out.println("이미 존재하는 시간표입니다");
@@ -78,7 +77,7 @@ public class AddManager {
 
     }
 
-    public void print_add_timetable_setcurrent(int year, int semester) {
+    private void print_add_timetable_setcurrent(int year, int semester) {
         Timetable temp = new Timetable(year, semester);
         if (!TimetableManager.timetableSets.contains(temp)) {
             TimetableManager.addTimeTabletoManager(temp);
@@ -95,7 +94,7 @@ public class AddManager {
         System.out.println("[ 현재 시간표가 " + year + "학년 " + semester + "학기로 설정되었습니다. ]");
     }
 
-    public void print_add_course_current(String[] tuples) {
+    private void print_add_course_current(String[] tuples) {
         Subject temp = SubjectManager.findSubject(tuples);
         if (temp == null) {
             System.out.println("잘못된 과목 튜플 입력입니다.");
@@ -107,7 +106,7 @@ public class AddManager {
         }
     }
 
-    public void print_add_course_database(String[] lectureInfo){
+    private void print_add_course_database(String[] lectureInfo){
         List<String> previousSubjectCode = new ArrayList<>();
         if (lectureInfo.length < 8) {
             System.out.println("과목 정보가 부족합니다.");
@@ -130,7 +129,7 @@ public class AddManager {
         }
     }
 
-    public void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
+    private void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
         Subject temp = SubjectManager.findSubject(lectureInfo);
         Timetable table = TimetableManager.getTimetable(year, semester);
 
@@ -145,25 +144,6 @@ public class AddManager {
             System.out.println("[ 과목 '" + temp + "'가 시간표에 추가되었습니다.]");
         }
 
-    }
-
-    public static boolean isTimeConflicted(Subject subject, Timetable timetable) {
-        if (timetable == null) {
-            return false;
-        }
-
-        for (Subject existingSubject : timetable.getSubjects()) {
-            // 기존 시간표의 과목과 비교하여 시간 겹침 여부를 확인
-            if (existingSubject.getSubjectCode().equals(subject.getSubjectCode()) ||
-                    existingSubject.getCategory().equals(subject.getCategory())) {
-                return true; // 겹치는 과목이 존재하면 true 반환
-            }
-        }
-        return false;  // 겹치는 과목이 없으면 false
-    }
-
-    private static boolean isNumeric(String str) {
-        return str.matches("\\d");
     }
 }
 

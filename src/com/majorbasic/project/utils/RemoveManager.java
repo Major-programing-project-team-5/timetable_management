@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.Arrays;
 
 public class RemoveManager {
-    public static void removeMain(String input) {
+    public void removeMain(String input) {
         try {
             String[] tokens = input.split("\\s+");
 
@@ -55,7 +55,7 @@ public class RemoveManager {
      * 시간표를 매니저에서 삭제하는 메소드입니다.
      * @param timetable 삭제할 시간표
      */
-    public static void removeTimetableToManager(Timetable timetable) {
+    public void removeTimetableToManager(Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {
                 throw new RemoveException("removeUtilitySet - removeTimetableToManager : 존재하지 않는 시간표입니다.");
@@ -73,7 +73,7 @@ public class RemoveManager {
      * @param subject   삭제할 과목
      * @param timetable 과목이 들어있는 시간표
      */
-    public static void removeSubjectToTimetable(Subject subject, Timetable timetable) {
+    public void removeSubjectToTimetable(Subject subject, Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {
                 throw new RemoveException("removeUtilitySet - removeSubjectToTimetable : 해당 시간표가 존재하지 않습니다.");
@@ -98,7 +98,7 @@ public class RemoveManager {
      * 특정 시간표에서 모든 과목을 삭제하는 메소드입니다.
      * @param timetable 과목을 모두 삭제할 시간표
      */
-    public static void removeAllSubjectToTimetable(Timetable timetable) {
+    public void removeAllSubjectToTimetable(Timetable timetable) {
         try {
             if (!TimetableManager.timetableSets.contains(timetable)) {
                 throw new RemoveException("removeUtilitySet - removeAllSubjectToTimetable : 존재하지 않는 시간표입니다.");
@@ -119,7 +119,7 @@ public class RemoveManager {
      * 데이터베이스(파일)에서 과목을 삭제하는 메소드입니다.
      * @param subject 삭제할 과목
      */
-    public static void removeSubjectToDatabase(Subject subject) {
+    public void removeSubjectToDatabase(Subject subject) {
         try {
             if (!SubjectManager.subjectSets.contains(subject)) {
                 throw new RemoveException("removeUtilitySet - removeSubjectToDatabase : 존재하지 않는 과목입니다.");

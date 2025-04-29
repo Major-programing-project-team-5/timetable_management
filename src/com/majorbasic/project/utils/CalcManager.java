@@ -9,7 +9,7 @@ public class CalcManager {
 //    2. <calc> <term> 특정 학기 내 학점 계산
 //    3. <calc> <remain> 잔여 학점(전 학기 시간표 대상) 계산
 
-    static final int GRADUATION_CREDIT = 130;
+    public final int GRADUATION_CREDIT = 130;
 
     //    if (tokens.length < 2 || !tokens[0].equals("calc") || !tokens[0].equals("계산") || !tokens[0].equals("학점")) {
 //        System.out.println("올바르지 않은 명령입니다.");
@@ -59,7 +59,7 @@ public class CalcManager {
 
     // 조건문에 사용되는 함수들
     // 1. 총 학점을 계산하는 함수
-    public static void calculateTotalCredits() {
+    public void calculateTotalCredits() {
         try {
             int totalCredits = 0;
 
@@ -99,7 +99,7 @@ public class CalcManager {
 //    } --> findSubject 사용하면서 불필요해짐.
 
     // 2. 특정 학기의 학점 계산
-    public static void calculateTermCredits(int year, int semester) {
+    public void calculateTermCredits(int year, int semester) {
         try {
             int totalCredits = 0;
             Timetable timetable = TimetableManager.getTimetable(year, semester);
@@ -122,7 +122,7 @@ public class CalcManager {
     }
 
     // 3. 남은 학점 계산
-    public static void calculateRemainingCredits() {
+    public void calculateRemainingCredits() {
         try {
             int totalCredits = 0;
 

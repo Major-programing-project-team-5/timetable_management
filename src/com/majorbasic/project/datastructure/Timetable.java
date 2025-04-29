@@ -3,7 +3,7 @@ package com.majorbasic.project.datastructure;
 import java.util.ArrayList;
 import java.util.Objects;
 
-    public class Timetable {
+public class Timetable {
     private final ArrayList<Subject> subjects;
     private final int semester; // 학기
     private final int year; // 년도

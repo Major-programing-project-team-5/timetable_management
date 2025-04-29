@@ -14,7 +14,9 @@ public class OnloadProgram {
     private final HelpPrompt help = new HelpPrompt();
     private final AddManager add = new AddManager();
     private final CalcManager calc = new CalcManager();
+    private final VerifyManager verify = new VerifyManager();
     private final QuitManager quit = new QuitManager();
+    private final RemoveManager remove = new RemoveManager();
     private final UpdateManager update = new UpdateManager();
 
     public void run(){
@@ -86,7 +88,7 @@ public class OnloadProgram {
                 case "확인":
                 case "불러오기":
                 case "표시":
-                    VerifyManager.verifyMain(ans);
+                    verify.verifyMain(ans);
                     break;
                 case "calc":
                 case "Calc":
@@ -100,7 +102,7 @@ public class OnloadProgram {
                 case "REMOVE":
                 case "삭제":
                 case "제거":
-                    RemoveManager.removeMain(ans);
+                    remove.removeMain(ans);
                     break;
                 case "update":
                 case "Update":
