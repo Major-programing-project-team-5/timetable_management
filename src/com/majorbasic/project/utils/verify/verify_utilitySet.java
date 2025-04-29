@@ -1,11 +1,10 @@
-package Core.Utils.Verify;
+package com.majorbasic.project.utils.verify;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.Timetable;
-import Core.DataStructure.TimetableManager;
-import Core.Utils.findSubjectClass;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
+import com.majorbasic.project.datastructure.subjectManager;
 
-import javax.swing.table.TableModel;
 import java.util.Arrays;
 
 public class verify_utilitySet {
@@ -36,12 +35,12 @@ public class verify_utilitySet {
                 System.out.println("올바른 인자가 아닙니다.");
             }
         } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e.toString());
+            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e);
         }
     }
 
     public static void verifySubject(String[] tuples) {
-        Subject subject = findSubjectClass.findSubject(tuples);
+        Subject subject = subjectManager.findSubject(tuples);
 
         if (subject == null) {
             System.out.println("해당 과목을 찾을 수 없습니다.");

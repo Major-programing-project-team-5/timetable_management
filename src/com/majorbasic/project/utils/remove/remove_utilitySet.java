@@ -1,8 +1,10 @@
-package Core.Utils.Remove;
+package com.majorbasic.project.utils.remove;
 
-import Core.DataStructure.*;
-import Core.Utils.findSubjectClass;
-import Core.Exception.removeException;
+import com.majorbasic.project.datastructure.subjectManager;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
+import com.majorbasic.project.exception.removeException;
 
 import java.io.*;
 import java.util.Arrays;
@@ -21,10 +23,10 @@ public class remove_utilitySet {
                 if(tokens[2].equals("all")) {
                     removeAllSubjectToTimetable(TimetableManager.presentTimetable);
                 } else if (tokens[tokens.length - 1].equals("database")) {
-                    Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+                    Subject token = subjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
                     removeSubjectToDatabase(token);
                 } else if (tokens.length > 5) {
-                    Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+                    Subject token = subjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
                     removeSubjectToTimetable(token, TimetableManager.presentTimetable);
                 } else {
                     System.out.println("인자가 올바르지 않습니다.");
@@ -35,7 +37,7 @@ public class remove_utilitySet {
                 if (tokens[3].equals("subject") && tokens[4].equals("all")) {
                     removeAllSubjectToTimetable(timetable);
                 } else if (tokens[3].equals("subject")) {
-                    Subject token = findSubjectClass.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
+                    Subject token = subjectManager.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
                     removeSubjectToTimetable(token, timetable);
                 } else if (tokens[3].equals("timetable")) {
                     removeTimetableToManager(timetable);

@@ -1,11 +1,10 @@
-package Core.Utils.Update;
+package com.majorbasic.project.utils.update;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.subjectManager;
-import Core.DataStructure.Timetable;
-import Core.DataStructure.TimetableManager;
-import Core.DataStructure.Graduation;
-import Core.Utils.findSubjectClass;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.subjectManager;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
+import com.majorbasic.project.datastructure.Graduation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -28,9 +27,9 @@ public class UpdateManager {
 
     public void updateAll(){
         System.out.println("데이터 업데이트를 시도합니다.");
-        updateSubjectManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\resources\\subject.txt");
-        updateTimetableManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\resources\\timetable.txt");
-        updateGraduate("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\resources\\graduate.txt");
+        updateSubjectManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\com\\majorbasic\\project\\resources\\subject.txt");
+        updateTimetableManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\com\\majorbasic\\project\\resources\\timetable.txt");
+        updateGraduate("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\com\\majorbasic\\project\\resources\\graduate.txt");
         System.out.println("데이터 업데이트를 완료하였습니다.");
     }
 
@@ -52,8 +51,6 @@ public class UpdateManager {
             while ((line = br.readLine()) != null) {
                 String[] tuples = line.split(" ");
 
-                String subjectName = tuples[0];
-                String[] subjectDayTime = null;
                 String[] day = tuples[1].split(",");
                 String[] time = tuples[2].split(",");
                 if(day.length == 2){
@@ -68,30 +65,17 @@ public class UpdateManager {
                 }else{
                     day[0] = day[0] + ","  + time[0];
                 }
-                subjectDayTime = day;
-
-                String subjectCode = tuples[3];
-                int credit = Integer.parseInt(tuples[4]);
-                String category = tuples[5];
-                String courseCode = tuples[6];
-                String lectureRoom = tuples[7];
-
-                // 선수 과목 처리
-                List<String> previousSubjects = null;
-                if (tuples.length > 8) {
-                    previousSubjects = Arrays.asList(tuples[7].split(","));
-                }
 
                 // Subject 객체 생성
                 Subject subject = new Subject(
-                        subjectName,
-                        subjectDayTime,
-                        subjectCode,
-                        credit,
-                        category,
-                        courseCode,
-                        lectureRoom,
-                        previousSubjects
+                        tuples[0],                      //subjectName
+                        day,                 //subjectDayTime
+                        tuples[3],                      //subjectCode
+                        Integer.parseInt(tuples[4]),    //credit
+                        tuples[5],                      //category
+                        tuples[6],                      //courseCode
+                        tuples[7],                      //lectureRoom
+                        Arrays.asList(tuples[7].split(",")) //previousSubjectCodes
                 );
 
                 // subjectManager에 과목 추가
@@ -123,7 +107,7 @@ public class UpdateManager {
                 for(int i = 0; i < subjectAmount; i++){
                     line = br.readLine();
                     String[] tuples = line.split(" ");
-                    Subject subject = findSubjectClass.findSubject(tuples);
+                    Subject subject = subjectManager.findSubject(tuples);
                     if(subject == null) {
                         continue;
                     }
@@ -134,6 +118,7 @@ public class UpdateManager {
                 TimetableManager.addTimeTabletoManager(timetable);
                 System.out.println(timetable);
             }
+            TimetableManager.presentTimetable = TimetableManager.timetableList.get(0);
             br.close();
         } catch (Exception e) {
             System.out.println("updateTimetableManager 에러 : " + e.getMessage());

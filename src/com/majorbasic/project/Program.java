@@ -1,4 +1,6 @@
-import Core.Views.OnloadProgram;
+package com.majorbasic.project;
+
+import com.majorbasic.project.views.OnloadProgram;
 
 public class Program {
     public static void main(String[] args) {

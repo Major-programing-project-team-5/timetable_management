@@ -1,6 +1,6 @@
-package Core.DataStructure;
+package com.majorbasic.project.datastructure;
 
-import Core.Exception.addException;
+import com.majorbasic.project.exception.addException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +11,6 @@ public class TimetableManager {
     public static Timetable presentTimetable;
     /**
      * TimeTableManager에 시간표를 추가하는 메소드입니다.
-     *
      * @param timetable 시간표에 추가할 시간표입니다
      */
     public static void addTimeTabletoManager(Timetable timetable){
@@ -21,7 +20,6 @@ public class TimetableManager {
             }else{
                 timetableSets.add(timetable);
                 timetableList.add(timetable);
-
             }
         }catch (addException e){
             System.out.println(e.getMessage());

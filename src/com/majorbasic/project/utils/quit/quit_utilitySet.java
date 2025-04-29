@@ -1,6 +1,9 @@
-package Core.Utils.Quit;
+package com.majorbasic.project.utils.quit;
 
-import Core.DataStructure.*;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
+import com.majorbasic.project.datastructure.subjectManager;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

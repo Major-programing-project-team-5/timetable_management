@@ -1,6 +1,4 @@
-package Core.DataStructure;
-
-import Core.Utils.findSubjectClass;
+package com.majorbasic.project.datastructure;
 
 import java.util.Arrays;
 import java.util.List;
@@ -72,7 +70,7 @@ public class Subject {
         if(previousSubjectCodes != null){
             for(String i : previousSubjectCodes){
                 String[] tempstr = {i};
-                Subject tempsubject = findSubjectClass.findSubject(tempstr);
+                Subject tempsubject = subjectManager.findSubject(tempstr);
                 if(tempsubject != null){
                     previousSubject.add(tempsubject);
                 }

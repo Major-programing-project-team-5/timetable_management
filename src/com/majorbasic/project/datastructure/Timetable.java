@@ -1,4 +1,4 @@
-package Core.DataStructure;
+package com.majorbasic.project.datastructure;
 
 import java.util.ArrayList;
 import java.util.Objects;

@@ -1,8 +1,8 @@
-package Core.Utils.Calc;
+package com.majorbasic.project.utils.calc;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.Timetable;
-import Core.DataStructure.TimetableManager;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
 
 public class calc_utilitySet {
 //    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산

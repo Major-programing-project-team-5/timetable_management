@@ -1,13 +1,13 @@
-package Core.Views;
+package com.majorbasic.project.views;
 
 import java.util.Scanner;
 
-import Core.Utils.Add.add_promptSet;
-import Core.Utils.Calc.calc_utilitySet;
-import Core.Utils.Quit.quit_utilitySet;
-import Core.Utils.Update.UpdateManager;
-import Core.Utils.Verify.verify_utilitySet;
-import Core.Utils.Remove.remove_utilitySet;
+import com.majorbasic.project.utils.add.add_promptSet;
+import com.majorbasic.project.utils.calc.calc_utilitySet;
+import com.majorbasic.project.utils.quit.quit_utilitySet;
+import com.majorbasic.project.utils.update.UpdateManager;
+import com.majorbasic.project.utils.verify.verify_utilitySet;
+import com.majorbasic.project.utils.remove.remove_utilitySet;
 
 public class OnloadProgram {
     private final Scanner sc = new Scanner(System.in);
@@ -45,14 +45,13 @@ public class OnloadProgram {
         System.out.println("예) help add");
         System.out.println();
         System.out.println("무엇을 도와드릴까요?");
-        System.out.print("> ");
     }
 
     public void getInput () {
         while(true){
             System.out.print("> ");
             String ans = sc.nextLine();
-            String[] args = ans.split("[ \t\n\r\f\u000B]");
+            String[] args = ans.split("\\s+");
 
             switch (args[0]) {
                 case "help":
@@ -74,7 +73,7 @@ public class OnloadProgram {
                         break;
                     }
                     quit.quit();
-                    break;
+                    return;
                 case "add":
                 case "Add":
                 case "ADD":
@@ -115,7 +114,5 @@ public class OnloadProgram {
                     help.helpNoarg();
             }
         }
-
     }
-
 }
