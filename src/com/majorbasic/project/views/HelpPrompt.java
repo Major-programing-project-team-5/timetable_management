@@ -6,7 +6,7 @@ public class HelpPrompt {
     private final Scanner sc = new Scanner(System.in);
 
     public void helpMain(String input) {
-        String[] inputList = input.split("[ \t\n\r\f\u000B]");
+        String[] inputList = input.split("\\s+");
         clear();
 
         if(inputList.length == 1) {
