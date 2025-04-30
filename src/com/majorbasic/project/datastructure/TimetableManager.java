@@ -34,4 +34,28 @@ public class TimetableManager {
             }
             return null;
     }
+
+    /**
+     * 타임테이블의 학년과 학기의 값이 유효한지 검사
+     * @param year 학년
+     * @param semester 학기
+     * @return 학년과 학기의 값이 유효한지 여부
+     */
+    public static boolean isTimetableCorrect(int year, int semester) {
+        if(year > 4 || year < 1 || semester > 2 || semester < 1) {
+            System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 타임테이블의 학년과 학기의 값이 유효한지 검사
+     * @param year 학년
+     * @param semester 학기
+     * @return 학년과 학기의 값이 유효한지 여부
+     */
+    public static boolean isTimetableCorrect(String year, String semester) {
+        return isTimetableCorrect(Integer.parseInt(year), Integer.parseInt(semester));
+    }
 }

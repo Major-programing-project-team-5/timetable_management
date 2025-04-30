@@ -26,7 +26,7 @@ public class VerifyManager {
                 String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
                 verifySubject(output);
             } else if (tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])) {
-                if(!isTimetableCorrect(tokens[1], tokens[2])) {
+                if(!TimetableManager.isTimetableCorrect(tokens[1], tokens[2])) {
                     return;
                 }
                 verifyTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));

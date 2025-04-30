@@ -23,7 +23,7 @@ public class AddManager {
                 System.out.println("잘못된 add 명령 형식입니다.");
             } else if ( tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])  ) {
                 // 1. 지정 학기 시간표 생성 (학년, 학기) - 검사완
-                if(!isTimetableCorrect(tokens[1], tokens[2])) {
+                if(!TimetableManager.isTimetableCorrect(tokens[1], tokens[2])) {
                     return;
                 }
                 print_add_timetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));

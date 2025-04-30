@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
 
+import static com.majorbasic.project.utils.Util.dayTimeArr;
+
 public class UpdateManager {
 
     /**
@@ -50,21 +52,7 @@ public class UpdateManager {
 
             while ((line = br.readLine()) != null) {
                 String[] tuples = line.split(" ");
-
-                String[] day = tuples[1].split(",");
-                String[] time = tuples[2].split(",");
-                if(day.length == 2){
-                    if(time.length == 2){
-                        day[0] = day[0] + ","  + time[0];
-                        day[1] = day[1] + "," + time[1];
-                    }
-                    else{
-                        day[0] = day[0] + ","  + time[0];
-                        day[1] = day[1] + "," + time[0];
-                    }
-                }else{
-                    day[0] = day[0] + ","  + time[0];
-                }
+                String[] day = dayTimeArr(tuples);
 
                 // Subject 객체 생성
                 Subject subject = new Subject(

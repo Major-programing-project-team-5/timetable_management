@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import static com.majorbasic.project.utils.Util.dayTimeArr;
+
 public class SubjectManager {
     //튜플 찾기용으로 사용하는, 해쉬맵이 담겨 있는 객체입니다.
 
@@ -67,20 +69,7 @@ public class SubjectManager {
             return null;
         }
         //일반적인 과목 찾기용
-        String[] day = tuples[1].split(",");
-        String[] time = tuples[2].split(",");
-        if(day.length == 2){
-            if(time.length == 2){
-                day[0] = day[0] + ","  + time[0];
-                day[1] = day[1] + "," + time[1];
-            }
-            else{
-                day[0] = day[0] + ","  + time[0];
-                day[1] = day[1] + "," + time[0];
-            }
-        }else{
-            day[0] = day[0] + ","  + time[0];
-        }
+        String[] day = dayTimeArr(tuples);
 
         Subject tempsubject = new Subject(tuples[0], day, tuples[3]);
         if(SubjectManager.subjectSets.contains(tempsubject)){
