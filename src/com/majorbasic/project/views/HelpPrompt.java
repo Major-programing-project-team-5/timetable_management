@@ -1,12 +1,12 @@
 // 터미널 크기 120 * 30 가정한 크기
-package Core.Views;
+package com.majorbasic.project.views;
 import java.util.Scanner;
 
-public class helpPrompt {
+public class HelpPrompt {
     private final Scanner sc = new Scanner(System.in);
 
     public void helpMain(String input) {
-        String[] inputList = input.split("[ \t\n\r\f\u000B]");
+        String[] inputList = input.split("\\s+");
         clear();
 
         if(inputList.length == 1) {
@@ -60,7 +60,7 @@ public class helpPrompt {
                 start.waitFor();
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("명령어 처리 중 오류가 발생하였습니다 : " + e);
         }
     }
     public void helpNoarg() {

@@ -1,12 +1,12 @@
-package Core.DataStructure;
+package com.majorbasic.project.datastructure;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Timetable {
-    private ArrayList<Subject> subjects;
-    private int semester; // 학기
-    private int year; // 년도
+    private final ArrayList<Subject> subjects;
+    private final int semester; // 학기
+    private final int year; // 년도
 
     public Timetable(int year, int semester, ArrayList<Subject> subjects) {
         this.semester = semester;
@@ -38,8 +38,8 @@ public class Timetable {
 
     /**
      * 시간표는 학기와 년도가 같으면 같은 시간표로 취급합니다.
-     * @param object
-     * @return
+     * @param object 같은 객체인지 검사할 객체
+     * @return 만약 같은 객체이면 true, 아니면 false 반환
      */
     @Override
     public boolean equals(Object object) {

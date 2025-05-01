@@ -1,22 +1,23 @@
-package Core.Views;
+package com.majorbasic.project.views;
 
 import java.util.Scanner;
 
-import Core.DataStructure.TimetableManager;
-import Core.Utils.Add.add_promptSet;
-import Core.Utils.Calc.calc_utilitySet;
-import Core.Utils.Quit.quit_utilitySet;
-import Core.Utils.Update.UpdateManager;
-import Core.Utils.Verify.verify_utilitySet;
-import Core.Utils.Remove.remove_utilitySet;
+import com.majorbasic.project.utils.AddManager;
+import com.majorbasic.project.utils.CalcManager;
+import com.majorbasic.project.utils.QuitManager;
+import com.majorbasic.project.utils.UpdateManager;
+import com.majorbasic.project.utils.VerifyManager;
+import com.majorbasic.project.utils.RemoveManager;
 
 public class OnloadProgram {
     private final Scanner sc = new Scanner(System.in);
-    private helpPrompt help = new helpPrompt();
-    private add_promptSet add = new add_promptSet();
-    private calc_utilitySet calc = new calc_utilitySet();
-    private quit_utilitySet quit = new quit_utilitySet();
-    private UpdateManager update = new UpdateManager();
+    private final HelpPrompt help = new HelpPrompt();
+    private final AddManager add = new AddManager();
+    private final CalcManager calc = new CalcManager();
+    private final VerifyManager verify = new VerifyManager();
+    private final QuitManager quit = new QuitManager();
+    private final RemoveManager remove = new RemoveManager();
+    private final UpdateManager update = new UpdateManager();
 
     public void run(){
         update.updateAll();
@@ -46,14 +47,13 @@ public class OnloadProgram {
         System.out.println("예) help add");
         System.out.println();
         System.out.println("무엇을 도와드릴까요?");
-        System.out.print("> ");
     }
 
     public void getInput () {
         while(true){
             System.out.print("> ");
             String ans = sc.nextLine();
-            String[] args = ans.split("[ \t\n\r\f\u000B]");
+            String[] args = ans.split("\\s+");
 
             switch (args[0]) {
                 case "help":
@@ -75,7 +75,7 @@ public class OnloadProgram {
                         break;
                     }
                     quit.quit();
-                    break;
+                    return;
                 case "add":
                 case "Add":
                 case "ADD":
@@ -88,7 +88,7 @@ public class OnloadProgram {
                 case "확인":
                 case "불러오기":
                 case "표시":
-                    verify_utilitySet.verifyMain(ans);
+                    verify.verifyMain(ans);
                     break;
                 case "calc":
                 case "Calc":
@@ -102,7 +102,7 @@ public class OnloadProgram {
                 case "REMOVE":
                 case "삭제":
                 case "제거":
-                    remove_utilitySet.removeMain(ans);
+                    remove.removeMain(ans);
                     break;
                 case "update":
                 case "Update":
@@ -116,7 +116,5 @@ public class OnloadProgram {
                     help.helpNoarg();
             }
         }
-
     }
-
 }

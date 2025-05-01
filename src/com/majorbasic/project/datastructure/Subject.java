@@ -1,6 +1,4 @@
-package Core.DataStructure;
-
-import Core.Utils.findSubjectClass;
+package com.majorbasic.project.datastructure;
 
 import java.util.Arrays;
 import java.util.List;
@@ -72,7 +70,7 @@ public class Subject {
         if(previousSubjectCodes != null){
             for(String i : previousSubjectCodes){
                 String[] tempstr = {i};
-                Subject tempsubject = findSubjectClass.findSubject(tempstr);
+                Subject tempsubject = SubjectManager.findSubject(tempstr);
                 if(tempsubject != null){
                     previousSubject.add(tempsubject);
                 }
@@ -82,8 +80,8 @@ public class Subject {
 
     /**
      * 선수과목의 경우엔 간단하게 이름-과목코드만 가진 객체로 생성해서 가지고있도록 함.
-     * @param subjectCode
-     * @param subjectName
+     * @param subjectCode 과목코드
+     * @param subjectName 과목이름
      */
     public Subject(String subjectCode, String subjectName) {
         this.subjectCode = subjectCode;
@@ -93,9 +91,9 @@ public class Subject {
 
     /**
      * 과목을 찾을 때 임시로 만드는 것.
-     * @param subjectName
-     * @param subjectDayTime
-     * @param subjectCode
+     * @param subjectName 과목이름
+     * @param subjectDayTime 과목시간 형식 ["요일,시간", "요일,시간"]
+     * @param subjectCode 과목코드
      */
     public Subject(String subjectName, String[] subjectDayTime, String subjectCode) {
         this.subjectDayTime = subjectDayTime;

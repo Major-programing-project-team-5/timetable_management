@@ -1,16 +1,17 @@
-package Core.Utils.Verify;
+package com.majorbasic.project.utils;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.Timetable;
-import Core.DataStructure.TimetableManager;
-import Core.Utils.findSubjectClass;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
+import com.majorbasic.project.datastructure.SubjectManager;
 
-import javax.swing.table.TableModel;
 import java.util.Arrays;
 
-public class verify_utilitySet {
+import static com.majorbasic.project.utils.Util.*;
 
-    public static void verifyMain(String input) {
+public class VerifyManager {
+
+    public void verifyMain(String input) {
         try {
             String[] tokens = input.split("\\s+");
 
@@ -24,11 +25,8 @@ public class verify_utilitySet {
             } else if (tokens[1].equals("subject")) {
                 String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
                 verifySubject(output);
-            } else if (tokens.length == 3 && tokens[1].matches("\\d") && tokens[2].matches("\\d")) {
-                int year = Integer.parseInt(tokens[1]);
-                int semester = Integer.parseInt(tokens[2]);
-                if (year > 4 || year < 1 || semester > 2 || semester < 1) {
-                    System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
+            } else if (tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])) {
+                if(!TimetableManager.isTimetableCorrect(tokens[1], tokens[2])) {
                     return;
                 }
                 verifyTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
@@ -36,12 +34,12 @@ public class verify_utilitySet {
                 System.out.println("올바른 인자가 아닙니다.");
             }
         } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e.toString());
+            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e);
         }
     }
 
-    public static void verifySubject(String[] tuples) {
-        Subject subject = findSubjectClass.findSubject(tuples);
+    public void verifySubject(String[] tuples) {
+        Subject subject = SubjectManager.findSubject(tuples);
 
         if (subject == null) {
             System.out.println("해당 과목을 찾을 수 없습니다.");
@@ -61,7 +59,7 @@ public class verify_utilitySet {
         System.out.println("강의 코드: " + subject.getCourseCode());
     }
 
-    public static void verifyTimetable(int year, int semester) {
+    public void verifyTimetable(int year, int semester) {
         Timetable timetable = TimetableManager.getTimetable(year, semester);
 
         if (timetable == null) {
@@ -108,13 +106,13 @@ public class verify_utilitySet {
         }
     }
 
-    private static int convertTimeToPeriod(int hour) {
+    private int convertTimeToPeriod(int hour) {
         // 간단히 시간대별 교시 매칭
         // 9시 -> 1교시, 10시 -> 2교시, 11시 -> 3교시... 가정
         return hour - 9;
     }
 
-    private static int dayToIndex(String day) {
+    private int dayToIndex(String day) {
         switch (day) {
             case "월": return 0;
             case "화": return 1;
