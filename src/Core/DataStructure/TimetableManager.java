@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class TimetableManager {
-    public static HashSet<Timetable> timetableSets;
-    public static List<Timetable> timetableList;
+    public static HashSet<Timetable> timetableSets = new HashSet<>();
+    public static List<Timetable> timetableList = new java.util.ArrayList<>();
     public static Timetable presentTimetable;
     /**
      * TimeTableManager에 시간표를 추가하는 메소드입니다.

@@ -37,7 +37,7 @@ public class calc_utilitySet {
                         System.out.println("잘못된 calc term 명령 형식입니다.");
                         return;
                     }
-                    if (tokens[2].matches("\\d") || tokens[3].matches("\\d")) {
+                    if (!(tokens[2].matches("\\d") && tokens[3].matches("\\d"))) {
                         System.out.println("인자가 올바르지 않습니다.");
                         return;
                     }

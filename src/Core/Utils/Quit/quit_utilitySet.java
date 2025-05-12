@@ -21,7 +21,7 @@ public class quit_utilitySet {
     }
 
     private void pushSubjectFileToDatabase() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/subject.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/subject.txt"))) {
             for (Subject subject : subjectManager.subjectList) {
                 writer.write(subject.toSave());
                 writer.newLine();
@@ -34,7 +34,7 @@ public class quit_utilitySet {
     }
 
     private void pushTimetableFileToDatabase() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/timetable.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/timetable.txt"))) {
             for (Timetable timetable : TimetableManager.timetableList) {
                 writer.write(timetable.getYear() + " " + timetable.getSemester());
                 writer.newLine();

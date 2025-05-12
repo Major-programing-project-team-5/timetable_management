@@ -46,12 +46,12 @@ public class Timetable {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Timetable timetable = (Timetable) object;
-        return semester == timetable.semester && year == timetable.year;
+        return this.year == timetable.year && this.semester == timetable.semester;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(semester, year);
+        return Objects.hash(year, semester);
     }
 
     @Override
