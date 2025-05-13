@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class add_promptSet {
+public class AddManager{
     public void addMain(String args) {
         String[] tokens = args.split("\\s+");
         Select_add_prompt(tokens);
