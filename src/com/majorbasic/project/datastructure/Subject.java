@@ -122,7 +122,7 @@ public class Subject {
      * @param subjectCode 과목코드
      */
     public Subject(String subjectName, String[] subjectDayTime, String subjectCode) {
-        this.subjectDayTime = subjectDayTime;
+        setSubjectDayTimes(subjectDayTime);
         this.subjectName = subjectName;
         this.subjectCode = subjectCode;
         this.credit = -1;

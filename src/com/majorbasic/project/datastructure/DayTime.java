@@ -23,6 +23,11 @@ public class DayTime {
     }
 
     @Override
+    public String toString() {
+        return day + "," + StartTimeHour + ":" + StartTimeMin + "~" + EndTimeHour + ":" + EndTimeMin;
+    }
+
+    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;

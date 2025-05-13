@@ -1,10 +1,7 @@
 package com.majorbasic.project.utils;
 
-import com.majorbasic.project.datastructure.*;
-
-import javax.xml.stream.events.StartElement;
 import java.util.Arrays;
-
+import com.majorbasic.project.datastructure.*;
 import static com.majorbasic.project.utils.Util.*;
 
 public class VerifyManager {
