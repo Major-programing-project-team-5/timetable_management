@@ -1,9 +1,9 @@
 package com.majorbasic.project.utils;
 
 import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.SubjectManager;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.SubjectManager;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -23,7 +23,7 @@ public class QuitManager {
     }
 
     private void pushSubjectFileToDatabase() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/subject.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/subject.txt"))) {
             for (Subject subject : SubjectManager.subjectList) {
                 writer.write(subject.toSave());
                 writer.newLine();
@@ -36,7 +36,7 @@ public class QuitManager {
     }
 
     private void pushTimetableFileToDatabase() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/timetable.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/timetable.txt"))) {
             for (Timetable timetable : TimetableManager.timetableList) {
                 writer.write(timetable.getYear() + " " + timetable.getSemester());
                 writer.newLine();

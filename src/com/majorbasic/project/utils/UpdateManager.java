@@ -1,16 +1,15 @@
 package com.majorbasic.project.utils;
 
+import com.majorbasic.project.datastructure.Graduation;
 import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.SubjectManager;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.Graduation;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.*;
-
-import static com.majorbasic.project.utils.Util.dayTimeArr;
 
 public class UpdateManager {
 
@@ -28,16 +27,17 @@ public class UpdateManager {
     }
 
     public void updateAll(){
+
         System.out.println("데이터 업데이트를 시도합니다.");
-        updateSubjectManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\com\\majorbasic\\project\\resources\\subject.txt");
-        updateTimetableManager("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\com\\majorbasic\\project\\resources\\timetable.txt");
-        updateGraduate("C:\\Users\\rlawh\\IdeaProjects\\asdf\\src\\com\\majorbasic\\project\\resources\\graduate.txt");
+        updateSubjectManager("src/resources/subject.txt");
+        updateTimetableManager("src/resources/timetable.txt");
+        updateGraduate("src/resources/graduate.txt");
         System.out.println("데이터 업데이트를 완료하였습니다.");
     }
 
     /**
      * subjectManager을 만들어서 리턴합니다.
-     * @param filePath 파일주소 이름
+     * @param filePath 저장파일 위치
      */
     public void updateSubjectManager(String filePath) {
 
@@ -52,18 +52,31 @@ public class UpdateManager {
 
             while ((line = br.readLine()) != null) {
                 String[] tuples = line.split(" ");
-                String[] day = dayTimeArr(tuples);
+
+                String subjectName = tuples[0];
+                String[] subjectDayTime = Util.dayTimeArr(tuples);
+                String subjectCode = tuples[3];
+                int credit = Integer.parseInt(tuples[4]);
+                String category = tuples[5];
+                String courseCode = tuples[6];
+                String lectureRoom = tuples[7];
+
+                // 선수 과목 처리
+                List<String> previousSubjects = null;
+                if (tuples.length > 8) {
+                    previousSubjects = Arrays.asList(tuples[7].split(","));
+                }
 
                 // Subject 객체 생성
                 Subject subject = new Subject(
-                        tuples[0],                      //subjectName
-                        day,                 //subjectDayTime
-                        tuples[3],                      //subjectCode
-                        Integer.parseInt(tuples[4]),    //credit
-                        tuples[5],                      //category
-                        tuples[6],                      //courseCode
-                        tuples[7],                      //lectureRoom
-                        Arrays.asList(tuples[7].split(",")) //previousSubjectCodes
+                        subjectName,
+                        subjectDayTime,
+                        subjectCode,
+                        credit,
+                        category,
+                        courseCode,
+                        lectureRoom,
+                        previousSubjects
                 );
 
                 // subjectManager에 과목 추가
@@ -80,6 +93,13 @@ public class UpdateManager {
     public void updateTimetableManager(String filePath) {
 
         try {
+            // 파일 존재 여부 확인
+            File file = new File(filePath);
+            if (!file.exists()) {
+                System.out.println("파일이 존재하지 않습니다: " + filePath);
+                return;
+            }
+
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             TimetableManager.timetableSets = new HashSet<>();
             TimetableManager.timetableList = new ArrayList<>();
@@ -88,6 +108,7 @@ public class UpdateManager {
             while ((line = br.readLine()) != null) {
 
                 String[] tokens = line.split(" ");
+                System.out.println("연도: " + tokens[0] + ", 학기: " + tokens[1]);  // 디버깅 로그 추가
                 int year = Integer.parseInt(tokens[0]);
                 int semester = Integer.parseInt(tokens[1]);
                 ArrayList<Subject> subjects = new ArrayList<>();
@@ -97,6 +118,7 @@ public class UpdateManager {
                     String[] tuples = line.split(" ");
                     Subject subject = SubjectManager.findSubject(tuples);
                     if(subject == null) {
+                        System.out.println("과목을 찾을 수 없음: " + Arrays.toString(tuples));
                         continue;
                     }
                     subjects.add(subject);
@@ -106,10 +128,10 @@ public class UpdateManager {
                 TimetableManager.addTimeTabletoManager(timetable);
                 System.out.println(timetable);
             }
-            TimetableManager.presentTimetable = TimetableManager.timetableList.get(0);
             br.close();
         } catch (Exception e) {
-            System.out.println("updateTimetableManager 에러 : " + e.getMessage());
+//            System.out.println("updateTimetableManager 에러 : " + e.getMessage());
+            e.printStackTrace();
             System.out.println("시간표 데이터 파일을 업데이트 할 수 없습니다.");
         }
     }
