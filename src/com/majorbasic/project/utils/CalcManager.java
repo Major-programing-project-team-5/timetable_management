@@ -29,7 +29,7 @@ public class CalcManager {
                         System.out.println("잘못된 calc term 명령 형식입니다.");
                         return;
                     }
-                    if (tokens[2].matches("\\d") || tokens[3].matches("\\d")) {
+                    if (!(tokens[2].matches("\\d") && tokens[3].matches("\\d"))) {
                         System.out.println("인자가 올바르지 않습니다.");
                         return;
                     }
@@ -63,22 +63,6 @@ public class CalcManager {
         // 총 학점 출력
         System.out.println("전체 이수 학점: " + totalCredits);
     }
-
-//    // 2. 이수한 학기의 총 credit을 계산
-//    private static int getCreditFromDatabase(String subjectName) {
-//        try (BufferedReader reader = new BufferedReader(new FileReader(DB_PATH))) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                String[] tokens = line.split(" ");
-//                if (tokens.length >= 5 && tokens[0].equals(subjectName)) {
-//                    return Integer.parseInt(tokens[4]); // 5번째 요소가 학점
-//                }
-//            }
-//        } catch (IOException e) {
-//            System.out.println("데이터베이스 읽기 오류: " + e.getMessage());
-//        }
-//        return 0;
-//    } --> findSubject 사용하면서 불필요해짐.
 
     // 2. 특정 학기의 학점 계산
     public void calculateTermCredits(int year, int semester) {

@@ -135,15 +135,24 @@ public class Subject {
     }
 
     public String toSave() {
-        if (subjectDayTime.length < 2) {
-            return subjectName + " " + subjectDayTime[0].charAt(0) + " " + subjectDayTime[0].split(",")[1] + " " +
-                    subjectCode + " " + credit + " " + category + " " + courseCode + " " + lectureRoom;
+        StringBuilder dayBuilder = new StringBuilder();
+        StringBuilder timeBuilder = new StringBuilder();
+
+        for (int i = 0; i < subjectDayTime.length; i++) {
+            String[] parts = subjectDayTime[i].split(",", 2);
+            if (parts.length == 2) {
+                dayBuilder.append(parts[0]);
+                timeBuilder.append(parts[1]);
+                if (i != subjectDayTime.length - 1) {
+                    dayBuilder.append(",");
+                    timeBuilder.append(",");
+                }
+            }
         }
-        else {
-            return subjectName + " " + subjectDayTime[0].charAt(0) + "," + subjectDayTime[1].charAt(0) + " " + subjectDayTime[0].split(",")[1] + "," + subjectDayTime[1].split(",")[1] + " " +
-                    subjectCode + " " + credit + " " + category + " " + courseCode + " " + lectureRoom;
-        }
+
+        return subjectName + " " + dayBuilder + " " + timeBuilder + " " + subjectCode + " " + credit + " " + category + " " + courseCode + " " + lectureRoom;
     }
+
 
     public String toTable() {
         if (subjectDayTime.length < 2) {

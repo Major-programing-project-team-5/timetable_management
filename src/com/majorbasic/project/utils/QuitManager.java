@@ -1,15 +1,13 @@
-package com.majorbasic.project.utils;
+package Core.Utils.Quit;
 
-import com.majorbasic.project.datastructure.Subject;
-import com.majorbasic.project.datastructure.Timetable;
-import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.SubjectManager;
+import Core.DataStructure.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
-public class QuitManager {
+public class quit_utilitySet {
     public void quit() {
         uploadAllFileToDatabase();
         System.out.println("프로그램을 종료합니다.");
@@ -23,8 +21,8 @@ public class QuitManager {
     }
 
     private void pushSubjectFileToDatabase() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/subject.txt"))) {
-            for (Subject subject : SubjectManager.subjectList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/subject.txt"))) {
+            for (Subject subject : subjectManager.subjectList) {
                 writer.write(subject.toSave());
                 writer.newLine();
             }
@@ -36,7 +34,7 @@ public class QuitManager {
     }
 
     private void pushTimetableFileToDatabase() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/timetable.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/timetable.txt"))) {
             for (Timetable timetable : TimetableManager.timetableList) {
                 writer.write(timetable.getYear() + " " + timetable.getSemester());
                 writer.newLine();
