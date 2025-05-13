@@ -1,11 +1,9 @@
-package Core.Utils.Update;
+package com.majorbasic.project.utils;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.subjectManager;
-import Core.DataStructure.Timetable;
-import Core.DataStructure.TimetableManager;
-import Core.DataStructure.Graduation;
-import Core.Utils.findSubjectClass;
+import com.majorbasic.project.*;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.SubjectManager;
+import com.majorbasic.project.datastructure.TimetableManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,9 +44,9 @@ public class UpdateManager {
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
-            subjectManager.subjectSets = new HashSet<>();
-            subjectManager.subjectList = new ArrayList<>();
-            subjectManager.subjectSets_fineNameUseCode = new HashMap<>();
+            SubjectManager.subjectSets = new HashSet<>();
+            SubjectManager.subjectList = new ArrayList<>();
+            SubjectManager.subjectSets_fineNameUseCode = new HashMap<>();
 
             String line;
 
@@ -98,7 +96,7 @@ public class UpdateManager {
                 );
 
                 // subjectManager에 과목 추가
-                subjectManager.addSubjectToManager(subject);
+                SubjectManager.addSubjectToManager(subject);
             }
             br.close();
         } catch (Exception e) {

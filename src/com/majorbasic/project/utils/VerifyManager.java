@@ -1,23 +1,26 @@
 package com.majorbasic.project.utils;
 
-import com.majorbasic.project.datastructure.Subject;
-import com.majorbasic.project.datastructure.Timetable;
-import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.SubjectManager;
+import com.majorbasic.project.datastructure.*;
 
+import javax.xml.stream.events.StartElement;
 import java.util.Arrays;
 
 import static com.majorbasic.project.utils.Util.*;
 
 public class VerifyManager {
 
+
+    /**
+     * 입력값 받는 부분
+     * @param input 입력값
+     */
     public void verifyMain(String input) {
         try {
             String[] tokens = input.split("\\s+");
 
             if (tokens.length == 1) {
                 if (TimetableManager.presentTimetable == null) {
-                    System.out.println("현재 대상으로 지정된 시간표가 없습니다.");
+                    System.out.println("현재 확인 대상으로 지목된 시간표가 없습니다");
                     return;
                 }
                 Timetable table = TimetableManager.presentTimetable;
@@ -26,6 +29,7 @@ public class VerifyManager {
                 String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
                 verifySubject(output);
             } else if (tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])) {
+                //2차때는 테스트 관련 데이터 넣어줘야 함.
                 if(!TimetableManager.isTimetableCorrect(tokens[1], tokens[2])) {
                     return;
                 }
@@ -53,10 +57,10 @@ public class VerifyManager {
             System.out.println("  " + dayTime);
         }
         System.out.println("과목 코드: " + subject.getSubjectCode());
+        System.out.println("학수번호: " + subject.getCourseCode());
         System.out.println("학점: " + subject.getCredit());
-        System.out.println("구분: " + subject.getCategory());
+        System.out.println("이수 구분: " + subject.getCategory());
         System.out.println("강의실: " + subject.getLectureRoom());
-        System.out.println("강의 코드: " + subject.getCourseCode());
     }
 
     public void verifyTimetable(int year, int semester) {
@@ -67,50 +71,54 @@ public class VerifyManager {
             return;
         }
 
-        boolean[][] timetableArray = new boolean[5][15]; // 월(0)~금(4), 1~15교시
+        boolean[][] timetableArray = new boolean[5][22]; // 월(0)~금(4), 9 : 00 ~ 20:00까지. 30분 단위.
 
         for (Subject subject : timetable.getSubjects()) {
-            for (String dayTime : subject.getSubjectDayTime()) {
-                String[] parts = dayTime.split(",");
-                if (parts.length != 2) continue;
-
-                String day = parts[0];
-                String[] timeParts = parts[1].split("~");
-                int startTime = Integer.parseInt(timeParts[0].split(":")[0]);
-                int endTime = Integer.parseInt(timeParts[1].split(":")[0]);
-
-                int startPeriod = convertTimeToPeriod(startTime);
-                int endPeriod = convertTimeToPeriod(endTime);
-
-                int dayIndex = dayToIndex(day);
-
+            for (DayTime dayTime : subject.getSubjectDayTimes()) {
+                if (dayTime == null) continue;
+                int dayIndex = dayToIndex(dayTime.day);
                 if (dayIndex != -1) {
-                    for (int i = startPeriod; i < endPeriod; i++) {
-                        if (i >= 0 && i < 15) {
-                            timetableArray[dayIndex][i] = true;
+                    for (int i = dayTime.StartTimeHour; i < dayTime.EndTimeHour; i=i+2) {
+                        if (i >= 9 && i < 20) {
+                            //0 ~ 11
+                            if(dayTime.StartTimeMin == 30 && i == dayTime.StartTimeHour){
+                                timetableArray[dayIndex][i-8] = true;
+                            }
+                            else{
+                                timetableArray[dayIndex][i-9] = true;
+                                timetableArray[dayIndex][i-8] = true;
+                                //두 칸 연속으로 true 박히도록
+                            }
+                            if(dayTime.EndTimeMin == 30 && i == dayTime.EndTimeHour - 1){
+                                timetableArray[dayIndex][i-7] = true;
+                            }
                         }
                     }
+
                 }
             }
         }
 
         // 출력
         System.out.println("==== 시간표 (" + year + "년 " + semester + "학기) ====");
-        System.out.print("교시\\요일\t월\t화\t수\t목\t금\n");
-        for (int period = 0; period < 15; period++) {
-            System.out.print((period + 1) + "교시\t");
+        System.out.print("시간\\요일\t월\t화\t수\t목\t금\n");
+        int i = 0;
+        for (int period = 0; period < 22; period = period + 2) {
+            System.out.print((period + 9 - i) + "시\t");
             for (int day = 0; day < 5; day++) {
                 System.out.print((timetableArray[day][period] ? "●" : "○") + "\t");
             }
+            System.out.print((period + 9 - i) + "시 30분\t");
+            for (int day = 0; day < 5; day++) {
+                System.out.print((timetableArray[day][period] ? "●" : "○") + "\t");
+            }
+
             System.out.println();
+            i++;
         }
     }
 
-    private int convertTimeToPeriod(int hour) {
-        // 간단히 시간대별 교시 매칭
-        // 9시 -> 1교시, 10시 -> 2교시, 11시 -> 3교시... 가정
-        return hour - 9;
-    }
+
 
     private int dayToIndex(String day) {
         switch (day) {

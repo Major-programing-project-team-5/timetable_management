@@ -1,13 +1,15 @@
-package Core.Utils.Quit;
+package com.majorbasic.project.utils;
 
-import Core.DataStructure.*;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.SubjectManager;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
-public class quit_utilitySet {
+public class QuitManager {
     public void quit() {
         uploadAllFileToDatabase();
         System.out.println("프로그램을 종료합니다.");
@@ -22,7 +24,7 @@ public class quit_utilitySet {
 
     private void pushSubjectFileToDatabase() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/subject.txt"))) {
-            for (Subject subject : subjectManager.subjectList) {
+            for (Subject subject : SubjectManager.subjectList) {
                 writer.write(subject.toSave());
                 writer.newLine();
             }

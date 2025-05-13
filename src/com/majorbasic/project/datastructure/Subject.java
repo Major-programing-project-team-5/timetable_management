@@ -15,6 +15,8 @@ public class Subject {
    만약 요일별로 수업 시간이 다를 시에는 월,화 13:00~15:00,17:00~18:00으로 입력받음.
      */
 
+    private DayTime[] subjectDayTimes;
+
     private String subjectCode; // 과목코드
 
     private int credit;// 학점
@@ -62,6 +64,7 @@ public class Subject {
                    List<String> previousSubjectCodes) {
         this.subjectName = subjectName;
         this.subjectDayTime = subjectDayTime;
+        setSubjectDayTimes(subjectDayTime);
         this.subjectCode = subjectCode;
         this.credit = credit;
         this.category = category;
@@ -76,6 +79,29 @@ public class Subject {
                 }
             }
         }
+    }
+
+    public void setSubjectDayTimes(String[] dayTimes){
+        String[] days = dayTimes[0].split(",");
+        String[] times = dayTimes[1].split(",");
+        if(days.length == 2){
+            DayTime temp1;
+            DayTime temp2;
+            if(times.length == 2){
+                temp1 = new DayTime(days[0], times[0]);
+                temp2 = new DayTime(days[1], times[1]);
+            }else{
+                temp1 = new DayTime(days[0], times[0]);
+                temp2 = new DayTime(days[1], times[0]);
+            }
+            this.subjectDayTimes = new DayTime[]{temp1, temp2};
+        }else if(days.length == 1){
+           this.subjectDayTimes = new DayTime[]{new DayTime(days[0], times[0])};
+        }
+
+    }
+    public DayTime[] getSubjectDayTimes(){
+        return subjectDayTimes;
     }
 
     /**
