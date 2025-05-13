@@ -1,8 +1,9 @@
 package com.majorbasic.project.utils;
 
-import com.majorbasic.project.*;
+import com.majorbasic.project.datastructure.Graduation;
 import com.majorbasic.project.datastructure.Subject;
 import com.majorbasic.project.datastructure.SubjectManager;
+import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
 
 import java.io.BufferedReader;
@@ -36,8 +37,7 @@ public class UpdateManager {
 
     /**
      * subjectManager을 만들어서 리턴합니다.
-     * @param filePath
-     * @return
+     * @param filePath 저장파일 위치
      */
     public void updateSubjectManager(String filePath) {
 
@@ -54,23 +54,7 @@ public class UpdateManager {
                 String[] tuples = line.split(" ");
 
                 String subjectName = tuples[0];
-                String[] subjectDayTime = null;
-                String[] day = tuples[1].split(",");
-                String[] time = tuples[2].split(",");
-                if(day.length == 2){
-                    if(time.length == 2){
-                        day[0] = day[0] + ","  + time[0];
-                        day[1] = day[1] + "," + time[1];
-                    }
-                    else{
-                        day[0] = day[0] + ","  + time[0];
-                        day[1] = day[1] + "," + time[0];
-                    }
-                }else{
-                    day[0] = day[0] + ","  + time[0];
-                }
-                subjectDayTime = day;
-
+                String[] subjectDayTime = Util.dayTimeArr(tuples);
                 String subjectCode = tuples[3];
                 int credit = Integer.parseInt(tuples[4]);
                 String category = tuples[5];
@@ -132,7 +116,7 @@ public class UpdateManager {
                 for(int i = 0; i < subjectAmount; i++){
                     line = br.readLine();
                     String[] tuples = line.split(" ");
-                    Subject subject = findSubjectClass.findSubject(tuples);
+                    Subject subject = SubjectManager.findSubject(tuples);
                     if(subject == null) {
                         System.out.println("과목을 찾을 수 없음: " + Arrays.toString(tuples));
                         continue;
@@ -142,7 +126,7 @@ public class UpdateManager {
 
                 Timetable timetable = new Timetable(year, semester, subjects);
                 TimetableManager.addTimeTabletoManager(timetable);
-                System.out.println(timetable.toString());
+                System.out.println(timetable);
             }
             br.close();
         } catch (Exception e) {

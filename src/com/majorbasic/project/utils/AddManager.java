@@ -1,16 +1,15 @@
-package Core.Utils.Add;
+package com.majorbasic.project.utils;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.Timetable;
-import Core.DataStructure.TimetableManager;
-import Core.DataStructure.subjectManager;
-import Core.Utils.findSubjectClass;
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
+import com.majorbasic.project.datastructure.SubjectManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class add_promptSet {
+public class AddManager {
     public void addMain(String args) {
         String[] tokens = args.split("\\s+");
         Select_add_prompt(tokens);
@@ -62,7 +61,7 @@ public class add_promptSet {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
         } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e.toString());
+            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e);
         }
     }
 
@@ -97,14 +96,14 @@ public class add_promptSet {
     }
 
     public void print_add_course_current(String[] tuples) {
-        Subject temp = findSubjectClass.findSubject(tuples);
+        Subject temp = SubjectManager.findSubject(tuples);
         if (temp == null) {
             System.out.println("잘못된 과목 튜플 입력입니다.");
         } else if (isTimeConflicted(temp, TimetableManager.presentTimetable)) {
             System.out.println("겹치는 강의가 있습니다.");
         } else {
             TimetableManager.presentTimetable.addSubject(temp);
-            System.out.println("[ 과목 '" + temp.toString() + "'가 현재 시간표에 추가되었습니다.]");
+            System.out.println("[ 과목 '" + temp + "'가 현재 시간표에 추가되었습니다.]");
         }
     }
 
@@ -150,7 +149,7 @@ public class add_promptSet {
                 previousSubjectCode.isEmpty() ? null : previousSubjectCode
         );
 
-        boolean success = subjectManager.addSubjectToManager(subject);
+        boolean success = SubjectManager.addSubjectToManager(subject);
         if (success) {
             System.out.println("과목이 데이터베이스에 추가되었습니다.");
         } else {
@@ -160,7 +159,7 @@ public class add_promptSet {
 
     // 확인
     public void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
-        Subject temp = findSubjectClass.findSubject(lectureInfo);
+        Subject temp = SubjectManager.findSubject(lectureInfo);
         if (temp == null) {
             System.out.println("Subject가 없습니다.");
         }
@@ -172,15 +171,13 @@ public class add_promptSet {
 
         if(table == null){
             System.out.println("존재하지 않는 시간표입니다.");
-            return;
         } else if(temp == null){
             System.out.println("잘못된 과목 튜플 입력입니다.");
-            return;
         } else if (isTimeConflicted(temp, table)) {
             System.out.println("겹치는 강의가 있습니다.");
         } else {
             table.addSubject(temp);
-            System.out.println("[ 과목 '" + temp.toString() + "'가 시간표에 추가되었습니다.]");
+            System.out.println("[ 과목 '" + temp + "'가 시간표에 추가되었습니다.]");
         }
 
     }
