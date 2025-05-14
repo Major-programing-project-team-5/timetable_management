@@ -1,10 +1,10 @@
-package Core.Utils.Add;
+package com.majorbasic.project.utils;
 
-import Core.DataStructure.Subject;
-import Core.DataStructure.Timetable;
-import Core.DataStructure.TimetableManager;
-import Core.DataStructure.subjectManager;
-import Core.Utils.findSubjectClass;
+
+import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.SubjectManager;
+import com.majorbasic.project.datastructure.Timetable;
+import com.majorbasic.project.datastructure.TimetableManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,7 +97,7 @@ public class AddManager{
     }
 
     public void print_add_course_current(String[] tuples) {
-        Subject temp = findSubjectClass.findSubject(tuples);
+        Subject temp = SubjectManager.findSubject(tuples);
         if (temp == null) {
             System.out.println("잘못된 과목 튜플 입력입니다.");
         } else if (isTimeConflicted(temp, TimetableManager.presentTimetable)) {
@@ -150,7 +150,7 @@ public class AddManager{
                 previousSubjectCode.isEmpty() ? null : previousSubjectCode
         );
 
-        boolean success = subjectManager.addSubjectToManager(subject);
+        boolean success = SubjectManager.addSubjectToManager(subject);
         if (success) {
             System.out.println("과목이 데이터베이스에 추가되었습니다.");
         } else {
@@ -160,7 +160,7 @@ public class AddManager{
 
     // 확인
     public void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
-        Subject temp = findSubjectClass.findSubject(lectureInfo);
+        Subject temp = SubjectManager.findSubject(lectureInfo);
         if (temp == null) {
             System.out.println("Subject가 없습니다.");
         }
