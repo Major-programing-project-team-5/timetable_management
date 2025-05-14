@@ -29,9 +29,9 @@ public class UpdateManager {
     public void updateAll(){
 
         System.out.println("데이터 업데이트를 시도합니다.");
-        updateSubjectManager("src/resources/subject.txt");
-        updateTimetableManager("src/resources/timetable.txt");
-        updateGraduate("src/resources/graduate.txt");
+        updateSubjectManager("src/com/majorbasic/project/resources/subject.txt");
+        updateTimetableManager("src/com/majorbasic/project/resources/timetable.txt");
+        updateGraduate("src/com/majorbasic/project/resources/graduate.txt");
         System.out.println("데이터 업데이트를 완료하였습니다.");
     }
 
@@ -54,7 +54,7 @@ public class UpdateManager {
                 String[] tuples = line.split(" ");
 
                 String subjectName = tuples[0];
-                String[] subjectDayTime = Util.dayTimeArr(tuples);
+                String[] subjectDayTime = new String[]{tuples[1], tuples[2]};
                 String subjectCode = tuples[3];
                 int credit = Integer.parseInt(tuples[4]);
                 String category = tuples[5];
@@ -83,6 +83,9 @@ public class UpdateManager {
                 SubjectManager.addSubjectToManager(subject);
             }
             br.close();
+            ///---------디버깅용 코드-----------
+            System.out.println(SubjectManager.getAllSubjectInfo());
+            ///-------------------------
         } catch (Exception e) {
             System.out.println("updateSubjectManager 에러 : " + e.getMessage());
             System.out.println("과목 데이터 파일을 업데이트 할 수 없습니다.");
@@ -106,7 +109,6 @@ public class UpdateManager {
 
             String line;
             while ((line = br.readLine()) != null) {
-
                 String[] tokens = line.split(" ");
                 System.out.println("연도: " + tokens[0] + ", 학기: " + tokens[1]);  // 디버깅 로그 추가
                 int year = Integer.parseInt(tokens[0]);

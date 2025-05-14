@@ -71,28 +71,34 @@ public class VerifyManager {
         boolean[][] timetableArray = new boolean[5][22]; // 월(0)~금(4), 9 : 00 ~ 20:00까지. 30분 단위.
 
         for (Subject subject : timetable.getSubjects()) {
+
             for (DayTime dayTime : subject.getSubjectDayTimes()) {
                 if (dayTime == null) continue;
                 int dayIndex = dayToIndex(dayTime.day);
                 if (dayIndex != -1) {
-                    for (int i = dayTime.StartTimeHour; i < dayTime.EndTimeHour; i=i+2) {
+                    for (int i = dayTime.StartTimeHour, j = (i-9); i < dayTime.EndTimeHour; i++) {
+                        //아래에 이상한 숫자 더하는 과정은 index는 0~22인데 시간 표기는 9~20인 문제 해결 위함.
                         if (i >= 9 && i < 20) {
                             //0 ~ 11
                             if(dayTime.StartTimeMin == 30 && i == dayTime.StartTimeHour){
-                                timetableArray[dayIndex][i-8] = true;
+                                timetableArray[dayIndex][i-8 + j] = true;
                             }
                             else{
-                                timetableArray[dayIndex][i-9] = true;
-                                timetableArray[dayIndex][i-8] = true;
+                                timetableArray[dayIndex][i-9 + j] = true;
+                                timetableArray[dayIndex][i-8 + j] = true;
+                                timetableArray[dayIndex][i-7 + j] = true;
                                 //두 칸 연속으로 true 박히도록
                             }
                             if(dayTime.EndTimeMin == 30 && i == dayTime.EndTimeHour - 1){
-                                timetableArray[dayIndex][i-7] = true;
+                                timetableArray[dayIndex][i-8 + j] = true;
                             }
                         }
+                        j++;
+
                     }
 
                 }
+
             }
         }
 
@@ -101,13 +107,14 @@ public class VerifyManager {
         System.out.print("시간\\요일\t월\t화\t수\t목\t금\n");
         int i = 0;
         for (int period = 0; period < 22; period = period + 2) {
-            System.out.print((period + 9 - i) + "시\t");
+            System.out.print((period + 9 - i) + "시 \t\t");
             for (int day = 0; day < 5; day++) {
                 System.out.print((timetableArray[day][period] ? "●" : "○") + "\t");
             }
-            System.out.print((period + 9 - i) + "시 30분\t");
+            System.out.println();
+            System.out.print((period + 9 - i) + "시 30분 \t");
             for (int day = 0; day < 5; day++) {
-                System.out.print((timetableArray[day][period] ? "●" : "○") + "\t");
+                System.out.print((timetableArray[day][period+1] ? "●" : "○") + "\t");
             }
 
             System.out.println();
