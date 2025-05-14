@@ -40,16 +40,24 @@ public class RemoveManager {
                 if (tokens[2].equals("all")) { //subject 다음의 인자가 all 인 경우
                     removeAllSubjectToTimetable(TimetableManager.presentTimetable);
                 } else if (tokens[tokens.length - 1].equals("database")) { //subject 다음, 마지막 인자가 database 인 경우
-                    //@@@@@원래 tokens[-1].equals("database")이었는데 명확한 표현을 위해 tokens.length - 1로 수정함
                     Subject token = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
                     removeSubjectToDatabase(token);
                 } else { //나머지 경우(subject 다음, 일반적인 과목 튜플이 들어온 경우), 이 경우에서의 잘못된 입력은 일단 findSubject 에서 다루게 함
-                    //@@@@@원래 tokens[1].equals("subject") && tokens.length > 5라는 조건이나 > 5라는 조건이 불명확해 보여 subject 인자를 다루는 if문 내에서 else 로 바꿈
+                    //@@@@@원래 tokens[1].equals("subject") && tokens.length > 5라는 조건이었으나, > 5라는 조건이 불명확해 보여 subject 인자를 다루는 if문 내에서 else 로 바꿈
                     Subject token = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length - 1));
                     removeSubjectToTimetable(token, TimetableManager.presentTimetable);
                 }
-            } else if (tokens[1].matches("\\d") && tokens[2].matches("\\d")) { //remove 다음의 인자가 학년, 학기인 경우
+            } else if (tokens[1].matches("\\d+") && tokens[2].matches("\\d")) { //remove 다음의 인자가 연도, 학기인 경우
                 Timetable timetable = TimetableManager.getTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+
+                if(Integer.parseInt(tokens[1]) < 1931 || Integer.parseInt((tokens[1])) > 2025){
+                    System.out.println("올바른 연도 입력이 아닙니다.");
+                    return;
+                }
+                if(Integer.parseInt(tokens[2]) < 1 || Integer.parseInt(tokens[2]) > 4){
+                    System.out.println("올바른 학기 입력이 아닙니다.");
+                    return;
+                } // (일단 임시, 나중에 Timetable 쪽에 기능 이전해도 좋을 것 같음)연도/학기 입력이 유효한지 체크
 
                 /*
                 if (tokens[3].equals("subject") && tokens[4].equals("all")) {
@@ -60,19 +68,19 @@ public class RemoveManager {
                 }
                 */ //@@@@@subject 인자 검사를 상위 if 문으로 통일하여 아래의 코드로 수정함
 
-                if (tokens[3].equals("subject")) {
-                    if (tokens[4].equals("all")) {
+                if (tokens[3].equals("subject")) { //연도, 학기 다음의 인자가 subject 인 경우
+                    if (tokens[4].equals("all")) { //subject all 의 경우
                         removeAllSubjectToTimetable(timetable);
-                    } else {
+                    } else { //subject <과목 튜플> 의 경우
                         Subject token = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length - 1));
                         removeSubjectToTimetable(token, timetable);
                     }
-                } else if (tokens[3].equals("timetable")) {
+                } else if (tokens[3].equals("timetable")) { //연도, 학기 다음의 인자가 timetable 인 경우
                     removeTimetableToManager(timetable);
-                } else {
+                } else { //연도, 학기 다음의 인자가 비정상적인 경우
                     System.out.println("인자가 올바르지 않습니다.");
                 }
-            } else {
+            } else { //remove 다음의 인자가 비정상적인 경우
                 System.out.println("인자가 올바르지 않습니다.");
             }
         } catch (Exception e) {
