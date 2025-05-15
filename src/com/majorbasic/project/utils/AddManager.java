@@ -1,15 +1,16 @@
 package com.majorbasic.project.utils;
 
+
 import com.majorbasic.project.datastructure.Subject;
+import com.majorbasic.project.datastructure.SubjectManager;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
-import com.majorbasic.project.datastructure.SubjectManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AddManager {
+public class AddManager{
     public void addMain(String args) {
         String[] tokens = args.split("\\s+");
         Select_add_prompt(tokens);
@@ -61,7 +62,7 @@ public class AddManager {
                 System.out.println("잘못된 add 명령 형식입니다.");
             }
         } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e);
+            System.out.println("명령어 처리 중 오류가 발생했습니다 " + e.toString());
         }
     }
 
@@ -103,7 +104,7 @@ public class AddManager {
             System.out.println("겹치는 강의가 있습니다.");
         } else {
             TimetableManager.presentTimetable.addSubject(temp);
-            System.out.println("[ 과목 '" + temp + "'가 현재 시간표에 추가되었습니다.]");
+            System.out.println("[ 과목 '" + temp.toString() + "'가 현재 시간표에 추가되었습니다.]");
         }
     }
 
@@ -171,13 +172,15 @@ public class AddManager {
 
         if(table == null){
             System.out.println("존재하지 않는 시간표입니다.");
+            return;
         } else if(temp == null){
             System.out.println("잘못된 과목 튜플 입력입니다.");
+            return;
         } else if (isTimeConflicted(temp, table)) {
             System.out.println("겹치는 강의가 있습니다.");
         } else {
             table.addSubject(temp);
-            System.out.println("[ 과목 '" + temp + "'가 시간표에 추가되었습니다.]");
+            System.out.println("[ 과목 '" + temp.toString() + "'가 시간표에 추가되었습니다.]");
         }
 
     }

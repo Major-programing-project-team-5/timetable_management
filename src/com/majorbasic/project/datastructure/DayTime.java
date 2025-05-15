@@ -27,6 +27,7 @@ public class DayTime {
         return day + "," + StartTimeHour + ":" + StartTimeMin + "~" + EndTimeHour + ":" + EndTimeMin;
     }
 
+    //여기도 비슷합니다.
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

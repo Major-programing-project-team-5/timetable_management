@@ -196,16 +196,21 @@ public class Subject {
         return "[" + subjectCode + "] " + subjectName + " (" + credit + "학점, " + category + ")";
     }
 
+    /**
+     * equals는 1차 구현물 때의 버전을 따릅니다 -> 과목명, 시간, 과목 코드.
+     * @param object
+     * @return
+     */
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Subject subject = (Subject) object;
-        return Objects.equals(subjectName, subject.subjectName) && Objects.deepEquals(subjectDayTime, subject.subjectDayTime) && Objects.equals(subjectCode, subject.subjectCode);
+        return Objects.equals(subjectName, subject.subjectName) && Objects.deepEquals(subjectDayTimes, subject.subjectDayTimes) && Objects.equals(subjectCode, subject.subjectCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subjectName, Arrays.hashCode(subjectDayTime), subjectCode);
+        return Objects.hash(subjectName, Arrays.hashCode(subjectDayTimes), subjectCode);
     }
 }

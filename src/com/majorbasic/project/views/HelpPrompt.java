@@ -108,27 +108,27 @@ public class HelpPrompt {
         System.out.println("유의사항");
         System.out.println("- 만약 프로그램의 데이터에 오류가 생겼을 경우 초기 파일로 복구 후 종료하게 됩니다.");
     }
-    private void helpAdd() {
+    private void helpAdd() { //학년 -> 연도에 맞춰 프롬프트 수정함
         System.out.println("[ 도움말 - add 명령어 ]");
         System.out.println("명령어: add (동일 명령어: 추가)");
         System.out.println("설명: 시간표 또는 시간표 내부에 과목을 추가하거나 과목 데이터를 추가할 수 있습니다.");
         System.out.println("________________________________________________________________________________________________________________________");
         System.out.println("사용 방식");
         System.out.println("1. 시간표 추가 및 지정");
-        System.out.println("add <학년> <학기>");
-        System.out.println("예) add 2 1");
-        System.out.println("-> 2학년 1학기 시간표 생성");
-        System.out.println("\nadd current <학년> <학기>");
-        System.out.println("예) add current 2 1");
-        System.out.println("-> 2학년 1학기 시간표를 생성하고 현재 시간표로 설정");
-        System.out.println("add past <학년> <학기>");
-        System.out.println("예) add past 2 1");
-        System.out.println("-> 2학년 1학기 시간표가 존재하면 그 시간표를 현재 시간표로 설정");
+        System.out.println("add <연도> <학기>");
+        System.out.println("예) add 2025 1");
+        System.out.println("-> 2025년 1학기 시간표 생성");
+        System.out.println("\nadd current <연도> <학기>");
+        System.out.println("예) add current 2025 1");
+        System.out.println("-> 2025년 1학기 시간표를 생성하고 현재 시간표로 설정");
+        System.out.println("add past <연도> <학기>");
+        System.out.println("예) add past 2025 1");
+        System.out.println("-> 2025년 1학기 시간표가 존재하면 그 시간표를 현재 시간표로 설정");
         System.out.println("\n2. 기존 시간표에 과목 추가");
         System.out.println("add current <과목 튜플>");
         System.out.println("예) add current 운영체제 화 14:00~16:00");
         System.out.println("-> 현재 시간표에 운영체제 화요일 14:00~16:00 수업 등록");
-        System.out.println("\nadd past <학년> <학기> <과목 튜플>\n\n\n\n\n");
+        System.out.println("\nadd past <연도> <학기> <과목 튜플>\n\n\n\n\n");
 
         String ans;
         while(true) {
@@ -148,10 +148,10 @@ public class HelpPrompt {
         }
     }
     private void helpAdd2() {
-        System.out.println("예) add past 2 1 운영체제 화 14:00~16:00");
-        System.out.println("-> 2학년 1학기 시간표를 현재 시간표로 설정하고 운영체제 화요일 14:00~16:00 수업 등록");
+        System.out.println("예) add past 2025 1 운영체제 화 14:00~16:00");
+        System.out.println("-> 2025년 1학기 시간표를 현재 시간표로 설정하고 운영체제 화요일 14:00~16:00 수업 등록");
         System.out.println("\n3. 데이터베이스에 과목 등록");
-        System.out.println("add subject <강의정보>");
+        System.out.println("add subject <과목 튜플>");
         System.out.println("예) add subject 과목 운영체제 CS101-01 3 전공 화 14:00~16:00 CS101 3공학관201");
         System.out.println("-> 운영체제 과목을 데이터베이스에 등록");
         System.out.println("________________________________________________________________________________________________________________________");
@@ -187,8 +187,8 @@ public class HelpPrompt {
         System.out.println("예) verify");
         System.out.println("-> 현재 학기의 시간표 출력");
         System.out.println("\n2. 지난 학기의 특정 시간표 출력");
-        System.out.println("verify <학년> <학기>");
-        System.out.println("예) verify 2 1");
+        System.out.println("verify <연도> <학기>");
+        System.out.println("예) verify 2024 2");
         System.out.println("-> 지난 학기의 특정 시간표 출력");
         System.out.println("\n3. 해당 과목이 존재하는지 확인");
         System.out.println("verify subject <과목 튜플>");
@@ -196,7 +196,7 @@ public class HelpPrompt {
         System.out.println("-> 운영체제가 데이터베이스에 존재하는지 확인하고 존재하면 과목의 정보 출력");
         System.out.println("________________________________________________________________________________________________________________________");
         System.out.println("유의사항");
-        System.out.println("- 시간표가 존재하지 않는 학년 또는 학기를 입력하면 해당 학기가 존재하지 않는다고 출력합니다.");
+        System.out.println("- 시간표가 존재하지 않는 연도 또는 학기를 입력하면 해당 학기가 존재하지 않는다고 출력합니다.");
         System.out.println("- 존재하지 않는 과목을 입력하게 되면 해당 과목이 존재하지 않는다고 출력합니다.");
     }
     private void helpCalc() {
@@ -210,16 +210,16 @@ public class HelpPrompt {
         System.out.println("예) calc total");
         System.out.println("-> 전체 학기의 학점 계산");
         System.out.println("\n2. 특정 학기 학점 계산 후 출력");
-        System.out.println("calc term <학년> <학기>");
-        System.out.println("예) calc term 2 1");
-        System.out.println("-> 2학년 1학기의 학점 계산 후 출력");
+        System.out.println("calc term <연도> <학기>");
+        System.out.println("예) calc term 2025 1");
+        System.out.println("-> 2025년 1학기의 학점 계산 후 출력");
         System.out.println("\n3. 잔여 학점 계산");
         System.out.println("calc remain");
         System.out.println("예) calc remain");
         System.out.println("-> 남은 학기의 학점 계산 후 출력");
         System.out.println("________________________________________________________________________________________________________________________");
         System.out.println("유의사항");
-        System.out.println("- 만약 해당 학년 또는 학기가 존재하지 않는다면 해당 학기가 존재하지 않는다고 출력합니다.");
+        System.out.println("- 만약 해당 연도 또는 학기가 존재하지 않는다면 해당 학기가 존재하지 않는다고 출력합니다.");
         System.out.println("- 만약 모종의 이유로 학점 게산에 실패하게 되면 계산에 실패했다고 출력합니다.");
     }
 
@@ -237,12 +237,12 @@ public class HelpPrompt {
         System.out.println("예) remove subject all");
         System.out.println("-> 현재 시간표에서 모든 과목 삭제");
         System.out.println("\n2. 특정 학기의 과목 삭제");
-        System.out.println("remove <학년> <학기> subject <과목 튜플>");
-        System.out.println("예) remove 2 1 subject 운영체제 화 14:00~16:00");
-        System.out.println("-> 2학년 1학기 시간표에서 운영체제 과목 삭제");
-        System.out.println("\nremove <학년> <학기> subject all");
-        System.out.println("예) remove 2 1subject all");
-        System.out.println("-> 2학년 1학기 시간표에서 모든 과목 삭제\n\n\n\n\n\n");
+        System.out.println("remove <연도> <학기> subject <과목 튜플>");
+        System.out.println("예) remove 2025 1 subject 운영체제 화 14:00~16:00");
+        System.out.println("-> 2025년 1학기 시간표에서 운영체제 과목 삭제");
+        System.out.println("\nremove <연도> <학기> subject all");
+        System.out.println("예) remove 2025 1 subject all");
+        System.out.println("-> 2025년 1학기 시간표에서 모든 과목 삭제\n\n\n\n\n\n");
 
         String ans;
         while(true) {
@@ -264,9 +264,9 @@ public class HelpPrompt {
 
     private void helpRemove2() {
         System.out.println("\n3. 특정 학기의 시간표 삭제");
-        System.out.println("remove <학년> <학기> timetable");
-        System.out.println("예) remove 2 1 timetable");
-        System.out.println("-> 2학년 1학기 시간표를 삭제");
+        System.out.println("remove <연도> <학기> timetable");
+        System.out.println("예) remove 2025 1 timetable");
+        System.out.println("-> 2025년 1학기 시간표를 삭제");
         System.out.println("\n4. 데이터베이스에서 과목 삭제");
         System.out.println("remove subject <과목 튜플> database");
         System.out.println("예) remove subject 운영체제 화 14:00~16:00 database");
