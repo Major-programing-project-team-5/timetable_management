@@ -13,10 +13,11 @@ import java.util.List;
 //add <년도> <학기> -> 1번       ----완
 //add current timetable -> 2번   ----완
 //add current <과목 번호> -> 3번     ----완
-//add <년도> <학기> <과목 번호> -> 4번
-//add <년도> <학기> <과목 튜플> <성적> -> 4번
+//add <년도> <학기> <과목 번호> -> 4번   ----완
+//add <년도> <학기> <과목 튜플> <성적> -> 4번  ----완
 //add grade <년도> <학기> <과목튜플> <성적> -> 신규
 // 과목 튜플: 과목명, 학수번호, 학점
+// 과목 정보: 과목명, 요일, 시간, 과목번호, 학점, 이수구분, 학수번호, 강의실, 선수과목 과목코드
 
 public class AddManager{
     public void addMain(String args) {
@@ -46,10 +47,10 @@ public class AddManager{
                 // 3. current 시간표에 과목 추가
                 String[] subjectInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 add_course_current(subjectInfo);
-            } else if (tokens[1].equals("subject")) {
+            } else if (tokens[1].equals("subject") && (tokens.length == 10 || tokens.length == 11)) {
                 // 5. 데이터베이스에 과목 추가
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
-                print_add_course_database(lectureInfo);
+                add_course_database(lectureInfo);
             } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && ((tokens.length == 4 && isNumeric(tokens[3])) || tokens.length == 7)) {
                 // 4. add 학년 학기 <과목 정보> 로 입력시 해당 시간표에 과목 추가
                 int year = Integer.parseInt(tokens[1]);
@@ -116,9 +117,9 @@ public class AddManager{
         }
     }
 
-    public void print_add_course_database(String[] lectureInfo) {
+    public void add_course_database(String[] lectureInfo) {
         if (lectureInfo.length < 8) {
-            System.out.println("과목 정보가 부족합니다.");
+            System.out.println("[과목 정보의 요소가 부족합니다.]");
             return;
         }
 
@@ -160,14 +161,14 @@ public class AddManager{
 
         boolean success = SubjectManager.addSubjectToManager(subject);
         if (success) {
-            System.out.println("과목이 데이터베이스에 추가되었습니다.");
+            System.out.println("[과목이 데이터베이스에 추가되었습니다.]");
         } else {
-            System.out.println("과목 추가에 실패했습니다.");
+            System.out.println("[과목 추가에 실패했습니다.]");
         }
     }
 
     public void add_course_timetable(int year, int semester, String[] lectureInfo) {
-        Subject temp = SubjectManager.findSubject(lectureInfo);
+        Subject temp = SubjectManager.findSubject(lectureInfo);     // findSubject 구조 검토 필요
         if (temp == null) {
             System.out.println("[해당하는 과목을 찾을 수 없습니다.]");
         }
