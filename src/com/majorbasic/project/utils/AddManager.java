@@ -9,14 +9,14 @@ import com.majorbasic.project.datastructure.TimetableManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-//add subject <과목 정보> -> 4번
+//add subject <과목 정보> -> 5번
 //add <년도> <학기> -> 1번       ----완
 //add current timetable -> 2번   ----완
-//add <년도> <학기> <과목 번호> -> 5번
-//add current <과목 번호> -> 3번
-//add <년도> <학기> <과목 튜플> <성적> -> 5번
+//add current <과목 번호> -> 3번     ----완
+//add <년도> <학기> <과목 번호> -> 4번
+//add <년도> <학기> <과목 튜플> <성적> -> 4번
 //add grade <년도> <학기> <과목튜플> <성적> -> 신규
-// 과목 튜플: 과목명 학수번호 학점
+// 과목 튜플: 과목명, 학수번호, 학점
 
 public class AddManager{
     public void addMain(String args) {
@@ -29,7 +29,7 @@ public class AddManager{
             if (tokens.length < 3) {
                 System.out.println("잘못된 add 명령 형식입니다.");
             } else if ( tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])  ) {
-                // 1. 지정 학기 시간표 생성 (년도, 학기) - 구현 완료
+                // 1. 지정 학기 시간표 생성 (년도, 학기)
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
                 if (!(TimetableManager.isTimetableCorrect(year, semester))){ // isTimetableCorrect수정
@@ -47,15 +47,15 @@ public class AddManager{
                 String[] subjectInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 add_course_current(subjectInfo);
             } else if (tokens[1].equals("subject")) {
-                // 4. 데이터베이스에 과목 추가 -- 정상 동작
+                // 5. 데이터베이스에 과목 추가
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
                 print_add_course_database(lectureInfo);
-            } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && tokens.length > 5) {
-                // 5. add 학년 학기 <과목 정보> 로 입력시 해당 시간표에 과목 추가 -- 정상 동작
+            } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && ((tokens.length == 4 && isNumeric(tokens[3])) || tokens.length == 7)) {
+                // 4. add 학년 학기 <과목 정보> 로 입력시 해당 시간표에 과목 추가
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 3, tokens.length);
-                print_add_course_timetable(year, semester, lectureInfo);
+                add_course_timetable(year, semester, lectureInfo);
             } else if (tokens[1].equals("past") && isNumeric(tokens[2]) && isNumeric(tokens[3]) && tokens.length == 4) {
                 int year = Integer.parseInt(tokens[2]);
                 int semester = Integer.parseInt(tokens[3]);
@@ -166,30 +166,34 @@ public class AddManager{
         }
     }
 
-    // 확인
-    public void print_add_course_timetable(int year, int semester, String[] lectureInfo) {
+    public void add_course_timetable(int year, int semester, String[] lectureInfo) {
         Subject temp = SubjectManager.findSubject(lectureInfo);
         if (temp == null) {
-            System.out.println("Subject가 없습니다.");
+            System.out.println("[해당하는 과목을 찾을 수 없습니다.]");
         }
+
         Timetable table = TimetableManager.getTimetable(year, semester);
         if (table == null) {
-            System.out.println("Timetable이 없습니다.");
-        }
-
-
-        if(table == null){
-            System.out.println("존재하지 않는 시간표입니다.");
-            return;
-        } else if(temp == null){
-            System.out.println("잘못된 과목 튜플 입력입니다.");
-            return;
+            System.out.println("[" + year + "년도 " + semester + "학기 시간표가 없습니다.]");
         } else if (isTimeConflicted(temp, table)) {
             System.out.println("겹치는 강의가 있습니다.");
         } else {
             table.addSubject(temp);
             System.out.println("[ 과목 '" + temp.toString() + "'가 시간표에 추가되었습니다.]");
         }
+
+//        if(table == null){
+//            System.out.println("존재하지 않는 시간표입니다.");
+//            return;
+//        } else if(temp == null){
+//            System.out.println("잘못된 과목 튜플 입력입니다.");
+//            return;
+//        } else if (isTimeConflicted(temp, table)) {
+//            System.out.println("겹치는 강의가 있습니다.");
+//        } else {
+//            table.addSubject(temp);
+//            System.out.println("[ 과목 '" + temp.toString() + "'가 시간표에 추가되었습니다.]");
+//        }
 
     }
 
