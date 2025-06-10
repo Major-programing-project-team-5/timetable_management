@@ -6,9 +6,7 @@ import com.majorbasic.project.datastructure.SubjectManager;
 import com.majorbasic.project.datastructure.Timetable;
 import com.majorbasic.project.datastructure.TimetableManager;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 public class UpdateManager {
@@ -19,20 +17,62 @@ public class UpdateManager {
 
     public void updateInput(String input) {
         String[] tokens = input.split("\\s+");
-        if(tokens.length != 1) {
+        if(tokens.length == 1 && tokens[0].equals("update")) {
+            updateAll();
+        } else if(tokens.length == 2 && tokens[1].equals("save")) {
+            updateSave();
+        } else {
             System.out.println("잘못된 update 명령 형식입니다.");
-            return;
         }
-        updateAll();
     }
 
     public void updateAll(){
-
-        System.out.println("데이터 업데이트를 시도합니다.");
-        updateSubjectManager("src/com/majorbasic/project/resources/subject.txt");
-        updateTimetableManager("src/com/majorbasic/project/resources/timetable.txt");
-        updateGraduate("src/com/majorbasic/project/resources/graduate.txt");
+        updateSubjectManager("./resources/subject.txt");
+        updateTimetableManager(String.format("./resources/timetable/%s/timetable.txt", UserManager.currentUserID));
+        updateGraduate("./resources/graduate.txt");
         System.out.println("데이터 업데이트를 완료하였습니다.");
+    }
+
+    public void updateSave(){
+        saveSubjectFile();
+        saveTimetableFile();
+        System.out.println("데이터 저장을 완료하였습니다.");
+    }
+
+    public void saveSubjectFile() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("./resources/subject.txt"));
+            for(Subject subject : SubjectManager.subjectList) {
+                writer.write(subject.toSave());
+                writer.newLine();
+            }
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("saveSubjectFile 에러 : " + e.getMessage());
+            System.out.println("과목 데이터 파일을 저장 할 수 없습니다.");
+        }
+    }
+
+    public void saveTimetableFile() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("./resources/timetable/timetable_%s.txt", UserManager.currentUserID), false), 1024 * 1024 * 2); // 2MB"src/com/majorbasic/project/resources/timetable.txt"));
+            for(Timetable timetable : TimetableManager.timetableList) {
+                writer.write(timetable.getYear() + " " + timetable.getSemester());
+                writer.newLine();
+                writer.write(Integer.toString(timetable.getSubjects().size()));
+                writer.newLine();
+                for(Subject subject : timetable.getSubjects()) {
+                    writer.write(subject.toTable());
+                    writer.newLine();
+                }
+            }
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("saveTimetableFile 에러 : " + e.getMessage());
+            System.out.println("시간표 데이터 파일을 저장할 수 없습니다.");
+        }
     }
 
     /**
@@ -40,8 +80,6 @@ public class UpdateManager {
      * @param filePath 저장파일 위치
      */
     public void updateSubjectManager(String filePath) {
-
-
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             SubjectManager.subjectSets = new HashSet<>();
@@ -94,7 +132,6 @@ public class UpdateManager {
     }
 
     public void updateTimetableManager(String filePath) {
-
         try {
             // 파일 존재 여부 확인
             File file = new File(filePath);
@@ -132,8 +169,7 @@ public class UpdateManager {
             }
             br.close();
         } catch (Exception e) {
-//            System.out.println("updateTimetableManager 에러 : " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("updateTimetableManager 에러 : " + e.getMessage());
             System.out.println("시간표 데이터 파일을 업데이트 할 수 없습니다.");
         }
     }
@@ -149,5 +185,37 @@ public class UpdateManager {
             System.out.println("updateGraduate 에러 : " + e.getMessage());
             System.out.println("학점 데이터 파일을 업데이트 할 수 없습니다.");
         }
+    }
+
+    public static boolean deleteUserToDatabase(String id) {
+        try {
+            File file = new File(String.format("./src/com/majorbasic/project/resources/timetable/%s/timetable.txt", id));
+            File folder = new File(String.format("./src/com/majorbasic/project/resources/timetable/%s", id));
+            if (file.exists()) {
+                if(file.delete())  {
+                    System.out.println("유저 데이터 파일을 삭제하였습니다.");
+                }
+                else {
+                    System.out.println("유저 데이터 파일을 삭제할 수 없음.");
+                    return false;
+                }
+            }
+            if (folder.exists()) {
+                if(folder.delete()) {
+                    System.out.println("유저 데이터 폴더을 삭제하였습니다.");
+                    return true;
+                }
+                else {
+                    System.out.println("유저 데이터 폴더을 삭제할 수 없음.");
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("updateUserToDatabase 에러 : " + e.getMessage());
+            System.out.println("유저 데이터 파일을 업데이트할 수 없습니다.");
+            return false;
+        }
+
+        return false;
     }
 }
