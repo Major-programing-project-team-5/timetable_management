@@ -9,6 +9,14 @@ import com.majorbasic.project.datastructure.TimetableManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+//add subject <과목 정보> -> 4번
+//add <년도> <학기> -> 1번       ----완
+//add current timetable -> 2번   ----완
+//add <년도> <학기> <과목 번호> -> 5번
+//add current <과목 번호> -> 3번
+//add <년도> <학기> <과목 튜플> <성적> -> 5번
+//add grade <년도> <학기> <과목튜플> <성적> -> 신규
+// 과목 튜플: 과목명 학수번호 학점
 
 public class AddManager{
     public void addMain(String args) {
@@ -21,23 +29,23 @@ public class AddManager{
             if (tokens.length < 3) {
                 System.out.println("잘못된 add 명령 형식입니다.");
             } else if ( tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])  ) {
-                // 1. 지정 학기 시간표 생성 (학년, 학기) - 정상 동작
+                // 1. 지정 학기 시간표 생성 (년도, 학기) - 구현 완료
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
-                if(year > 4 || year < 1 || semester > 2 || semester < 1) {
-                    System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
+                if (!(TimetableManager.isTimetableCorrect(year, semester))){ // isTimetableCorrect수정
                     return;
                 }
-                print_add_timetable(year, semester);
-            } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && isNumeric(tokens[3])) {
-                // 2. 현재 시간표 생성 및 설정 -- 정상 동작
-                int year = Integer.parseInt(tokens[2]);
-                int semester = Integer.parseInt(tokens[3]);
-                print_add_timetable_setcurrent(year, semester);
-            } else if (tokens[1].equals("current") && tokens.length > 5) {
-                // 3. 시간표에 과목 추가 -- 정상 동작
+                add_timetable(year, semester);
+            } else if (tokens[1].equals("current") && tokens[2].equals("timetable") && tokens.length == 3) {
+                // 2. 현재 시간표 생성
+//                int year = Integer.parseInt(tokens[2]);
+//                int semester = Integer.parseInt(tokens[3]);
+//                print_add_timetable_setcurrent(year, semester);
+                add_current_timetable();
+            } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && tokens.length == 3) {
+                // 3. current 시간표에 과목 추가
                 String[] subjectInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
-                print_add_course_current(subjectInfo);
+                add_course_current(subjectInfo);
             } else if (tokens[1].equals("subject")) {
                 // 4. 데이터베이스에 과목 추가 -- 정상 동작
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
@@ -68,7 +76,7 @@ public class AddManager{
 
 
 
-    public void print_add_timetable(int year, int semester) {
+    public void add_timetable(int year, int semester) {
         Timetable temp = new Timetable(year, semester);
         if(TimetableManager.timetableSets.contains(temp)){
             System.out.println("이미 존재하는 시간표입니다");
@@ -79,24 +87,24 @@ public class AddManager{
 
     }
 
-    public void print_add_timetable_setcurrent(int year, int semester) {
-        Timetable temp = new Timetable(year, semester);
+    public void add_current_timetable() {
+        Timetable temp = TimetableManager.presentTimetable;    // 나중에 current로 설정된 year와 semester를 받아오도록 수정
         if (!TimetableManager.timetableSets.contains(temp)) {
             TimetableManager.addTimeTabletoManager(temp);
-            System.out.println("[ " + year + "학년 " + semester + "학기 시간표가 생성되었습니다. ]");
+            System.out.println("[ 현재 학기 시간표가 생성되었습니다. ]");
         } else {
-            for (Timetable i : TimetableManager.timetableList) {
-                if (i.equals(temp)) {
-                    temp = i;
-                    break;
-                }
-            }
+//            for (Timetable i : TimetableManager.timetableList) {
+//                if (i.equals(temp)) {
+//                    temp = i;
+//                    break;
+//                }
+//            }
+            System.out.println("[이미 현재 시간표가 존재합니다.]");
         }
-        TimetableManager.presentTimetable = temp;
-        System.out.println("[ 현재 시간표가 " + year + "학년 " + semester + "학기로 설정되었습니다. ]");
+
     }
 
-    public void print_add_course_current(String[] tuples) {
+    public void add_course_current(String[] tuples) {
         Subject temp = SubjectManager.findSubject(tuples);
         if (temp == null) {
             System.out.println("잘못된 과목 튜플 입력입니다.");

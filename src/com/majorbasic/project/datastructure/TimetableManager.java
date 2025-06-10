@@ -42,7 +42,7 @@ public class TimetableManager {
      * @return 학년과 학기의 값이 유효한지 여부
      */
     public static boolean isTimetableCorrect(int year, int semester) {
-        if(year > 4 || year < 1 || semester > 2 || semester < 1) {
+        if(year > 2025 || year < 1930 || semester > 2 || semester < 1) {
             System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
             return false;
         }
