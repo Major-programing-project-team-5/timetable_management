@@ -55,6 +55,8 @@ public class Subject {
     텍스트 파일엔 과목코드만 적어둠.
      */
 
+    private String grade;
+
     /**
      * 생성자
      * @param previousSubjectCodes 선수과목 정보임. 만약 없으면 null 넣을 것.
@@ -126,6 +128,24 @@ public class Subject {
         this.subjectName = subjectName;
         this.subjectCode = subjectCode;
         this.credit = -1;
+    }
+
+    /**
+     * 시간표에 성적 추가할 때 사용
+     * @param subjectName 과목이름
+     * @param courseCode 학수번호
+     * @param grade 성적
+     */
+    public Subject(String subjectName, String courseCode, String grade) {
+        this.courseCode = courseCode;
+        this.subjectName = subjectName;
+        this.grade = ""; //기본값
+    }
+    public String getGrade() {
+        return grade;
+    }
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 
     public String getSubjectName() {
