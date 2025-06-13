@@ -15,7 +15,7 @@ import java.util.List;
 //add current <과목 번호> -> 3번     ----완
 //add <년도> <학기> <과목 번호> -> 4번   ----완
 //add <년도> <학기> <과목 튜플> <성적> -> 4번  ----완
-//add grade <년도> <학기> <과목튜플> <성적> -> 신규
+//add grade <년도> <학기> <과목튜플> <성적> -> 신규 6번
 // 과목 튜플: 과목명, 학수번호, 학점
 // 과목 정보: 과목명, 요일, 시간, 과목번호, 학점, 이수구분, 학수번호, 강의실, 선수과목 과목코드
 
@@ -57,6 +57,13 @@ public class AddManager{
                 int semester = Integer.parseInt(tokens[2]);
                 String[] lectureInfo = Arrays.copyOfRange(tokens, 3, tokens.length);
                 add_course_timetable(year, semester, lectureInfo);
+            } else if (tokens[1].equals("grade") && isNumeric(tokens[2]) && isNumeric(tokens[3]) && tokens.length == 8){
+                // 6. 과거 시간표에 성적 추가
+                int year = Integer.parseInt(tokens[2]);
+                int semester = Integer.parseInt(tokens[3]);
+                String[] subjectInfo = Arrays.copyOfRange(tokens, 4, tokens.length);
+                add_grade_timetable(year, semester, subjectInfo);
+
             } else if (tokens[1].equals("past") && isNumeric(tokens[2]) && isNumeric(tokens[3]) && tokens.length == 4) {
                 int year = Integer.parseInt(tokens[2]);
                 int semester = Integer.parseInt(tokens[3]);
@@ -196,6 +203,10 @@ public class AddManager{
 //            System.out.println("[ 과목 '" + temp.toString() + "'가 시간표에 추가되었습니다.]");
 //        }
 
+    }
+
+    public void add_grade_timetable(int year, int semester, String[] subjectInfo) {
+        TimetableManager.editSubject(year, semester, subjectInfo);
     }
 
     public static boolean isTimeConflicted(Subject subject, Timetable timetable) {
