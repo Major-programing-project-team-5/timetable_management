@@ -90,7 +90,7 @@ public class SubjectManager {
      */
     public static String getAllSubjectInfo() {
         StringBuilder builder = new StringBuilder();
-        for (var i : subjectList) {
+        for (Subject i : subjectList) {
             builder.append(i.toString()).append("\n");
         }
         return builder.toString();
