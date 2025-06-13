@@ -149,6 +149,7 @@ public class UserManager {
                 System.out.println(e.getMessage());
                 return false;
             }
+            UpdateManager.saveUserData();
             setCurrentUserData(input_id);
             return true;
         }
@@ -160,7 +161,7 @@ public class UserManager {
      */
     public static boolean loadUserData() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("userData.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("./resources/userData.txt"));
             String line = br.readLine();
             while (line != null) {
                 String[] tokens = line.split(" ");

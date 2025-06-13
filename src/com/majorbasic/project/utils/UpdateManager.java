@@ -56,7 +56,7 @@ public class UpdateManager {
 
     public void saveTimetableFile() {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("./resources/timetable/timetable_%s.txt", UserManager.currentUserID), false), 1024 * 1024 * 2); // 2MB"src/com/majorbasic/project/resources/timetable.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("./resources/timetable/timetable_%s.txt", UserManager.currentUserID), false), 1024 * 1024 * 2);
             for(Timetable timetable : TimetableManager.timetableList) {
                 writer.write(timetable.getYear() + " " + timetable.getSemester());
                 writer.newLine();
@@ -72,6 +72,23 @@ public class UpdateManager {
         } catch (Exception e) {
             System.out.println("saveTimetableFile 에러 : " + e.getMessage());
             System.out.println("시간표 데이터 파일을 저장할 수 없습니다.");
+        }
+    }
+
+    public static void saveUserData() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("./resources/userdata/userdata_%s.txt", UserManager.currentUserID), false), 1024 * 1024 * 2);
+
+            for(Map.Entry<String, String> entry : UserManager.userDataMap.entrySet()) {
+                writer.write(entry.getKey() + " " + entry.getValue());
+                writer.newLine();
+            }
+
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("saveUserData 에러 : " + e.getMessage());
+            System.out.println("유저 데이터 파일을 저장할 수 없습니다.");
         }
     }
 
