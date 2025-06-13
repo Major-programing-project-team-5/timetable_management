@@ -4,11 +4,48 @@ import java.util.Arrays;
 import com.majorbasic.project.datastructure.*;
 import static com.majorbasic.project.utils.Util.*;
 
+/* =========================
+Verify에 필요한 명령어들에 대한 정의를 만들어둔 클래스.
+
+[명령어 정보]
+
+1. 과목 정보 확인하기
+
+verify subject 과목명 시간 날짜 과목 코드
+
+해당 과목의 정보를 확인 가능합니다.
+
+ex ) verify subject 데이터베이스 화,목 10:30~12:00,10:30~12:00 3136
+
+목업 1.
+    과목명: 데이터베이스
+    요일 및 시간:
+      화,목
+      10:30~12:00,10:30~12:00
+    과목 코드: 3136
+    학수번호: BBAB12001
+    학점: 3
+    이수 구분: 전공선택
+    강의실: 공C487
+
+
+2. 시간표 확인하기
+
+verify 년도 학기
+
+해당 년도의 시간표를 확인 가능합니다.
+
+ex) verify 2025 1
+
+목업 1. 
+
+
+ */
 public class VerifyManager {
 
 
     /**
-     * 입력값 받는 부분
+     * 튜플 입력 확인해서 기능 수행하는 쪽
      * @param input 입력값
      */
     public void verifyMain(String input) {

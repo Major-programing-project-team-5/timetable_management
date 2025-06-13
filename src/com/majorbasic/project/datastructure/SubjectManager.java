@@ -13,11 +13,13 @@ public class SubjectManager {
 
     public static HashSet<Subject> subjectSets;
     public static List<Subject> subjectList;
-    public static Map<String, String> subjectSets_fineNameUseCode; // findSubject용 변수.
+
     /*
-    과목 코드만 주면 이름을 리턴해주기 위한 변수.
-    <1300, 자료구조> 식으로 매핑됨.
-     */
+   과목 코드만 주면 이름을 리턴해주기 위한 변수.
+   <1300, 자료구조> 식으로 매핑됨.
+    */
+    public static Map<String, String> subjectSets_fineNameUseCode; // findSubject용 변수.
+
 
     /**
      * subjectManager에 과목을 추가하는 메소드입니다.
