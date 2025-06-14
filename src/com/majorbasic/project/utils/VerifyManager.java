@@ -66,6 +66,8 @@ public class VerifyManager {
             } else if (tokens[1].equals("subject")) {
                 String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
                 verifySubject(output);
+            } else if (tokens.length == 2 && tokens[1].equals("graduation")) {
+                verifyGraduation();
             } else if (tokens.length == 3) {
                 try {
                     int year = Integer.parseInt(tokens[1]);
@@ -115,16 +117,19 @@ public class VerifyManager {
             return;
         }
 
+        // 시간표용 boolean 배열
+        boolean[][] timetableArray = new boolean[5][22];
+
+        // 과목 이름 확인용 String 배열
+        String[][] symbolGrid = new String[5][22];
+        for (String[] row : symbolGrid) {
+            Arrays.fill(row, "○"); //빈칸 초기화
+        }
+
         // 과목-기호 연결을 위한 맵과 기호 리스트
         Map<String, String> subjectLegend = new LinkedHashMap<>();
-        List<String> symbols = Arrays.asList("■", "★", "▲", "▼", "◆", "♥", "♣", "♠", "▣", "●");
+        List<String> symbols = Arrays.asList("■", "★", "▲", "▼", "◆", "♥");
         int symbolCounter = 0;
-
-        // 월~금, 9:00~20:00까지, 30분 단위
-        String[][] scheduleGrid = new String[5][22];
-        for (String[] row : scheduleGrid) {
-            Arrays.fill(row, "○");
-        }
 
         for (Subject subject : timetable.getSubjects()) {
             // 새로운 과목에 새로운 기호 할당
@@ -140,22 +145,23 @@ public class VerifyManager {
                 if (dayTime == null) continue;
 
                 int dayIndex = dayToIndex(dayTime.day);
-                if (dayIndex == -1) continue;
-
-                if (dayTime.StartTimeHour >= 9 && dayTime.EndTimeHour <= 21) {
+                if (dayIndex != -1 && dayTime.StartTimeHour >= 9 && dayTime.EndTimeHour <= 21) {
                     int startRow = (dayTime.StartTimeHour - 9) * 2 + (dayTime.StartTimeMin / 30);
                     int endRow = (dayTime.EndTimeHour - 9) * 2 + (dayTime.EndTimeMin / 30);
 
                     for (int i = startRow; i < endRow; i++) {
                         if (i >= 0 && i < 22) {
-                            scheduleGrid[dayIndex][i] = currentSymbol;
+                            // boolean 배열에는 true 값을 할당
+                            timetableArray[dayIndex][i] = true;
+                            // String 배열에는 해당 과목의 기호를 할당
+                            symbolGrid[dayIndex][i] = currentSymbol;
                         }
                     }
                 }
             }
         }
 
-        // 출력
+        // 시간표 출력
         System.out.println("===== 시간표 (" + year + "년 " + semester + "학기) =====");
         System.out.print("시간\\요일\t월\t화\t수\t목\t금\n");
 
@@ -163,14 +169,16 @@ public class VerifyManager {
             int hour = 9 + (i / 2);
             boolean isHalfHour = (i % 2 != 0);
 
+            String timeLabel;
             if (isHalfHour) {
-                System.out.print(hour + "시 30분\t");
+                timeLabel = hour + "시 30분";
             } else {
-                System.out.print(hour + "시\t\t");
+                timeLabel = hour + "시";
             }
+            System.out.printf("%-10s", timeLabel);
 
             for (int day = 0; day < 5; day++) {
-                System.out.print(scheduleGrid[day][i] + "\t");
+                System.out.print(symbolGrid[day][i] + "\t");
             }
             System.out.println();
         }
