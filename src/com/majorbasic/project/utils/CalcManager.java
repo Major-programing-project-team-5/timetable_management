@@ -1,131 +1,157 @@
 package com.majorbasic.project.utils;
 
-import com.majorbasic.project.datastructure.Subject;
-import com.majorbasic.project.datastructure.Timetable;
-import com.majorbasic.project.datastructure.TimetableManager;
+import com.majorbasic.project.datastructure.*;
+
+import java.util.*;
 
 public class CalcManager {
-//    1. <calc> <total> 총 학점(전 학기 시간표 대상) 계산
-//    2. <calc> <term> 특정 학기 내 학점 계산
-//    3. <calc> <remain> 잔여 학점(전 학기 시간표 대상) 계산
 
-    public final int GRADUATION_CREDIT = 130;
-
+    //테스트해봐야 하는 명령어들.
+//    calc remain -> 현재 남은 학점 출력
+//    calc basic -> 현재 남은 기본교양 학점 출력
+//    calc adv -> 현재 남은 심화교양 학점 졸업요건 출력
+//    calc alloc -> 현재 남은 지정교양 졸업요건 출력
+//    calc ess -> 현재 남은 지정필수 졸업요건 출력
+//    calc major -> 현재 남은 모든 전공과목 학점 출력.
+    // 사용자 입력 처리
     public void calcInput(String userInput) {
+        String[] tokens = userInput.trim().split("\\s+");
+        if(tokens.length < 2) {
+            System.out.println("인자가 올바르지 않습니다.");
+            return;
+        }
+
         try {
-            String[] tokens = userInput.trim().split("\\s+");
-
-            if(tokens.length < 2) {
-                System.out.println("인자가 올바르지 않습니다.");
-                return;
-            }
-
-            switch (tokens[1]) {
-                case "total":
-                    calculateTotalCredits();
-                    break;
-                case "term":
-                    if (tokens.length != 4) {
-                        System.out.println("잘못된 calc term 명령 형식입니다.");
-                        return;
-                    }
-                    if (!(tokens[2].matches("\\d") && tokens[3].matches("\\d"))) {
-                        System.out.println("인자가 올바르지 않습니다.");
-                        return;
-                    }
-                    int year = Integer.parseInt(tokens[2]);
-                    int semester = Integer.parseInt(tokens[3]);
-                    if (year > 4 || year < 1 || semester > 2 || semester < 1) {
-                        System.out.println("학년 또는 학기의 숫자가 범위를 넘어섰습니다");
-                        return;
-                    }
-                    calculateTermCredits(year, semester);
-                    break;
+            switch(tokens[1]) {
                 case "remain":
                     calculateRemainingCredits();
+                    break;
+                case "basic":
+                    calculateBasicCredits();
+                    break;
+                case "adv":
+                    calculateAdvCredits();
+                    break;
+                case "alloc":
+                    calculateAllocCredits();
+                    break;
+                case "ess":
+                    calculateEssCredits();
+                    break;
+                case "major":
+                    calculateMajorCredits();
                     break;
                 default:
                     System.out.println("인자가 올바르지 않습니다.");
             }
         } catch (Exception e) {
-            System.out.println("명령어 처리 중 오류가 발생했습니다" + e);
+            System.out.println("calc 쪽 명령어 처리 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 
-    // 조건문에 사용되는 함수들
-    // 1. 총 학점을 계산하는 함수
-    public void calculateTotalCredits() {
-        int totalCredits = calculateTotalCredit();
-
-        if(totalCredits  == -1) {
-            return;
-        }
-        // 총 학점 출력
-        System.out.println("전체 이수 학점: " + totalCredits);
-    }
-
-    // 2. 특정 학기의 학점 계산
-    public void calculateTermCredits(int year, int semester) {
-        try {
-            int termCredits = 0;
-            Timetable timetable = TimetableManager.getTimetable(year, semester);
-
-            if (timetable == null) {
-                System.out.println("시간표가 존재하지 않습니다.");
-                return;
-            }
-
-            // 각 시간표 파일을 순회
-            for (Subject subject : timetable.getSubjects()) {
-                termCredits += subject.getCredit();
-            }
-
-            // 총 학점 출력
-            System.out.println("학기 이수 학점: " + termCredits);
-        } catch (Exception e) {
-            System.out.println("학점 계산 실패" + e);
-        }
-    }
-
-    // 3. 남은 학점 계산
+    // 1. 남은 학점 계산
     public void calculateRemainingCredits() {
-        int totalCredits = calculateTotalCredit();
+        int total = sumAllCredits();
+        if(total < 0) return;
 
-        if (totalCredits == -1) {
+        int required = Graduation.getTotalRequiredCredit();
+        int remaining = required - total;
+        System.out.println("최저이수학점: " + required);
+        System.out.println("수강 학점: " + total);
+        System.out.println("남은 학점: " + remaining);
+    }
+
+    // 2. 기초교양 학점 계산 및 필수과목 출력
+    public void calculateBasicCredits() {
+        calculateAreaDetail("기초교양", List.of(
+                "기초교양:외국어", "기초교양:글쓰기", "기초교양:sw",
+                "기초교양:취창업", "기초요양:인성"
+        ));
+    }
+
+    // 3. 심화교양
+    public void calculateAdvCredits() {
+        calculateAreaDetail("심화교양", List.of(
+                "심화교양:사고력", "심화교양:학문소양", "심화교양:글로벌"
+        ));
+    }
+
+    // 4. 지정교양
+    public void calculateAllocCredits() {
+        calculateAreaDetail("지정교양", List.of("지정교양"));
+    }
+
+    // 5. 지정필수
+    public void calculateEssCredits() {
+        calculateAreaDetail("지정필수", List.of("지정필수"));
+    }
+
+    // 6. 전공
+    public void calculateMajorCredits() {
+        calculateAreaDetail("전공", List.of("전공"));
+    }
+
+    // 공통 처리 로직
+    private void calculateAreaDetail(String reportName, List<String> areaKeys) {
+        if(TimetableManager.timetableList.isEmpty()) {
+            System.out.println("시간표가 존재하지 않습니다.");
             return;
         }
 
-        int remainingCredits = GRADUATION_CREDIT - totalCredits;
+        int required = Graduation.getEachAreaReqCredit(reportName);
+        if(required < 0) return;
 
-        System.out.println("잔여 학점");
-        System.out.println("---------");
-        System.out.println("이수 학점: " + totalCredits + "학점");
-        System.out.println("졸업 요건: " + GRADUATION_CREDIT + "학점");
-        System.out.println("남은 학점: " + remainingCredits + "학점");
-    }
+        Map<String, Subject> taken = new HashMap<>();
+        int sum = 0;
 
-    private int calculateTotalCredit() {
-        try {
-            int totalCredits = 0;
-
-            if (TimetableManager.timetableList.isEmpty()) {
-                System.out.println("시간표가 존재하지 않습니다.");
-                return -1;
-            }
-
-            // 각 시간표 파일을 순회
-            for (Timetable timetable : TimetableManager.timetableList) {
-                for (Subject subject : timetable.getSubjects()) {
-                    totalCredits += subject.getCredit();
+        for(Timetable tt : TimetableManager.timetableList) {
+            for(Subject s : tt.getSubjects().keySet()) {
+                String area = s.getCategory();
+                for(String key : areaKeys) {
+                    if(area.equals(key)) {
+                        taken.put(s.getCourseCode(), s);
+                        sum += s.getCredit();
+                        break;
+                    }
                 }
             }
+        }
 
-            return totalCredits;
-        } catch (Exception e) {
-            System.out.println("학점 계산 실패" + e);
-            return -1;
+        System.out.println(reportName + " 이수현황");
+        System.out.println("최저이수학점: " + required);
+        System.out.println("수강 학점: " + sum);
+        System.out.println("남은 학점: " + (required - sum));
+
+        System.out.println("—— 필수 과목 목록 ——");
+        for(String key : areaKeys) {
+            String code = Graduation.getEachAreaReqSubject(key);
+            if(code == null) continue;
+            Subject subj = SubjectManager.findSubject(code, 0);
+            if(subj == null) {
+                System.out.println(key + " - " + code + ": 정보 없음");
+                continue;
+            }
+            boolean done = taken.containsKey(code);
+            System.out.print(subj.toString() + " 수강여부: " + (done? "Yee" : "No"));
+            if(done) {
+                System.out.println(" 수강 과목: " + taken.get(code).toString());
+            } else {
+                System.out.println();
+            }
         }
     }
+
+    /**
+     * 사용자의 전체 학점 합을 출력함.
+     * @return 사용자가 들은 과목의 전체 합 출력함.
+     */
+    private int sumAllCredits() {
+        if(TimetableManager.timetableList.isEmpty()) {
+            System.out.println("시간표가 존재하지 않습니다.");
+            return -1;
+        }
+        return TimetableManager.timetableList.stream()
+                .flatMap(tt -> tt.getSubjects().keySet().stream())
+                .mapToInt(Subject::getCredit).sum();
+    }
 }
-
-

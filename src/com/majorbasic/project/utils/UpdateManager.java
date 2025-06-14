@@ -200,7 +200,7 @@ public class UpdateManager {
             Graduation.resetGraduation(totalCreditsRequired);
         } catch (Exception e) {
             System.out.println("updateGraduate 에러 : " + e.getMessage());
-            System.out.println("학점 데이터 파일을 업데이트 할 수 없습니다.");
+            System.out.println("졸업요건 데이터 파일을 업데이트 할 수 없습니다.");
         }
     }
 

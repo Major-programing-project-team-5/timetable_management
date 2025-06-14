@@ -118,16 +118,23 @@ public class Subject {
     }
 
     /**
-     * 과목을 찾을 때 임시로 만드는 것.
-     * @param subjectName 과목이름
-     * @param subjectDayTime 과목시간 형식 ["요일,시간", "요일,시간"]
+     * 과목코드 이용한 과목 찾기 용으로 오로지 과목코드만 존재하는 과목을 만듭니다.
      * @param subjectCode 과목코드
      */
-    public Subject(String subjectName, String[] subjectDayTime, String subjectCode) {
-        setSubjectDayTimes(subjectDayTime);
-        this.subjectName = subjectName;
+    public Subject(String subjectCode){
         this.subjectCode = subjectCode;
-        this.credit = -1;
+    }
+
+    /**
+     * 과목명, 학수번호, 학점으로 과거 과목을 찾을 때 임시로 만듬.
+     * @param subjectName 과목명
+     * @param courseCode 학수번호
+     * @param credit 학점, int타입임!!
+     */
+    public Subject(String subjectName, String courseCode, int credit) {
+        this.subjectName = subjectName;
+        this.courseCode = courseCode;
+        this.credit = credit;
     }
 
     /**
@@ -216,8 +223,18 @@ public class Subject {
         return "[" + subjectCode + "] " + subjectName + " (" + credit + "학점, " + category + ")";
     }
 
+
     /**
-     * equals는 1차 구현물 때의 버전을 따릅니다 -> 과목명, 시간, 과목 코드.
+     * 주어진 학수번호와 그 과목의 학수번호가 같은지 확인.
+     * @param CourseCode
+     * @return
+     */
+    public boolean equalsUseCourseCode(String CourseCode){
+        return this.courseCode.equals(CourseCode);
+    }
+
+    /**
+     * 기본적인 equals = 학수번호가 같은지 여부를 확인해서 리턴합니다.
      * @param object
      * @return
      */
@@ -226,11 +243,32 @@ public class Subject {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Subject subject = (Subject) object;
-        return Objects.equals(subjectName, subject.subjectName) && Objects.deepEquals(subjectDayTimes, subject.subjectDayTimes) && Objects.equals(subjectCode, subject.subjectCode);
+
+        if (this.subjectCode == null || subject.subjectCode == null) {
+            // 둘 중 하나만 subjectCode가 null이라면 false
+            if (this.subjectCode != null || subject.subjectCode != null) {
+                return false;
+            }
+
+            // 둘 다 subjectCode가 null이면 과목명, 학수번호,  학점을 이용해 비교
+            return Objects.equals(subjectName, subject.subjectName)
+                    && Objects.equals(courseCode, subject.courseCode)
+                    && Objects.equals(credit, subject.credit);
+        } else {
+            // 둘 다 subjectCode가 null이 아니면 subjectCode로 비교
+            return Objects.equals(this.subjectCode, subject.subjectCode);
+        }
     }
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(subjectName, Arrays.hashCode(subjectDayTimes), subjectCode);
+        if (subjectCode != null) {
+            // 과목코드가 있는 경우에는 과목코드로만 해시코드 생성
+            return Objects.hash(subjectCode);
+        } else {
+            // 과목코드가 없는 경우에는 subjectName, courseCode, credit을 기반으로 해시코드 생성
+            return Objects.hash(subjectName, courseCode, credit);
+        }
     }
 }

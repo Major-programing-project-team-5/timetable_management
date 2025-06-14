@@ -11,8 +11,8 @@ import static com.majorbasic.project.utils.Util.dayTimeArr;
 public class SubjectManager {
     //튜플 찾기용으로 사용하는, 해쉬맵이 담겨 있는 객체입니다.
 
-    public static HashSet<Subject> subjectSets;
-    public static List<Subject> subjectList;
+    public static HashSet<Subject> subjectSets;//해당 과목이 존재하는지 찾기 위한 셋
+    public static List<Subject> subjectList;//만약 존재한다면 이거 돌려서 찾아감.
 
     /*
    과목 코드만 주면 이름을 리턴해주기 위한 변수.
@@ -50,39 +50,94 @@ public class SubjectManager {
 
 
     /**
-     * @param tuples 튜플의 입력 형태 : 자료구조 월,목 13:00~15:00,17:00~18:00 1300
-     *               각각 tuple0, (1, 2), 3
+     *
+     * @param subject_code 과목 코드를 이용해서 과목을 찾습니다.
+     * @return 해당 과목 코드로 찾을 수 있는 과목을 리턴합니다.
+     */
+    public static Subject findSubject(String subject_code){
+        ///예외 처리 구간
+
+        //null일때 기본 리턴
+        if(subject_code == null){
+            System.out.println("과목 코드 입력이 공백입니다");
+            return null;
+        }
+        //기본적으로 subject를 만들 때 과목코드만 제공함.
+        Subject temp_sub = new Subject(subject_code);//과목 코드만 이용해서 과목 만들기.
+
+        if(SubjectManager.subjectSets.contains(temp_sub)){
+            for(var sub : subjectList){
+                if(sub.equals(temp_sub)){
+                    return temp_sub;
+                }
+            }
+        }else{
+            return null;//만약 존재하지 않는다면 null 리턴
+            //같은 과목이 두 번 동시에 들어갈 수는 없으므로 이는 타당함.
+        }
+        return null;
+    }
+
+    /**
+     * 학수번호로만 과목을 찾는 함수입니다.
+     * @param n 학수번호로만 과목을 찾겠다는 표시입니다. 아무 값이나 넣으세요
+     * @return
+     */
+
+    public static Subject findSubject(String coursecode, int n){
+        ///예외 처리 구간
+
+        //null일때 기본 리턴
+        if(coursecode == null){
+            System.out.println("학수번호 입력이 공백입니다");
+            return null;
+        }
+
+        for(var sub : subjectList){
+            if(sub.equalsUseCourseCode(coursecode)){
+                return sub;
+            }
+        }
+        System.out.println("해당 학수번호로 과목을 찾을 수 업습니다.");
+        return null;
+    }
+    /**
+     * @param tuples 과목명 학수번호 학점을 이용해 과목을 찾습니다. string 배열로 넣어주세요
      * @return 해당 정보를 가진 과목을 리턴함.
      */
     public static Subject findSubject(String[] tuples) {
-        if (tuples.length == 1) {
-            //선수과목용 : 만약 선수과목의 추가용으로 과목코드만 날아왔을시
-            //이 경우 과목 코드만 가지고 판별함.
-            if (SubjectManager.subjectSets_fineNameUseCode.containsKey(tuples[0])) {
-                String sujectname = SubjectManager.subjectSets_fineNameUseCode.get(tuples[0]);
-                return new Subject(sujectname, tuples[0]);
-            } else {
-                return null;
-            }
-        }
-        if (tuples.length < 4) {
+
+        // 예외처리용
+        if (tuples.length < 3) {
             System.out.println("과목 튜플의 정보가 부족합니다.");
             return null;
         }
-        //일반적인 과목 찾기용
-        String[] day = new String[]{tuples[1], tuples[2]};
 
-        Subject tempsubject = new Subject(tuples[0], day, tuples[3]);
-        if (SubjectManager.subjectSets.contains(tempsubject)) {
-            for (Subject i : SubjectManager.subjectList) {
-                if (i.equals(tempsubject)) {
-                    return i;
+        int credit;
+        try {
+            credit = Integer.parseInt(tuples[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("학점 정보가 올바른 숫자가 아닙니다: " + tuples[2]);
+            return null;
+        }
+
+        // tuple 0번(이름), 1번(학수번호), 2번(학점:int)으로 Subject 생성
+        Subject temp_sub = new Subject(tuples[0], tuples[1], credit);
+
+        // 해당 subject가 hashset에 있는지 확인
+        if (subjectSets.contains(temp_sub)) {
+            // 있으면 subjectList에서 찾아서 정확한 객체를 리턴
+            for (Subject sub : subjectList) {
+                if (sub.equals(temp_sub)) {
+                    return sub;
                 }
             }
         }
 
+        // 없으면 null 리턴
         return null;
     }
+
 
     /**
      * SubjectManager쪽은 static이라 tostring override가 안 되어서 직접 만들었습니다.
