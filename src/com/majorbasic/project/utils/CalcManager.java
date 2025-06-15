@@ -6,13 +6,6 @@ import java.util.*;
 
 public class CalcManager {
 
-    //테스트해봐야 하는 명령어들.
-//    calc remain -> 현재 남은 학점 출력
-//    calc basic -> 현재 남은 기본교양 학점 출력
-//    calc adv -> 현재 남은 심화교양 학점 졸업요건 출력
-//    calc alloc -> 현재 남은 지정교양 졸업요건 출력
-//    calc ess -> 현재 남은 지정필수 졸업요건 출력
-//    calc major -> 현재 남은 모든 전공과목 학점 출력.
     // 사용자 입력 처리
     public void calcInput(String userInput) {
         String[] tokens = userInput.trim().split("\\s+");
@@ -65,7 +58,7 @@ public class CalcManager {
     public void calculateBasicCredits() {
         calculateAreaDetail("기초교양", List.of(
                 "기초교양:외국어", "기초교양:글쓰기", "기초교양:sw",
-                "기초교양:취창업", "기초요양:인성"
+                "기초교양:취창업", "기초교양:인성"  // 오타 수정
         ));
     }
 
@@ -105,7 +98,15 @@ public class CalcManager {
         int sum = 0;
 
         for(Timetable tt : TimetableManager.timetableList) {
-            for(Subject s : tt.getSubjects().keySet()) {
+            for(Map.Entry<Subject, String> entry : tt.getSubjects().entrySet()) {
+                Subject s = entry.getKey();
+                String grade = entry.getValue();
+
+                // grade가 F 또는 N인 경우 제외
+                if(grade != null && (grade.equalsIgnoreCase("F") || grade.equalsIgnoreCase("N"))) {
+                    continue;
+                }
+
                 String area = s.getCategory();
                 for(String key : areaKeys) {
                     if(area.equals(key)) {
@@ -123,20 +124,25 @@ public class CalcManager {
         System.out.println("남은 학점: " + (required - sum));
 
         System.out.println("—— 필수 과목 목록 ——");
-        for(String key : areaKeys) {
-            String code = Graduation.getEachAreaReqSubject(key);
-            if(code == null) continue;
-            Subject subj = SubjectManager.findSubject(code, 0);
-            if(subj == null) {
-                System.out.println(key + " - " + code + ": 정보 없음");
-                continue;
-            }
-            boolean done = taken.containsKey(code);
-            System.out.print(subj.toString() + " 수강여부: " + (done? "Yee" : "No"));
-            if(done) {
-                System.out.println(" 수강 과목: " + taken.get(code).toString());
-            } else {
-                System.out.println();
+
+        // 수정 부분: 영역별 필수 과목 List<String>으로 변경된 부분 반영
+        for (String key : areaKeys) {
+            List<String> codes = Graduation.getEachAreaReqSubject(key);
+            if (codes == null || codes.isEmpty()) continue;
+
+            for (String code : codes) {
+                Subject subj = SubjectManager.findSubject(code, 0);
+                if (subj == null) {
+                    System.out.println(key + " - " + code + ": 정보 없음");
+                    continue;
+                }
+                boolean done = taken.containsKey(code);
+                System.out.print(subj.toString() + " 수강여부: " + (done ? "Yee" : "No"));
+                if (done) {
+                    System.out.println(" 수강 과목: " + taken.get(code).toString());
+                } else {
+                    System.out.println();
+                }
             }
         }
     }
@@ -150,8 +156,14 @@ public class CalcManager {
             System.out.println("시간표가 존재하지 않습니다.");
             return -1;
         }
+
         return TimetableManager.timetableList.stream()
-                .flatMap(tt -> tt.getSubjects().keySet().stream())
-                .mapToInt(Subject::getCredit).sum();
+                .flatMap(tt -> tt.getSubjects().entrySet().stream())
+                .filter(e -> {
+                    String grade = e.getValue();
+                    return grade == null || (!grade.equalsIgnoreCase("F") && !grade.equalsIgnoreCase("N"));
+                })
+                .mapToInt(e -> e.getKey().getCredit())
+                .sum();
     }
 }

@@ -13,11 +13,14 @@ public class UserManager {
     private static final Scanner sc = new Scanner(System.in);
     private static final OnloadProgram onload = new OnloadProgram();
 
+    //관리자 로그인 방법
+    //admin 1234
     /**
      * 로그인 또는 회원가입을 선택합니다.
      * @return 선택한 메뉴
      */
     public static String showLoginOrRegisterMenu() {
+        UpdateManager.loadUserData();
         while (true) {
             System.out.println("로그인을 원하시면 1번을");
             System.out.println("회원가입을 원하시면 2번을 입력해주세요");
@@ -27,6 +30,10 @@ public class UserManager {
             switch (sc.nextLine()) {
                 case "1":
                     if (loginMenu()) {
+                        if(currentUserID.equals("admin")){
+                            isAdmin = true;
+                            System.out.println("환영합니다. 관리자님");// 어드민 접근
+                        }
                         onload.run();
                     } else {
                         break;
@@ -105,9 +112,9 @@ public class UserManager {
 
         while (true) {
             System.out.print("id : ");
-            new_id = sc.nextLine();
+            new_id = sc.nextLine().trim();
             System.out.print("password : ");
-            new_password = sc.nextLine();
+            new_password = sc.nextLine().trim();
 
             if (new_id.length() >= 20 || new_password.length() >= 20) {
                 System.out.println("id와 password는 20자 이상일 수 없습니다. 다시 입력하세요.");
@@ -116,9 +123,13 @@ public class UserManager {
                 System.out.println("id 또는 password가 입력되지 않았습니다.");
                 return false;
             }
+            if(userDataMap.containsKey(new_id)){
+                System.out.println("오류, 해당 id는 이미 존재합니다!");
+                continue;
+            }
 
             if (!tryRegister(new_id, new_password)) {
-                System.out.println("오류, 해당 id는 이미 존재합니다!");
+                System.out.println("오류, 데이터 파일을 생성할 수 없습니다");
                 return false;
             }
 

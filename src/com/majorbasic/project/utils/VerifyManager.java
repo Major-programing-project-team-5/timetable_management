@@ -46,8 +46,9 @@ ex) verify 2025 1
 
  */
 public class VerifyManager {
-
-
+    //verify subject -> 과목 확인 가능
+    //verify <년도> <학기> -> 년도, 학기 확인 가능
+    //verify <graduation> -> 졸엽요건 확인 가능
     /**
      * 튜플 입력 확인해서 기능 수행하는 쪽
      * @param input 입력값
@@ -89,7 +90,13 @@ public class VerifyManager {
     }
 
     public void verifySubject(String[] tuples) {
-        Subject subject = SubjectManager.findSubject(tuples);
+        Subject subject;
+        if(tuples.length == 1){
+           subject = SubjectManager.findSubject(tuples[0]);
+        }else{
+            subject = SubjectManager.findSubject(tuples);
+        }
+
 
         if (subject == null) {
             System.out.println("해당 과목을 찾을 수 없습니다.");
@@ -127,11 +134,16 @@ public class VerifyManager {
         }
 
         // 과목-기호 연결을 위한 맵과 기호 리스트
+        // 과목-기호 연결을 위한 맵과 기호 리스트
         Map<String, String> subjectLegend = new LinkedHashMap<>();
-        List<String> symbols = Arrays.asList("■", "★", "▲", "▼", "◆", "♥");
+        List<String> symbols = Arrays.asList(
+                "■", "★", "▲", "▼", "◆", "♥",
+                "●", "◎", "◇", "□", "☆", "△",
+                "▽", "◇", "♫"
+        );
         int symbolCounter = 0;
 
-        for (Subject subject : timetable.getSubjects()) {
+        for (Subject subject : timetable.getSubjects().keySet()) {
             // 새로운 과목에 새로운 기호 할당
             if (!subjectLegend.containsKey(subject.getSubjectName())) {
                 String symbol = (symbolCounter < symbols.size()) ? symbols.get(symbolCounter++) : "?";
@@ -190,28 +202,47 @@ public class VerifyManager {
         }
     }
 
-    public void verifyGraduation(){
+    public void verifyGraduation() {
         System.out.println("==== 졸업 요건 정보 ====");
 
-        // 졸업 요건 정보 불러오기
-        System.out.println("총 이수 요구 학점: " + Graduation.totalCreditsRequired + "학점"); //
+        // 총 이수 요구 학점 출력
+        System.out.println("총 이수 요구 학점: " + Graduation.getTotalRequiredCredit() + "학점");
 
-        // 과목 구분별 요구 학점 출력
-        if (Graduation.CreditRequiredEachMajor != null && !Graduation.CreditRequiredEachMajor.isEmpty()) {
+        // 영역별 요구 학점 출력
+        Map<String, Integer> areaMap = Graduation.CreditRequiredCreditEachArea;
+        if (areaMap != null && !areaMap.isEmpty()) {
             System.out.println("\n[과목 구분별 요구 학점]");
-            for (Map.Entry<String, Integer> entry : Graduation.CreditRequiredEachMajor.entrySet()) {
+            for (Map.Entry<String, Integer> entry : areaMap.entrySet()) {
                 System.out.println(entry.getKey() + ": " + entry.getValue() + "학점");
             }
         }
 
-        // 필수 수강 과목 목록 출력
-        if (Graduation.requiredSubject != null && !Graduation.requiredSubject.isEmpty()) {
+        // 필수 수강 과목 목록 출력 (List<String>으로 수정됨)
+        Map<String, List<String>> reqMap = Graduation.requiredSubject;
+        if (reqMap != null && !reqMap.isEmpty()) {
             System.out.println("\n[필수 수강 과목]");
-            for (Subject subject : Graduation.requiredSubject) { //
-                System.out.println(subject.toString()); //
+            for (Map.Entry<String, List<String>> entry : reqMap.entrySet()) {
+                String area = entry.getKey();
+                List<String> courseCodes = entry.getValue();
+
+                if (courseCodes == null || courseCodes.isEmpty()) {
+                    System.out.println("[" + area + "] 필수 과목 없음");
+                    continue;
+                }
+
+                System.out.println("[" + area + "]");
+                for (String courseCode : courseCodes) {
+                    Subject subj = SubjectManager.findSubject(courseCode, 0);
+                    if (subj != null) {
+                        System.out.println("  - " + subj.toString());
+                    } else {
+                        System.out.println("  - 정보 없음 (코드: " + courseCode + ")");
+                    }
+                }
             }
         }
-        }
+    }
+
 
 
 

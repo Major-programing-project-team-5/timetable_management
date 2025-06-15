@@ -68,7 +68,7 @@ public class SubjectManager {
         if(SubjectManager.subjectSets.contains(temp_sub)){
             for(var sub : subjectList){
                 if(sub.equals(temp_sub)){
-                    return temp_sub;
+                    return sub;
                 }
             }
         }else{

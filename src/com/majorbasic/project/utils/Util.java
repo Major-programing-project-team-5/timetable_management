@@ -15,7 +15,7 @@ public class Util {
             return false;
         }
 
-        for (Subject existingSubject : timetable.getSubjects()) {
+        for (Subject existingSubject : timetable.getSubjects().keySet()) {
             // 기존 시간표의 과목과 비교하여 시간 겹침 여부를 확인
             if (existingSubject.getSubjectCode().equals(subject.getSubjectCode()) ||
                     existingSubject.getCategory().equals(subject.getCategory())) {

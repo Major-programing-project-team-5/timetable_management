@@ -1,54 +1,63 @@
 package com.majorbasic.project.datastructure;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Graduation {
-    //졸엽오건은 하나만 존재해도 되니까 딱히 매니저같은거 안 만들고 객체 하나만 가지고있도록합니다.
+    // 졸업 요건은 하나만 존재
     public static int totalCreditsRequired; // 총 이수 학점 목록
-    public static Map<String, Integer> CreditRequiredCreditEachArea; // 각 과목별 이수 학점 목록입니다.
-    //string : 영역 interger : 요구학점입니다.
-    //영역 모음 : 전공, 지정교양, 지정필수, 기초교양, 기초교양:외국어, 기초교양:글쓰기, 기초교양:sw, 기초교양:취창업, 기초요양:인성, 심화교양, 심화교양:사고력, 심화고양:학문소양, 심화교양:글로벌
+    public static Map<String, Integer> CreditRequiredCreditEachArea = new HashMap<>(); // 영역별 최소 이수 학점
 
-    public static Map<String, String>  requiredSubject; // 졸업을 위한 필수 수강 과목 목록입니다
-    //string은 영역입니다. 뒤의 String은 subject의 CourseCode와 동일합니다.
-
+    // 필수 수강 과목 목록 (영역 -> 필수 과목 코드 리스트)
+    public static Map<String, List<String>> requiredSubject = new HashMap<>();
 
     /**
-     * 총 최저이수학점 얻기
-     * @return 총 최저이수학점 반환
+     * 총 최저 이수 학점 반환
      */
-    public static int getTotalRequiredCredit(){
+    public static int getTotalRequiredCredit() {
         return totalCreditsRequired;
     }
 
     /**
-     * 영역별 최소이수학점 얻기
-     * @param area 영역 이름 / 예시는 위에 있음
-     * @return 영역별 최소이주학점
+     * 졸업 정보 리셋 (총학점, 영역별 학점, 필수과목 모두 초기화)
      */
-
-    public static int getEachAreaReqCredit(String area){
-        if(!CreditRequiredCreditEachArea.containsKey(area)){
-            System.out.println("존재하지 않는 영역입니다");
-            return -1;
-        }
-        return CreditRequiredCreditEachArea.get(area);
-
+    public static void resetGraduation(int totalCreditsRequired) {
+        Graduation.totalCreditsRequired = totalCreditsRequired;
+        CreditRequiredCreditEachArea.clear();
+        requiredSubject.clear();
     }
 
     /**
-     * 영역별 졸업필수과목 찾기
-     * @param area
-     * @return 영역별 졸업필수과목
+     * 영역별 최소 이수 학점 조회
      */
-    public static String getEachAreaReqSubject(String area){
-        if(!requiredSubject.containsKey(area)){
-            System.out.println("존재하지 않는 영역입니다");
+    public static int getEachAreaReqCredit(String area) {
+        if (!CreditRequiredCreditEachArea.containsKey(area)) {
+            System.out.println("존재하지 않는 영역입니다: " + area);
+            return -1;
+        }
+        return CreditRequiredCreditEachArea.get(area);
+    }
+
+    /**
+     * 영역별 졸업 필수 과목 목록 조회
+     */
+    public static List<String> getEachAreaReqSubject(String area) {
+        if (!requiredSubject.containsKey(area)) {
+            System.out.println("존재하지 않는 영역입니다: " + area);
             return null;
         }
         return requiredSubject.get(area);
     }
 
-
+    /**
+     * 영역별 필수 과목 추가
+     */
+    public static void addReqSubject(String area, String code) {
+        if (!requiredSubject.containsKey(area)) {
+            System.out.println("해당 영역이 존재하지 않습니다: " + area);
+            return;
+        }
+        requiredSubject.get(area).add(code);
+    }
 }
