@@ -66,7 +66,7 @@ public class SubjectManager {
         Subject temp_sub = new Subject(subject_code);//과목 코드만 이용해서 과목 만들기.
 
         if(SubjectManager.subjectSets.contains(temp_sub)){
-            for(var sub : subjectList){
+            for(Subject sub : subjectList){
                 if(sub.equals(temp_sub)){
                     return sub;
                 }
@@ -93,7 +93,7 @@ public class SubjectManager {
             return null;
         }
 
-        for(var sub : subjectList){
+        for(Subject sub : subjectList){
             if(sub.equalsUseCourseCode(coursecode)){
                 return sub;
             }
@@ -125,12 +125,10 @@ public class SubjectManager {
         Subject temp_sub = new Subject(tuples[0], tuples[1], credit);
 
         // 해당 subject가 hashset에 있는지 확인
-        if (subjectSets.contains(temp_sub)) {
-            // 있으면 subjectList에서 찾아서 정확한 객체를 리턴
-            for (Subject sub : subjectList) {
-                if (sub.equals(temp_sub)) {
-                    return sub;
-                }
+        // 있으면 subjectList에서 찾아서 정확한 객체를 리턴
+        for (Subject sub : subjectList) {
+            if (sub.equals(temp_sub)) {
+                return sub;
             }
         }
 

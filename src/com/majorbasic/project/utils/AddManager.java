@@ -47,7 +47,7 @@ public class AddManager{
                 //add <년도> <학기>
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
-                if (!(TimetableManager.isTimetableCorrect(year, semester))){ // isTimetableCorrect수정
+                if (!(TimetableManager.isTimetableCorrect(tokens[1], tokens[2]))) {
                     return;
                 }
                 add_timetable(year, semester);
@@ -59,9 +59,8 @@ public class AddManager{
                 add_current_timetable();
             } else if (tokens[1].equals("current") && isNumeric(tokens[2]) && tokens.length == 3) {
                 // 3. current 시간표에 과목 추가
-                String[] subjectInfo = Arrays.copyOfRange(tokens, 2, tokens.length);
-                add_course_current(subjectInfo);
-            } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && ((tokens.length == 4 && isNumeric(tokens[3])))) {
+                add_course_current(tokens[2]);
+            } else if (isNumeric(tokens[1]) && isNumeric(tokens[2]) && (tokens.length == 4 || tokens.length == 6)) {
                 // 4. add 학년 학기 <과목 정보> 로 입력시 해당 시간표에 과목 추가
                 int year = Integer.parseInt(tokens[1]);
                 int semester = Integer.parseInt(tokens[2]);
@@ -149,10 +148,10 @@ public class AddManager{
 
     }
 
-    public void add_course_current(String[] tuples) {
-        Subject temp = SubjectManager.findSubject(tuples);
+    public void add_course_current(String subjectCode) {
+        Subject temp = SubjectManager.findSubject(subjectCode);
         if (temp == null) {
-            System.out.println("잘못된 과목 튜플 입력입니다.");
+            System.out.println("잘못된 과목코드 입력입니다.");
         } else if (isTimeConflicted(temp, TimetableManager.presentTimetable)) {
             System.out.println("겹치는 강의가 있습니다.");
         } else {
@@ -170,27 +169,15 @@ public class AddManager{
         List<String> previousSubjectCode = new ArrayList<>();
         if (lectureInfo.length > 8) {
             previousSubjectCode = Arrays.asList(lectureInfo).subList(8, lectureInfo.length);
+            for(int i = 0; i < previousSubjectCode.size(); i++) {
+                if(SubjectManager.findSubject(previousSubjectCode.get(i)) == null) {
+                    System.out.println("과목코드가 올바르지 않습니다.");
+                    return;
+                }
+            }
         }
 
-        String[] days = lectureInfo[1].split(",");   // 예: ["화", "목"]
-        String[] times = lectureInfo[2].split(",");  // 예: ["10:30~12:00", "10:30~12:00"] 또는 ["10:30~12:00"]
-
-        String[] lectureDate = new String[days.length];
-
-        if (times.length == 1) {
-            // 모든 요일에 동일한 시간 적용
-            for (int i = 0; i < days.length; i++) {
-                lectureDate[i] = days[i] + "," + times[0];
-            }
-        } else if (times.length == days.length) {
-            // 각 요일마다 각각 시간 적용
-            for (int i = 0; i < days.length; i++) {
-                lectureDate[i] = days[i] + "," + times[i];
-            }
-        } else {
-            System.out.println("요일과 시간 정보가 맞지 않습니다.");
-            return;
-        }
+        String[] lectureDate = new String[]{lectureInfo[1], lectureInfo[2]};
 
         Subject subject = new Subject(
                 lectureInfo[0],              // 과목명
@@ -202,6 +189,7 @@ public class AddManager{
                 lectureInfo[7],              // 강의실
                 previousSubjectCode.isEmpty() ? null : previousSubjectCode
         );
+        System.out.println(subject);
 
         boolean success = SubjectManager.addSubjectToManager(subject);
         if (success) {

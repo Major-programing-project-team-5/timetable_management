@@ -52,32 +52,28 @@ public class RemoveManager {
                         subject = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 2, tokens.length-2));
                     }
                     removeSubjectToDatabase(subject);
+                } else if(tokens.length == 3) {
+                    // remove subject <과목 튜플> (현재 학기)
+                    //만일 remove subject 과목 코드로 날아왔을 경우
+                    Subject subject = SubjectManager.findSubject(tokens[2]);
+                    removeSubjectToTimetable(subject, TimetableManager.presentTimetable);
+                } else if (tokens.length == 5 && !isNumeric(tokens[2])) {
+                        //remove subject 과목명 학수번호 학점으로 날아왔을 경우
+                    Subject subject = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 1, tokens.length));
+                    removeSubjectToTimetable(subject, TimetableManager.presentTimetable);
                 } else if (isNumeric(tokens[2]) && isNumeric(tokens[3])) {
                     // remove subject <년도> <학기> <과목 튜플>
                     int year = Integer.parseInt(tokens[2]);
                     int semester = Integer.parseInt(tokens[3]);
                     Subject subject;
                     if(tokens.length == 5){
-
                         //만일 remove subject 년도 학기 과목 코드로 날아왔을 경우
                         subject = SubjectManager.findSubject(tokens[4]);
                     }else{
                         //remove subject 년도 학기 과목명 학수번호 학점으로 날아왔을 경우
-                        subject = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 3, tokens.length));
+                        subject = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 4, tokens.length));
                     }
                     removeSubjectToTimetable(subject, TimetableManager.getTimetable(year, semester));
-                } else if(tokens.length > 2) {
-                    // remove subject <과목 튜플> (현재 학기)
-                    Subject subject;
-                    if(tokens.length == 3){
-
-                        //만일 remove subject 과목 코드로 날아왔을 경우
-                        subject = SubjectManager.findSubject(tokens[2]);
-                    }else{
-                        //remove subject 과목명 학수번호 학점으로 날아왔을 경우
-                        subject = SubjectManager.findSubject(Arrays.copyOfRange(tokens, 1, tokens.length));
-                    }
-                    removeSubjectToTimetable(subject, TimetableManager.presentTimetable);
                 } else {
                     System.out.println("인자가 올바르지 않습니다.");
                 }

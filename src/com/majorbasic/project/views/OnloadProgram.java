@@ -110,6 +110,8 @@ public class OnloadProgram {
             String[] args = ans.split("\\s+");
 
             if (args.length == 0 || args[0].isEmpty()) {
+                System.out.println("올바르지 않은 명령어 입니다. help 목록을 불러옵니다.");
+                help.helpNoarg();
                 continue;
             }
 
@@ -161,6 +163,7 @@ public class OnloadProgram {
                 default:
                     System.out.println("올바르지 않은 명령어 입니다. help 목록을 불러옵니다.");
                     help.helpNoarg();
+                    break;
             }
         }
     }

@@ -48,7 +48,7 @@ public class Timetable {
         this.semester = semester;
         this.subjects = new HashMap<>();
         this.isReTake = new HashMap<>();
-        for (var sub : subjectList) {
+        for (Subject sub : subjectList) {
             subjects.put(sub, null);
             isReTake.put(sub, false);
         }
@@ -60,7 +60,7 @@ public class Timetable {
         this.semester = semester;
         this.subjects = new HashMap<>();
         this.isReTake = new HashMap<>();
-        for (var sub : subjectList) {
+        for (Subject sub : subjectList) {
             subjects.put(sub, null);
             isReTake.put(sub, false);
         }
