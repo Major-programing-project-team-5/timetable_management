@@ -118,17 +118,11 @@ public class HelpPrompt {
         System.out.println("add <연도> <학기>");
         System.out.println("예) add 2025 1");
         System.out.println("-> 2025년 1학기 시간표 생성");
-        System.out.println("\nadd current <연도> <학기>");
-        System.out.println("예) add current 2025 1");
-        System.out.println("-> 2025년 1학기 시간표를 생성하고 현재 시간표로 설정");
-        System.out.println("add past <연도> <학기>");
-        System.out.println("예) add past 2025 1");
-        System.out.println("-> 2025년 1학기 시간표가 존재하면 그 시간표를 현재 시간표로 설정");
         System.out.println("\n2. 기존 시간표에 과목 추가");
         System.out.println("add current <과목 튜플>");
         System.out.println("예) add current 운영체제 화 14:00~16:00");
         System.out.println("-> 현재 시간표에 운영체제 화요일 14:00~16:00 수업 등록");
-        System.out.println("\nadd past <연도> <학기> <과목 튜플>\n\n\n\n\n");
+        System.out.println("\nadd <연도> <학기> <과목 튜플>\n\n\n\n\n");
 
         String ans;
         while(true) {
@@ -148,7 +142,7 @@ public class HelpPrompt {
         }
     }
     private void helpAdd2() {
-        System.out.println("예) add past 2025 1 운영체제 화 14:00~16:00");
+        System.out.println("예) add 2025 1 운영체제 화 14:00~16:00");
         System.out.println("-> 2025년 1학기 시간표를 현재 시간표로 설정하고 운영체제 화요일 14:00~16:00 수업 등록");
         System.out.println("\n3. 데이터베이스에 과목 등록");
         System.out.println("add subject <과목 튜플>");

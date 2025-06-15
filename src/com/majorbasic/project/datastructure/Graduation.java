@@ -58,6 +58,29 @@ public class Graduation {
             System.out.println("해당 영역이 존재하지 않습니다: " + area);
             return;
         }
-        requiredSubject.get(area).add(code);
+
+        try {
+            List<String> subjects = requiredSubject.get(area);
+            if (subjects == null) {
+                // 해당 영역에 대한 리스트가 null인 경우 새 리스트 생성
+                subjects = new java.util.ArrayList<>();
+                requiredSubject.put(area, subjects);
+            } else {
+                // 어떤 타입이든 새 ArrayList로 복사하여 변경 가능하게 만듦
+                subjects = new java.util.ArrayList<>(subjects);
+                requiredSubject.put(area, subjects);
+            }
+
+            // 이미 존재하는 코드인지 확인
+            if (!subjects.contains(code)) {
+                subjects.add(code);
+                System.out.println(area + " 영역에 " + code + " 과목이 추가되었습니다.");
+            } else {
+                System.out.println(area + " 영역에 이미 " + code + " 과목이 존재합니다.");
+            }
+        } catch (Exception e) {
+            System.out.println("과목 추가 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

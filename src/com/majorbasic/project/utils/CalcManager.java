@@ -16,22 +16,53 @@ public class CalcManager {
 
         try {
             switch(tokens[1]) {
+                case "term":
+                    if(tokens.length != 4) {
+                        System.out.println("인자가 올바르지 않습니다.");
+                        break;
+                    }
+                    calculateTermCredits(tokens[2], tokens[3]);
+                    break;
                 case "remain":
+                    if(tokens.length != 2) {
+                        System.out.println("인자가 올바르지 않습니다.");
+                        break;
+                    }
                     calculateRemainingCredits();
                     break;
                 case "basic":
+                    if(tokens.length != 2) {
+                        System.out.println("인자가 올바르지 않습니다.");
+                        break;
+                    }
                     calculateBasicCredits();
                     break;
                 case "adv":
+                    if(tokens.length != 2) {
+                        System.out.println("인자가 올바르지 않습니다.");
+                        break;
+                    }
                     calculateAdvCredits();
                     break;
                 case "alloc":
+                    if(tokens.length != 2) {
+                        System.out.println("인자가 올바르지 않습니다.");
+                        break;
+                    }
                     calculateAllocCredits();
                     break;
                 case "ess":
+                    if(tokens.length != 2) {
+                        System.out.println("인자가 올바르지 않습니다.");
+                        break;
+                    }
                     calculateEssCredits();
                     break;
                 case "major":
+                    if(tokens.length != 2) {
+                        System.out.println("인자가 올바르지 않습니다.");
+                        break;
+                    }
                     calculateMajorCredits();
                     break;
                 default:
@@ -40,6 +71,29 @@ public class CalcManager {
         } catch (Exception e) {
             System.out.println("calc 쪽 명령어 처리 중 오류가 발생했습니다: " + e.getMessage());
         }
+    }
+
+    public void calculateTermCredits(String year, String semester) {
+        if(!TimetableManager.isTimetableCorrect(year, semester)) {
+            return;
+        }
+
+        Timetable table = TimetableManager.getTimetable(Integer.parseInt(year), Integer.parseInt(semester));
+        if(table == null) {
+            return;
+        }
+
+        // 해당 학기 시간표에서 학점 합계 계산
+        int totalCredits = table.getSubjects().entrySet().stream()
+                .filter(e -> {
+                    String grade = e.getValue();
+                    return grade == null || (!grade.equalsIgnoreCase("F") && !grade.equalsIgnoreCase("N"));
+                })
+                .mapToInt(e -> e.getKey().getCredit())
+                .sum();
+
+        System.out.println(year + "년도 " + Integer.parseInt(semester) + "학기");
+        System.out.println("수강 학점: " + totalCredits);
     }
 
     // 1. 남은 학점 계산

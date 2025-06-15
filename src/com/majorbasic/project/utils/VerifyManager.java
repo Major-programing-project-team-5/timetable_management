@@ -57,7 +57,9 @@ public class VerifyManager {
         try {
             String[] tokens = input.split("\\s+");
 
-            if (tokens.length == 1) {
+            if(tokens.length == 1) {
+                System.out.println("올바른 인자가 아닙니다.");
+            } else if (tokens[1].equals("current")) {
                 if (TimetableManager.presentTimetable == null) {
                     System.out.println("현재 확인 대상으로 지목된 시간표가 없습니다");
                     return;
@@ -67,14 +69,14 @@ public class VerifyManager {
             } else if (tokens[1].equals("subject")) {
                 String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
                 verifySubject(output);
-            } else if (tokens.length == 2 && tokens[1].equals("graduation")) {
+            } else if (tokens[1].equals("graduation")) {
                 verifyGraduation();
             } else if (tokens.length == 3) {
                 try {
                     int year = Integer.parseInt(tokens[1]);
                     int semester = Integer.parseInt(tokens[2]);
 
-                    if(!TimetableManager.isTimetableCorrect(year, semester)) {
+                    if(!TimetableManager.isTimetableCorrect(tokens[1], tokens[2])) {
                         return;
                     }
                     verifyTimetable(year, semester);

@@ -39,9 +39,8 @@ public class UserManager {
                         break;
                     }
                 case "2":
-                    if (registerMenu()) {
-                        break;
-                    }
+                    registerMenu();
+                    break;
                 case "q":
                     System.exit(0);
                     return "quit";
@@ -66,10 +65,13 @@ public class UserManager {
         input_password = sc.nextLine();
 
         if (input_id.length() >= 20 || input_password.length() >= 20) {
-            System.out.println("id와 password는 20자 이상일 수 없습니다.");
+            System.out.println("id와 password는 20자를 초과할 수 없습니다.");
             return false;
-        } else if (input_id.isEmpty() || input_password.isEmpty()) {
-            System.out.println("id 또는 password가 입력되지 않았습니다.");
+        } else if (input_id.length() < 2 || input_password.length() < 2) {
+            System.out.println("id 또는 password는 2자 미만일 수 없습니다.");
+            return false;
+        } else if (input_id.contains(" ") || input_password.contains(" ")) {
+            System.out.println("id 또는 password에 공백이 존재할 수 없습니다.");
             return false;
         }
 
@@ -117,11 +119,14 @@ public class UserManager {
             new_password = sc.nextLine().trim();
 
             if (new_id.length() >= 20 || new_password.length() >= 20) {
-                System.out.println("id와 password는 20자 이상일 수 없습니다. 다시 입력하세요.");
-                return false;
-            } else if (new_id.isEmpty() || new_password.isEmpty()) {
-                System.out.println("id 또는 password가 입력되지 않았습니다.");
-                return false;
+                System.out.println("id와 password는 20자를 초과할 수 없습니다. 다시 입력하세요.");
+                continue;
+            } else if (new_id.length() < 2 || new_password.length() < 2) {
+                System.out.println("id 또는 password는 2자 미만일 수 없습니다. 다시 입력하세요.");
+                continue;
+            } else if (new_id.contains(" ") || new_password.contains(" ")) {
+                System.out.println("id 또는 password에 공백이 존재할 수 없습니다. 다시 입력해주세요.");
+                continue;
             }
             if(userDataMap.containsKey(new_id)){
                 System.out.println("오류, 해당 id는 이미 존재합니다!");
@@ -163,28 +168,6 @@ public class UserManager {
             UpdateManager.saveUserData();
             setCurrentUserData(input_id);
             return true;
-        }
-    }
-
-    /**
-     * user_data.txt 파일에서 데이터를 읽어 userDataMap에 저장합니다
-     * @return userDataMap에 저장에 성공하면 true, 실패하면 false
-     */
-    public static boolean loadUserData() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("./resources/userData.txt"));
-            String line = br.readLine();
-            while (line != null) {
-                String[] tokens = line.split(" ");
-                userDataMap.put(tokens[0], tokens[1]);
-                line = br.readLine();
-            }
-            br.close();
-            return true;
-        } catch (Exception e) {
-            System.out.println("loadUserData 에러 : " + e.getMessage());
-            System.out.println("유저 데이터 파일을 불러올 수 없습니다.");
-            return false;
         }
     }
 

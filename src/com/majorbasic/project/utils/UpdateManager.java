@@ -315,12 +315,14 @@ public class UpdateManager {
                     UserManager.userDataMap.put(tokens[0], tokens[1]);
                 }
             }
+            br.close();
             System.out.println("유저 데이터 로딩 완료.");
         } catch (Exception e) {
             System.out.println("loadUserData 에러 : " + e.getMessage());
             System.out.println("유저 데이터 파일을 불러올 수 없습니다.");
         }
     }
+
     public void saveCurrentSemester() {
         String filePath = "./resources/current.txt";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {

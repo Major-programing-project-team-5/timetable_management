@@ -275,16 +275,16 @@ public class Subject {
      */
     @Override
     public boolean equals(Object object) {
+
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Subject subject = (Subject) object;
 
         if (this.subjectCode == null || subject.subjectCode == null) {
             // 둘 중 하나만 subjectCode가 null이라면 false
-            if (this.subjectCode != null || subject.subjectCode != null) {
-                return false;
-            }
-
+//            if (this.subjectCode != null || subject.subjectCode != null) {
+//                return false;
+//            }
             // 둘 다 subjectCode가 null이면 과목명, 학수번호,  학점을 이용해 비교
             return Objects.equals(subjectName, subject.subjectName)
                     && Objects.equals(courseCode, subject.courseCode)

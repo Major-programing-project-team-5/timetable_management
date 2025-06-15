@@ -73,7 +73,6 @@ public class ChangeManager {
                     switch (gradCmd) {
                         case "add":
                             change_addReqSubtoGrad(area, tokens[4]);
-                            System.out.println("졸업 필수 과목 추가 완료.");
                             break;
                         case "delete":
                             change_deleteReqSubtoGrad(area, tokens[4]);
@@ -163,7 +162,7 @@ public class ChangeManager {
                     }
                     break;
                 case "시간":
-                    String[] parts = val.split(" ");
+                    String[] parts = val.split(";");
                     if (parts.length != 2) {
                         throw new IllegalArgumentException("시간 형식이 올바르지 않습니다. 예: '월,화 13:00~15:00,17:00~18:00'");
                     }
@@ -210,7 +209,7 @@ public class ChangeManager {
      * @param courseCode 과목 코드
      */
     public void change_addReqSubtoGrad(String area, String courseCode) {
-        Subject subject = SubjectManager.findSubject(courseCode);
+        Subject subject = SubjectManager.findSubject(courseCode, 0);
         if (subject == null) {
             throw new IllegalArgumentException("존재하지 않는 과목 코드입니다: " + courseCode);
         }
@@ -261,6 +260,8 @@ public class ChangeManager {
     public void changeCurrentTime(int year, int semester) throws IOException {
         if (semester <= 0) {
             throw new IllegalArgumentException("학기는 1 이상이어야 합니다.");
+        } else if(semester > 4) {
+            throw new IllegalArgumentException("학기는 4 이하여야 합니다.");
         }
 
         // 1. userData.txt에서 사용자 목록 읽기 (admin 제외)
@@ -268,7 +269,7 @@ public class ChangeManager {
         try (BufferedReader br = new BufferedReader(new FileReader("./resources/userData.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String userId = line.trim();
+                String userId = line.trim().split("\\s+")[0];
                 if (!userId.isEmpty() && !userId.equalsIgnoreCase("admin")) {
                     userIds.add(userId);
                 }
