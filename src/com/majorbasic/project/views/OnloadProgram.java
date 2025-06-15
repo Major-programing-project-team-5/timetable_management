@@ -2,12 +2,7 @@ package com.majorbasic.project.views;
 
 import java.util.Scanner;
 
-import com.majorbasic.project.utils.AddManager;
-import com.majorbasic.project.utils.CalcManager;
-import com.majorbasic.project.utils.QuitManager;
-import com.majorbasic.project.utils.UpdateManager;
-import com.majorbasic.project.utils.VerifyManager;
-import com.majorbasic.project.utils.RemoveManager;
+import com.majorbasic.project.utils.*;
 
 public class OnloadProgram {
     private final Scanner sc = new Scanner(System.in);
@@ -18,12 +13,71 @@ public class OnloadProgram {
     private final QuitManager quit = new QuitManager();
     private final RemoveManager remove = new RemoveManager();
     private final UpdateManager update = new UpdateManager();
+    private final ChangeManager change = new ChangeManager();
+
+    public static int thisYear; // 현재 학기
+    public static int thisSemester; // 현재 시간
 
     public void run(){
+        loadCurrentSemester();
         update.updateAll();
-        help_onStart();
+        if(UserManager.isAdmin){
+            help_forAdmin();//관리자용
+
+        }else{
+            //유저용
+            help_onStart();
+        }
+
         getInput();
     }
+    public void help_forAdmin(){
+        System.out.println("환영합니다.");
+        //change 총 명령어
+        //remove subject database
+        //remove userData
+        //add subject database
+        //change graduation
+
+    }
+    private void loadCurrentSemester() {
+        String filePath = "./resources/current.txt";
+
+        try (Scanner fileScanner = new Scanner(new java.io.File(filePath))) {
+            if (!fileScanner.hasNextInt()) {
+                throw new IllegalArgumentException("current.txt에 유효한 연도가 없습니다.");
+            }
+            int year = fileScanner.nextInt();
+
+            if (!fileScanner.hasNextInt()) {
+                throw new IllegalArgumentException("current.txt에 유효한 학기가 없습니다.");
+            }
+            int semester = fileScanner.nextInt();
+
+            if (semester < 1 || semester > 4) {
+                throw new IllegalArgumentException("학기는 1~4 사이의 값이어야 합니다.");
+            }
+
+            thisYear = year;
+            thisSemester = semester;
+            System.out.println("==============================");
+            System.out.println("현재 학기 정보:");
+            if (semester == 3) {
+                System.out.printf("%d년 여름 계절학기%n", year);
+            } else if (semester == 4) {
+                System.out.printf("%d년 겨울 계절학기%n", year);
+            } else {
+                System.out.printf("%d년 %d학기%n", year, semester);
+            }
+            System.out.println("==============================");
+
+        } catch (Exception e) {
+            System.out.println("현재 학기 정보를 불러오는 데 실패했습니다: " + e.getMessage());
+            // 기본값 설정 또는 프로그램 종료 등 선택적 대응
+            return;
+        }
+    }
+
 
     public void help_onStart(){
 
@@ -55,10 +109,12 @@ public class OnloadProgram {
             String ans = sc.nextLine();
             String[] args = ans.split("\\s+");
 
-            switch (args[0]) {
+            if (args.length == 0 || args[0].isEmpty()) {
+                continue;
+            }
+
+            switch (args[0].toLowerCase()) {
                 case "help":
-                case "Help":
-                case "HELP":
                 case "도움말":
                 case "도움":
                 case "명령어":
@@ -67,8 +123,6 @@ public class OnloadProgram {
                     help.helpMain(ans);
                     break;
                 case "quit":
-                case "Quit":
-                case "QUIT":
                 case "종료":
                     if (args.length > 1) {
                         System.out.println("올바른 인자가 아닙니다.");
@@ -77,39 +131,32 @@ public class OnloadProgram {
                     quit.quit();
                     return;
                 case "add":
-                case "Add":
-                case "ADD":
                 case "추가":
                     add.addMain(ans);
                     break;
                 case "verify":
-                case "Verify":
-                case "VERIFY":
                 case "확인":
                 case "불러오기":
                 case "표시":
                     verify.verifyMain(ans);
                     break;
                 case "calc":
-                case "Calc":
-                case "CALC":
                 case "계산":
                 case "학점":
                     calc.calcInput(ans);
                     break;
                 case "remove":
-                case "Remove":
-                case "REMOVE":
                 case "삭제":
                 case "제거":
                     remove.removeMain(ans);
                     break;
                 case "update":
-                case "Update":
-                case "UPDATE":
                 case "갱신":
                 case "업데이트":
                     update.updateInput(ans);
+                    break;
+                case "change":     // 새로 추가
+                    change.changeMain(ans);
                     break;
                 default:
                     System.out.println("올바르지 않은 명령어 입니다. help 목록을 불러옵니다.");

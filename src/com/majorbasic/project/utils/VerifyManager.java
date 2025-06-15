@@ -1,14 +1,56 @@
 package com.majorbasic.project.utils;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.majorbasic.project.datastructure.*;
 import static com.majorbasic.project.utils.Util.*;
 
+/* =========================
+Verify에 필요한 명령어들에 대한 정의를 만들어둔 클래스.
+
+[명령어 정보]
+
+1. 과목 정보 확인하기
+
+verify subject 과목명 날짜 시간 과목 코드
+
+해당 과목의 정보를 확인 가능합니다.
+
+ex ) verify subject 데이터베이스 화,목 10:30~12:00,10:30~12:00 3136
+
+목업 1.
+    과목명: 데이터베이스
+    요일 및 시간:
+      화,목
+      10:30~12:00,10:30~12:00
+    과목 코드: 3136
+    학수번호: BBAB12001
+    학점: 3
+    이수 구분: 전공선택
+    강의실: 공C487
+
+
+2. 시간표 확인하기
+
+verify 년도 학기
+
+해당 년도의 시간표를 확인 가능합니다.
+
+ex) verify 2025 1
+
+목업 1. 
+
+
+ */
 public class VerifyManager {
-
-
+    //verify subject -> 과목 확인 가능
+    //verify <년도> <학기> -> 년도, 학기 확인 가능
+    //verify <graduation> -> 졸엽요건 확인 가능
     /**
-     * 입력값 받는 부분
+     * 튜플 입력 확인해서 기능 수행하는 쪽
      * @param input 입력값
      */
     public void verifyMain(String input) {
@@ -25,12 +67,20 @@ public class VerifyManager {
             } else if (tokens[1].equals("subject")) {
                 String[] output = Arrays.copyOfRange(tokens, 2, tokens.length);
                 verifySubject(output);
-            } else if (tokens.length == 3 && isNumeric(tokens[1]) && isNumeric(tokens[2])) {
-                //2차때는 테스트 관련 데이터 넣어줘야 함.
-                if(!TimetableManager.isTimetableCorrect(tokens[1], tokens[2])) {
-                    return;
+            } else if (tokens.length == 2 && tokens[1].equals("graduation")) {
+                verifyGraduation();
+            } else if (tokens.length == 3) {
+                try {
+                    int year = Integer.parseInt(tokens[1]);
+                    int semester = Integer.parseInt(tokens[2]);
+
+                    if(!TimetableManager.isTimetableCorrect(year, semester)) {
+                        return;
+                    }
+                    verifyTimetable(year, semester);
+                } catch (NumberFormatException e) {
+                    System.out.println("연도와 학기는 숫자로 입력해야 합니다.");
                 }
-                verifyTimetable(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
             } else {
                 System.out.println("올바른 인자가 아닙니다.");
             }
@@ -40,7 +90,13 @@ public class VerifyManager {
     }
 
     public void verifySubject(String[] tuples) {
-        Subject subject = SubjectManager.findSubject(tuples);
+        Subject subject;
+        if(tuples.length == 1){
+           subject = SubjectManager.findSubject(tuples[0]);
+        }else{
+            subject = SubjectManager.findSubject(tuples);
+        }
+
 
         if (subject == null) {
             System.out.println("해당 과목을 찾을 수 없습니다.");
@@ -64,63 +120,129 @@ public class VerifyManager {
         Timetable timetable = TimetableManager.getTimetable(year, semester);
 
         if (timetable == null) {
-            System.out.println("해당 시간표를 찾을 수 없습니다.");
+            System.out.println(year + "년 " + semester + "학기 시간표를 찾을 수 없습니다.");
             return;
         }
 
-        boolean[][] timetableArray = new boolean[5][22]; // 월(0)~금(4), 9 : 00 ~ 20:00까지. 30분 단위.
+        // 시간표용 boolean 배열
+        boolean[][] timetableArray = new boolean[5][22];
 
-        for (Subject subject : timetable.getSubjects()) {
+        // 과목 이름 확인용 String 배열
+        String[][] symbolGrid = new String[5][22];
+        for (String[] row : symbolGrid) {
+            Arrays.fill(row, "○"); //빈칸 초기화
+        }
+
+        // 과목-기호 연결을 위한 맵과 기호 리스트
+        // 과목-기호 연결을 위한 맵과 기호 리스트
+        Map<String, String> subjectLegend = new LinkedHashMap<>();
+        List<String> symbols = Arrays.asList(
+                "■", "★", "▲", "▼", "◆", "♥",
+                "●", "◎", "◇", "□", "☆", "△",
+                "▽", "◇", "♫"
+        );
+        int symbolCounter = 0;
+
+        for (Subject subject : timetable.getSubjects().keySet()) {
+            // 새로운 과목에 새로운 기호 할당
+            if (!subjectLegend.containsKey(subject.getSubjectName())) {
+                String symbol = (symbolCounter < symbols.size()) ? symbols.get(symbolCounter++) : "?";
+                subjectLegend.put(subject.getSubjectName(), symbol);
+            }
+            String currentSymbol = subjectLegend.get(subject.getSubjectName());
+
+            if (subject.getSubjectDayTimes() == null) continue;
 
             for (DayTime dayTime : subject.getSubjectDayTimes()) {
                 if (dayTime == null) continue;
+
                 int dayIndex = dayToIndex(dayTime.day);
-                if (dayIndex != -1) {
-                    for (int i = dayTime.StartTimeHour, j = (i-9); i < dayTime.EndTimeHour; i++) {
-                        //아래에 이상한 숫자 더하는 과정은 index는 0~22인데 시간 표기는 9~20인 문제 해결 위함.
-                        if (i >= 9 && i < 20) {
-                            //0 ~ 11
-                            if(dayTime.StartTimeMin == 30 && i == dayTime.StartTimeHour){
-                                timetableArray[dayIndex][i-8 + j] = true;
-                            }
-                            else{
-                                timetableArray[dayIndex][i-9 + j] = true;
-                                timetableArray[dayIndex][i-8 + j] = true;
-                                timetableArray[dayIndex][i-7 + j] = true;
-                                //두 칸 연속으로 true 박히도록
-                            }
-                            if(dayTime.EndTimeMin == 30 && i == dayTime.EndTimeHour - 1){
-                                timetableArray[dayIndex][i-8 + j] = true;
-                            }
+                if (dayIndex != -1 && dayTime.StartTimeHour >= 9 && dayTime.EndTimeHour <= 21) {
+                    int startRow = (dayTime.StartTimeHour - 9) * 2 + (dayTime.StartTimeMin / 30);
+                    int endRow = (dayTime.EndTimeHour - 9) * 2 + (dayTime.EndTimeMin / 30);
+
+                    for (int i = startRow; i < endRow; i++) {
+                        if (i >= 0 && i < 22) {
+                            // boolean 배열에는 true 값을 할당
+                            timetableArray[dayIndex][i] = true;
+                            // String 배열에는 해당 과목의 기호를 할당
+                            symbolGrid[dayIndex][i] = currentSymbol;
                         }
-                        j++;
-
                     }
-
                 }
-
             }
         }
 
-        // 출력
-        System.out.println("==== 시간표 (" + year + "년 " + semester + "학기) ====");
+        // 시간표 출력
+        System.out.println("===== 시간표 (" + year + "년 " + semester + "학기) =====");
         System.out.print("시간\\요일\t월\t화\t수\t목\t금\n");
-        int i = 0;
-        for (int period = 0; period < 22; period = period + 2) {
-            System.out.print((period + 9 - i) + "시 \t\t");
-            for (int day = 0; day < 5; day++) {
-                System.out.print((timetableArray[day][period] ? "●" : "○") + "\t");
-            }
-            System.out.println();
-            System.out.print((period + 9 - i) + "시 30분 \t");
-            for (int day = 0; day < 5; day++) {
-                System.out.print((timetableArray[day][period+1] ? "●" : "○") + "\t");
-            }
 
+        for (int i = 0; i < 22; i++) {
+            int hour = 9 + (i / 2);
+            boolean isHalfHour = (i % 2 != 0);
+
+            String timeLabel;
+            if (isHalfHour) {
+                timeLabel = hour + "시 30분";
+            } else {
+                timeLabel = hour + "시";
+            }
+            System.out.printf("%-10s", timeLabel);
+
+            for (int day = 0; day < 5; day++) {
+                System.out.print(symbolGrid[day][i] + "\t");
+            }
             System.out.println();
-            i++;
+        }
+
+        // 기호별로 나타내는 과목 출력
+        System.out.println();
+        for (Map.Entry<String, String> entry : subjectLegend.entrySet()) {
+            System.out.println(entry.getValue() + " : " + entry.getKey());
         }
     }
+
+    public void verifyGraduation() {
+        System.out.println("==== 졸업 요건 정보 ====");
+
+        // 총 이수 요구 학점 출력
+        System.out.println("총 이수 요구 학점: " + Graduation.getTotalRequiredCredit() + "학점");
+
+        // 영역별 요구 학점 출력
+        Map<String, Integer> areaMap = Graduation.CreditRequiredCreditEachArea;
+        if (areaMap != null && !areaMap.isEmpty()) {
+            System.out.println("\n[과목 구분별 요구 학점]");
+            for (Map.Entry<String, Integer> entry : areaMap.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue() + "학점");
+            }
+        }
+
+        // 필수 수강 과목 목록 출력 (List<String>으로 수정됨)
+        Map<String, List<String>> reqMap = Graduation.requiredSubject;
+        if (reqMap != null && !reqMap.isEmpty()) {
+            System.out.println("\n[필수 수강 과목]");
+            for (Map.Entry<String, List<String>> entry : reqMap.entrySet()) {
+                String area = entry.getKey();
+                List<String> courseCodes = entry.getValue();
+
+                if (courseCodes == null || courseCodes.isEmpty()) {
+                    System.out.println("[" + area + "] 필수 과목 없음");
+                    continue;
+                }
+
+                System.out.println("[" + area + "]");
+                for (String courseCode : courseCodes) {
+                    Subject subj = SubjectManager.findSubject(courseCode, 0);
+                    if (subj != null) {
+                        System.out.println("  - " + subj.toString());
+                    } else {
+                        System.out.println("  - 정보 없음 (코드: " + courseCode + ")");
+                    }
+                }
+            }
+        }
+    }
+
 
 
 

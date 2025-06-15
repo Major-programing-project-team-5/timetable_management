@@ -22,9 +22,25 @@ public class DayTime {
         this.EndTimeMin = Integer.parseInt(timeInfo[1][1]);
     }
 
+    public String getDay() {
+        return day;
+    }
+
+    public String getTime() {
+        return String.format("%02d:%02d~%02d:%02d", StartTimeHour, StartTimeMin, EndTimeHour, EndTimeMin);
+    }
+
     @Override
     public String toString() {
         return day + "," + StartTimeHour + ":" + StartTimeMin + "~" + EndTimeHour + ":" + EndTimeMin;
+    }
+    public static boolean isOverlapping(DayTime t1, DayTime t2) {
+        int t1Start = t1.StartTimeHour * 60 + t1.StartTimeMin;
+        int t1End = t1.EndTimeHour * 60 + t1.EndTimeMin;
+        int t2Start = t2.StartTimeHour * 60 + t2.StartTimeMin;
+        int t2End = t2.EndTimeHour * 60 + t2.EndTimeMin;
+
+        return t1Start < t2End && t2Start < t1End; // 시간이 겹치는 경우
     }
 
     //여기도 비슷합니다.
